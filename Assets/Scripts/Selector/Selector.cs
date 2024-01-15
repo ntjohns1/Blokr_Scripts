@@ -16,26 +16,10 @@ public abstract class Selector : MonoBehaviour
         get { return pieceType; }
     }
 
-    private bool isSelected = false;
-
     public int GetSize()
     {
         return size;
     }
-
-    // void OnMouseDown()
-    // {
-    //     if (!isSelected)
-    //     {
-    //         GameManager.Instance.SelectPiece(gameObject);
-    //         isSelected = true;
-    //     }
-    //     else
-    //     {
-    //         GameManager.Instance.DeselectPiece(gameObject);
-    //         isSelected = false;
-    //     }
-    // }
 
     public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction);
 }
