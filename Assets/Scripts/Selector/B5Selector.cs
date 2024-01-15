@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class J5 : Piece
+public class B5Selector : Selector
 {
     public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction)
     {

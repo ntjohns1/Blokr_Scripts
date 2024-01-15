@@ -6,17 +6,17 @@ public enum PieceType
 { A1, A2, A3, B3, A4, B4, C4, D4, E4, A5, B5, C5, D5, E5, F5, G5, H5, I5, J5, K5, L5 };
 public enum PieceColor { Red, Green, Blue, Yellow };
 public enum Direction { Up, Right, Down, Left };
-public abstract class Piece : MonoBehaviour
+public class Piece : MonoBehaviour
 {
     [SerializeField]
     [Range(1, 5)]
-    protected int size;
+    private int size;
 
     [SerializeField]
-    protected PieceColor pieceColor;
+    private PieceColor pieceColor;
 
     [SerializeField]
-    protected PieceType pieceType;
+    private PieceType pieceType;
 
     public PieceColor PieceColor
     {
@@ -49,6 +49,4 @@ public abstract class Piece : MonoBehaviour
             isSelected = false;
         }
     }
-
-    public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction);
 }
