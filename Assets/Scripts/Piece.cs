@@ -14,9 +14,18 @@ public class Piece : MonoBehaviour
 
     [SerializeField]
     private PieceColor pieceColor;
+    
+    [SerializeField]
+    private Direction pieceDirection;
 
     [SerializeField]
     private PieceType pieceType;
+
+    public Direction PieceDirection
+    {
+        get { return pieceDirection; }
+        set { pieceDirection = value; }
+    }
 
     public PieceColor PieceColor
     {

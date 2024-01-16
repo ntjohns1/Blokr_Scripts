@@ -104,24 +104,25 @@ public class Board : MonoBehaviour
         Vector2Int gridPosition = Geometry.GridFromPoint(tileHighlight.transform.position);
 
         // Check if the spaces are available
-        if (AreSpacesAvailable(gridPosition, pieceComponent.GetSize()))
-        {
+        // if (AreSpacesAvailable(gridPosition, pieceComponent.GetSize()))
+        // {
             // Add the piece to the board
             GameObject pieceObject = Instantiate(piece, tileHighlight.transform.position, Quaternion.identity);
-            UpdateOccupiedSpaces(gridPosition, pieceComponent.GetSize(), true);
+            // UpdateOccupiedSpaces(gridPosition, pieceComponent.GetSize(), true);
 
+        
             // Calculate the grid positions occupied by the piece
             // List<Vector2Int> occupiedGridPositions = GetOccupiedGridPositions(gridPosition, pieceComponent);
             // Debug.Log("Occupied Grid Positions: " + string.Join(", ", occupiedGridPositions));
 
             return pieceObject;
-        }
-        else
-        {
-            // Spaces are not available, handle accordingly (e.g., display a message)
-            Debug.Log("Cannot place the piece in the selected position.");
-            return null;
-        }
+        // }
+        // else
+        // {
+        //     // Spaces are not available, handle accordingly (e.g., display a message)
+        //     Debug.Log("Cannot place the piece in the selected position.");
+        //     return null;
+        // }
     }
 
     // Check if the specified spaces are available

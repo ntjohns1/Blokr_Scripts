@@ -8,6 +8,14 @@ public abstract class Selector : MonoBehaviour
     [Range(1, 5)]
     protected int size;
 
+    protected Direction selectorDirection;
+    public Direction SelectorDirection
+    {
+        get { return selectorDirection; }
+        set { selectorDirection = value; }
+    }
+    
+
     [SerializeField]
     protected PieceType pieceType;
 
