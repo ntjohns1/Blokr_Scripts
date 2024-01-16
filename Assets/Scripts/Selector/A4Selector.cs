@@ -25,9 +25,9 @@ public class A4Selector : Selector
         var cellD = direction switch
         {
             Direction.Up => new Vector2Int(cellA.x - 2, cellA.y),
-            Direction.Right => new Vector2Int(cellA.x, cellA.y - 2),
+            Direction.Right => new Vector2Int(cellA.x, cellA.y + 2),
             Direction.Down => new Vector2Int(cellA.x + 2, cellA.y),
-            Direction.Left => new Vector2Int(cellA.x, cellA.y - 2),
+            Direction.Left => new Vector2Int(cellA.x, cellA.y + 2),
             _ => new Vector2Int(cellA.x - 2, cellA.y),
         };
         List<Vector2Int> cells = new()

@@ -16,19 +16,19 @@ public class D4Selector : Selector
         };
         var cellC = direction switch
         {
-            Direction.Up => new Vector2Int(cellA.x - 1, cellA.y),
-            Direction.Right => new Vector2Int(cellA.x, cellA.y + 1),
-            Direction.Down => new Vector2Int(cellA.x + 1, cellA.y),
-            Direction.Left => new Vector2Int(cellA.x, cellA.y - 1),
-            _ => new Vector2Int(cellA.x - 1, cellA.y),
+            Direction.Up => new Vector2Int(cellA.x, cellA.y + 1),
+            Direction.Right => new Vector2Int(cellA.x + 1, cellA.y),
+            Direction.Down => new Vector2Int(cellA.x, cellA.y - 1),
+            Direction.Left => new Vector2Int(cellA.x - 1, cellA.y),
+            _ => new Vector2Int(cellA.x, cellA.y + 1),
         };
         var cellD = direction switch
         {
-            Direction.Up => new Vector2Int(cellA.x - 2, cellA.y),
-            Direction.Right => new Vector2Int(cellA.x, cellA.y - 2),
-            Direction.Down => new Vector2Int(cellA.x + 2, cellA.y),
-            Direction.Left => new Vector2Int(cellA.x, cellA.y - 2),
-            _ => new Vector2Int(cellA.x - 2, cellA.y),
+            Direction.Up => new Vector2Int(cellA.x + 1, cellA.y + 1),
+            Direction.Right => new Vector2Int(cellA.x + 1, cellA.y - 1),
+            Direction.Down => new Vector2Int(cellA.x - 1, cellA.y - 1),
+            Direction.Left => new Vector2Int(cellA.x - 1, cellA.y + 1),
+            _ => new Vector2Int(cellA.x + 1, cellA.y + 1),
         };
         List<Vector2Int> cells = new()
         {
@@ -38,5 +38,5 @@ public class D4Selector : Selector
             cellD
         };
         return cells;
-    } 
+    }
 }
