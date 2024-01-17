@@ -46,10 +46,12 @@ public class TileSelector : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(0))
             {
-                GameObject piece = GameManager.Instance.SelectedPiece;
-                Piece p = piece.GetComponent<Piece>();
-                string s = p.PieceType + "Selector";
-                Debug.Log(s);
+                Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
+                List<Vector2Int> list = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
+                foreach (Vector2Int i in list)
+                {
+                    Debug.Log(i);
+                }
                 // GameManager.Instance.AddPiece(piece, tileHighlight);
             }
         }

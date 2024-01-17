@@ -11,8 +11,8 @@ public class Geometry : MonoBehaviour
 {
     static public Vector3 PointFromGrid(Vector2Int gridPoint)
     {
-        float x = -9.5f + 1.0f * gridPoint.x;
-        float z = -9.5f + 1.0f * gridPoint.y;
+        float x = 0.5f + 1.0f * gridPoint.x;
+        float z = 0.5f + 1.0f * gridPoint.y;
         return new Vector3(x, 0.0f, z);
     }
 
@@ -23,8 +23,8 @@ public class Geometry : MonoBehaviour
 
     static public Vector2Int GridFromPoint(Vector3 point)
     {
-        int col = Mathf.FloorToInt(10.0f + point.x);
-        int row = Mathf.FloorToInt(10.0f + point.z);
+        int col = Mathf.FloorToInt(point.x);
+        int row = Mathf.FloorToInt(point.z);
         return new Vector2Int(col, row);
     }
 }
