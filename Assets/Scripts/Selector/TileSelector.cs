@@ -36,9 +36,21 @@ public class TileSelector : MonoBehaviour
             Vector2Int gridPoint = Geometry.GridFromPoint(point);
             tileHighlight.SetActive(true);
             tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
+            Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
+            int initDirection = (int)piece.PieceDirection;
+            int dirIndex = initDirection;
+
             if (Input.GetKeyUp("e"))
             {
                 tileHighlight.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+                if (dirIndex < 3)
+                {
+                    piece.PieceDirection = (Direction)dirIndex++;
+                }
+                else
+                {
+                    piece.PieceDirection = (Direction)0;
+                }
             }
             if (Input.GetKeyUp("q"))
             {
@@ -46,7 +58,6 @@ public class TileSelector : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(0))
             {
-                Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
                 List<Vector2Int> list = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
                 foreach (Vector2Int i in list)
                 {
@@ -134,6 +145,7 @@ public class TileSelector : MonoBehaviour
                 return a1.GetOccupiedGridPositions(gridPoint, direction);
         }
     }
+
 
     public void EnterState()
     {
