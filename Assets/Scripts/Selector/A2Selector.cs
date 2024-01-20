@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class A2Selector : Selector
 {
-    public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int square1, Direction direction)
+    public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction)
     {
-        var square2 = direction switch
+        ClampToGrid(cellA, 0,19);
+        var cellB = ClampToGrid(direction switch
         {
-            Direction.Up => new Vector2Int(square1.x + 1, square1.y),
-            Direction.Right => new Vector2Int(square1.x, square1.y - 1),
-            Direction.Down => new Vector2Int(square1.x - 1, square1.y),
-            Direction.Left => new Vector2Int(square1.x, square1.y + 1),
-            _ => new Vector2Int(square1.x + 1, square1.y),
-        };
-        List<Vector2Int> spaces = new()
+            Direction.Up => new Vector2Int(cellA.x + 1, cellA.y),
+            Direction.Right => new Vector2Int(cellA.x, cellA.y - 1),
+            Direction.Down => new Vector2Int(cellA.x - 1, cellA.y),
+            Direction.Left => new Vector2Int(cellA.x, cellA.y + 1),
+            _ => new Vector2Int(cellA.x + 1, cellA.y),
+        },0,19);
+        List<Vector2Int> cells = new()
         {
-            square1,
-            square2
+            cellA,
+            cellB
         };
-        return spaces;
+        return cells;
     }
 }

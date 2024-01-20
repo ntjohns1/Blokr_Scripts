@@ -14,7 +14,7 @@ public abstract class Selector : MonoBehaviour
         get { return selectorDirection; }
         set { selectorDirection = value; }
     }
-    
+
 
     [SerializeField]
     protected PieceType pieceType;
@@ -30,4 +30,11 @@ public abstract class Selector : MonoBehaviour
     }
 
     public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction);
+
+    protected Vector2Int ClampToGrid(Vector2Int vector, int min, int max)
+    {
+        int clampedX = Mathf.Clamp(vector.x, min, max);
+        int clampedY = Mathf.Clamp(vector.y, min, max);
+        return new Vector2Int(clampedX, clampedY);
+    }
 }
