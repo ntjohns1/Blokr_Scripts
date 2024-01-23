@@ -6,39 +6,39 @@ public class K5Selector : Selector
 {
     public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction)
     {
-        ClampToGrid(cellA,0,19);
-        var cellB = ClampToGrid(direction switch
+        
+        var cellB = direction switch
         {
             Direction.Up => new Vector2Int(cellA.x, cellA.y + 1),
             Direction.Right => new Vector2Int(cellA.x + 1, cellA.y),
             Direction.Down => new Vector2Int(cellA.x, cellA.y - 1),
             Direction.Left => new Vector2Int(cellA.x - 1, cellA.y),
             _ => new Vector2Int(cellA.x, cellA.y + 1),
-        },0,19);
-        var cellC = ClampToGrid(direction switch
+        };
+        var cellC = direction switch
         {
             Direction.Up => new Vector2Int(cellA.x - 1, cellA.y + 1),
             Direction.Right => new Vector2Int(cellA.x + 1, cellA.y + 1),
             Direction.Down => new Vector2Int(cellA.x + 1, cellA.y - 1),
             Direction.Left => new Vector2Int(cellA.x - 1, cellA.y - 1),
             _ => new Vector2Int(cellA.x = 1, cellA.y + 1),
-        },0,19);
-        var cellD = ClampToGrid(direction switch
+        };
+        var cellD = direction switch
         {
             Direction.Up => new Vector2Int(cellA.x, cellA.y - 1),
             Direction.Right => new Vector2Int(cellA.x - 1, cellA.y),
             Direction.Down => new Vector2Int(cellA.x, cellA.y + 1),
             Direction.Left => new Vector2Int(cellA.x + 1, cellA.y),
             _ => new Vector2Int(cellA.x, cellA.y - 1),
-        },0,19);
-        var cellE = ClampToGrid(direction switch
+        };
+        var cellE = direction switch
         {
             Direction.Up => new Vector2Int(cellA.x - 1, cellA.y - 1),
             Direction.Right => new Vector2Int(cellA.x - 1, cellA.y + 1),
             Direction.Down => new Vector2Int(cellA.x + 1, cellA.y + 1),
             Direction.Left => new Vector2Int(cellA.x + 1, cellA.y - 1),
             _ => new Vector2Int(cellA.x - 1, cellA.y - 1),
-        },0,19);
+        };
         List<Vector2Int> cells = new()
         {
             cellA,

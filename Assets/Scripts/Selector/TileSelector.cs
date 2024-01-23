@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TileSelector : MonoBehaviour
@@ -8,6 +9,9 @@ public class TileSelector : MonoBehaviour
     // public GameObject tileHighlightPrefab;
 
     private GameObject tileHighlight;
+
+    private Collider objectCollider;
+
 
     [SerializeField] private LayerMask gridLayer;
 
@@ -24,53 +28,85 @@ public class TileSelector : MonoBehaviour
     public void SetHighlight(GameObject highlightPrefab)
     {
         tileHighlight = highlightPrefab;
+        objectCollider = highlightPrefab.GetComponent<Collider>();
     }
     void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100f, gridLayer))
+        if (tileHighlight != null)
         {
-            Vector3 point = hit.point;
-            Vector2Int gridPoint = Geometry.GridFromPoint(point);
-            tileHighlight.SetActive(true);
-            tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
-            Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
-            int initDirection = (int)piece.PieceDirection;
-            int dirIndex = initDirection;
 
-            if (Input.GetKeyUp("e"))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100f, gridLayer))
             {
-                tileHighlight.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-                if (dirIndex < 3)
+                Vector3 point = hit.point;
+                Vector2Int gridPoint = Geometry.GridFromPoint(point);
+                Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
+                Debug.Log(piece.PieceType);
+                int initDirection = (int)piece.PieceDirection;
+                int dirIndex = initDirection;
+
+                List<Vector2Int> occupiedGridPositions = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
+                bool allPositionsInBounds = occupiedGridPositions.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
+
+                if (allPositionsInBounds)
                 {
-                    piece.PieceDirection = (Direction)dirIndex++;
+                    tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
+                    tileHighlight.SetActive(true);
                 }
                 else
                 {
-                    piece.PieceDirection = (Direction)0;
+                    tileHighlight.SetActive(false);
                 }
-            }
-            if (Input.GetKeyUp("q"))
-            {
-                tileHighlight.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                List<Vector2Int> list = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
-                foreach (Vector2Int i in list)
+
+
+                if (Input.GetKeyUp("e"))
                 {
-                    Debug.Log(i);
+                    tileHighlight.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+                    if (dirIndex < 3)
+                    {
+                        piece.PieceDirection = (Direction)dirIndex++;
+                    }
+                    else
+                    {
+                        piece.PieceDirection = (Direction)0;
+                    }
                 }
-                // GameManager.Instance.AddPiece(piece, tileHighlight);
+                if (Input.GetKeyUp("q"))
+                {
+                    tileHighlight.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
+                }
+                if (Input.GetMouseButtonUp(0))
+                {
+                    List<Vector2Int> list = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
+                    foreach (Vector2Int i in list)
+                    {
+                        Debug.Log(i);
+                    }
+                    // GameManager.Instance.AddPiece(piece, tileHighlight);
+                }
             }
-        }
-        else
-        {
-            tileHighlight.SetActive(false);
+            else
+            {
+                if (tileHighlight != null)
+                {
+                    tileHighlight.SetActive(false);
+                }
+            }
         }
     }
+
+    // Function to check if bounds are intersecting
+    private bool AreBoundsIntersecting(Bounds bounds1, Bounds bounds2)
+    {
+        return bounds1.Intersects(bounds2);
+    }
+    /*
+    *** Tile Highlight should not display if any cell is out of bounds.
+    - Possible approach - use Update to track the values of the Selector child object 
+      and only set the object to active if they are in bounds
+    */
 
     private List<Vector2Int> GetOccupiedCellsForType(PieceType pieceType, Direction direction, Vector2Int gridPoint, GameObject tileHighlight)
     {
