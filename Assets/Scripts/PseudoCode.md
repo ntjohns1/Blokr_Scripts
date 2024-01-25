@@ -46,6 +46,17 @@ Board
         - tileHighLight.SetActive(false)
 
 
-
-￼
-
+Selectors to Reorganize:
+A4
+C4
+E4
+B5
+C4
+D5
+E5
+G5
+H5
+I5
+J5￼
+K5
+L5

@@ -48,15 +48,10 @@ public class TileSelector : MonoBehaviour
 
                 List<Vector2Int> occupiedGridPositions = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
                 bool allPositionsInBounds = occupiedGridPositions.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
-                Debug.Log("piece direction: " + piece.PieceDirection);
 
-                foreach (Vector2Int item in occupiedGridPositions)
-                {
-                    Debug.Log("x:" + item.x + " y:" + item.y);
-                }
                 if (allPositionsInBounds)
                 {
-                    tileHighlight.transform.SetPositionAndRotation(Geometry.PointFromGrid(gridPoint), Quaternion.Euler(0.0f, 90.0f * dirIndex, 0.0f));
+                    tileHighlight.transform.SetPositionAndRotation(Geometry.PointFromGrid(gridPoint), Quaternion.Euler(0.0f, 90.0f * (int)piece.PieceDirection, 0.0f));
                     tileHighlight.SetActive(true);
                 }
                 else
@@ -64,30 +59,50 @@ public class TileSelector : MonoBehaviour
                     tileHighlight.SetActive(false);
                 }
 
+                Debug.Log($"GridPoint: {gridPoint}");
+                int i = 0;
+                foreach (Vector2Int item in occupiedGridPositions)
+                {
+                    ++i;
+                    Debug.Log($"Cell{i}: {item}");
+                }
 
                 if (Input.GetKeyUp("e"))
                 {
                     tileHighlight.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
                     if (dirIndex < 3)
                     {
-                        piece.PieceDirection = (Direction)dirIndex++;
+                        dirIndex++;
                     }
                     else
                     {
-                        piece.PieceDirection = (Direction)0;
+                        dirIndex = 0;
                     }
+
+                    piece.PieceDirection = (Direction)dirIndex;
                 }
+
                 if (Input.GetKeyUp("q"))
                 {
                     tileHighlight.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
+                    if (dirIndex > 0)
+                    {
+                        dirIndex--;
+                    }
+                    else
+                    {
+                        dirIndex = 3;
+                    }
+
+                    piece.PieceDirection = (Direction)dirIndex;
                 }
                 if (Input.GetMouseButtonUp(0))
                 {
-                    List<Vector2Int> list = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
-                    foreach (Vector2Int i in list)
-                    {
-                        Debug.Log(i);
-                    }
+                    // List<Vector2Int> list = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, gridPoint, tileHighlight);
+                    // foreach (Vector2Int i in list)
+                    // {
+                    //     Debug.Log(i);
+                    // }
                     // GameManager.Instance.AddPiece(piece, tileHighlight);
                 }
             }
@@ -100,17 +115,6 @@ public class TileSelector : MonoBehaviour
             }
         }
     }
-
-    // Function to check if bounds are intersecting
-    private bool AreBoundsIntersecting(Bounds bounds1, Bounds bounds2)
-    {
-        return bounds1.Intersects(bounds2);
-    }
-    /*
-    *** Tile Highlight should not display if any cell is out of bounds.
-    - Possible approach - use Update to track the values of the Selector child object 
-      and only set the object to active if they are in bounds
-    */
 
     private List<Vector2Int> GetOccupiedCellsForType(PieceType pieceType, Direction direction, Vector2Int gridPoint, GameObject tileHighlight)
     {
@@ -143,22 +147,22 @@ public class TileSelector : MonoBehaviour
                 Debug.Log("Selector Direction: " + a4Selector.SelectorDirection);
                 return a4Selector.GetOccupiedGridPositions(gridPoint, direction);
             case PieceType.B4:
-                A1Selector b4Selector = tileHighlight.GetComponent<A1Selector>();
+                B4Selector b4Selector = tileHighlight.GetComponent<B4Selector>();
                 Debug.Log("Selector Direction: " + b4Selector.SelectorDirection);
                 b4Selector.SelectorDirection = direction;
                 return b4Selector.GetOccupiedGridPositions(gridPoint, direction);
             case PieceType.C4:
-                A1Selector c4Selector = tileHighlight.GetComponent<A1Selector>();
+                C4Selector c4Selector = tileHighlight.GetComponent<C4Selector>();
                 c4Selector.SelectorDirection = direction;
                 Debug.Log("Selector Direction: " + c4Selector.SelectorDirection);
                 return c4Selector.GetOccupiedGridPositions(gridPoint, direction);
             case PieceType.D4:
-                A1Selector d4Selector = tileHighlight.GetComponent<A1Selector>();
+                D4Selector d4Selector = tileHighlight.GetComponent<D4Selector>();
                 d4Selector.SelectorDirection = direction;
                 Debug.Log("Selector Direction: " + d4Selector.SelectorDirection);
                 return d4Selector.GetOccupiedGridPositions(gridPoint, direction);
             case PieceType.E4:
-                A1Selector e4Selector = tileHighlight.GetComponent<A1Selector>();
+                E4Selector e4Selector = tileHighlight.GetComponent<E4Selector>();
                 e4Selector.SelectorDirection = direction;
                 Debug.Log("Selector Direction: " + e4Selector.SelectorDirection);
                 return e4Selector.GetOccupiedGridPositions(gridPoint, direction);
