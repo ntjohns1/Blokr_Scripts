@@ -9,19 +9,19 @@ public class B4Selector : Selector
         
         var cellB = direction switch
         {
-            Direction.Up => new Vector2Int(cellA.x + 1, cellA.y),
-            Direction.Right => new Vector2Int(cellA.x, cellA.y - 1),
-            Direction.Down => new Vector2Int(cellA.x - 1, cellA.y),
-            Direction.Left => new Vector2Int(cellA.x, cellA.y + 1),
-            _ => new Vector2Int(cellA.x + 1, cellA.y),
-        };
-        var cellC = direction switch
-        {
             Direction.Up => new Vector2Int(cellA.x - 1, cellA.y),
             Direction.Right => new Vector2Int(cellA.x, cellA.y + 1),
             Direction.Down => new Vector2Int(cellA.x + 1, cellA.y),
             Direction.Left => new Vector2Int(cellA.x, cellA.y - 1),
             _ => new Vector2Int(cellA.x - 1, cellA.y),
+        };
+        var cellC = direction switch
+        {
+            Direction.Up => new Vector2Int(cellA.x + 1, cellA.y),
+            Direction.Right => new Vector2Int(cellA.x, cellA.y - 1),
+            Direction.Down => new Vector2Int(cellA.x - 1, cellA.y),
+            Direction.Left => new Vector2Int(cellA.x, cellA.y + 1),
+            _ => new Vector2Int(cellA.x + 1, cellA.y),
         };
         var cellD = direction switch
         {

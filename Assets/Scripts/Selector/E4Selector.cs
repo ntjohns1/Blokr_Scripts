@@ -6,7 +6,6 @@ public class E4Selector : Selector
 {
     public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction)
     {
-        
         var cellB = direction switch
         {
             Direction.Up => new Vector2Int(cellA.x + 1, cellA.y),
