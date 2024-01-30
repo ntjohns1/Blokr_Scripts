@@ -2,44 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class B5Selector : Selector
+namespace Blokr
 {
-    public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction)
+    public class B5Selector : Selector
     {
-        
-        var cellB = direction switch
+        public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction, bool isFlipped)
         {
-            Direction.Up => new Vector2Int(cellA.x - 1, cellA.y),
-            Direction.Right => new Vector2Int(cellA.x, cellA.y + 1),
-            Direction.Down => new Vector2Int(cellA.x + 1, cellA.y),
-            Direction.Left => new Vector2Int(cellA.x, cellA.y - 1),
-            _ => new Vector2Int(cellA.x - 1, cellA.y),
-        };
-        var cellC = direction switch
-        {
-            Direction.Up => new Vector2Int(cellA.x - 2, cellA.y),
-            Direction.Right => new Vector2Int(cellA.x, cellA.y + 2),
-            Direction.Down => new Vector2Int(cellA.x + 2, cellA.y),
-            Direction.Left => new Vector2Int(cellA.x, cellA.y - 2),
-            _ => new Vector2Int(cellA.x - 2, cellA.y),
-        };
-        var cellD = direction switch
-        {
-            Direction.Up => new Vector2Int(cellA.x + 1, cellA.y),
-            Direction.Right => new Vector2Int(cellA.x, cellA.y - 1),
-            Direction.Down => new Vector2Int(cellA.x - 1, cellA.y),
-            Direction.Left => new Vector2Int(cellA.x, cellA.y + 1),
-            _ => new Vector2Int(cellA.x + 1, cellA.y),
-        };
-        var cellE = direction switch
-        {
-            Direction.Up => new Vector2Int(cellA.x + 1, cellA.y - 1),
-            Direction.Right => new Vector2Int(cellA.x - 1, cellA.y - 1),
-            Direction.Down => new Vector2Int(cellA.x - 1, cellA.y + 1),
-            Direction.Left => new Vector2Int(cellA.x + 1, cellA.y + 1),
-            _ => new Vector2Int(cellA.x + 1, cellA.y - 1),
-        };
-        List<Vector2Int> cells = new()
+            var cellB = direction switch
+            {
+                Direction.Up => GetNext(cellA, Direction.Left, isFlipped),
+                Direction.Right => GetNext(cellA, Direction.Up, isFlipped),
+                Direction.Down => GetNext(cellA, Direction.Right, isFlipped),
+                Direction.Left => GetNext(cellA, Direction.Down, isFlipped),
+                _ => GetNext(cellA, Direction.Left, isFlipped),
+            };
+            var cellC = direction switch
+            {
+                Direction.Up => GetNext(cellB, Direction.Left, isFlipped),
+                Direction.Right => GetNext(cellB, Direction.Up, isFlipped),
+                Direction.Down => GetNext(cellB, Direction.Right, isFlipped),
+                Direction.Left => GetNext(cellB, Direction.Down, isFlipped),
+                _ => GetNext(cellB, Direction.Left, isFlipped),
+            };
+            var cellD = direction switch
+            {
+                Direction.Up => GetNext(cellA, Direction.Right, isFlipped),
+                Direction.Right => GetNext(cellA, Direction.Down, isFlipped),
+                Direction.Down => GetNext(cellA, Direction.Left, isFlipped),
+                Direction.Left => GetNext(cellA, Direction.Up, isFlipped),
+                _ => GetNext(cellA, Direction.Right, isFlipped),
+            };
+            var cellE = direction switch
+            {
+                Direction.Up => GetNext(cellD, Direction.Down, isFlipped),
+                Direction.Right => GetNext(cellD, Direction.Left, isFlipped),
+                Direction.Down => GetNext(cellD, Direction.Up, isFlipped),
+                Direction.Left => GetNext(cellD, Direction.Right, isFlipped),
+                _ => GetNext(cellD, Direction.Down, isFlipped),
+            };
+            List<Vector2Int> cells = new()
         {
             cellA,
             cellB,
@@ -47,6 +48,7 @@ public class B5Selector : Selector
             cellD,
             cellE
         };
-        return cells;
+            return cells;
+        }
     }
 }

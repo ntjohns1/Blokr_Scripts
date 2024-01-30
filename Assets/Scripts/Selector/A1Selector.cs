@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class A1Selector : Selector
+namespace Blokr
 {
-    
-    public override List< Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction)
+    public class A1Selector : Selector
     {
-        List<Vector2Int> spaces = new List<Vector2Int>
+
+        public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction, bool isFlipped)
+        {
+            List<Vector2Int> spaces = new List<Vector2Int>
         {
             cellA
         };
-        return spaces;
-    }   
+            return spaces;
+        }
+    }
 }
