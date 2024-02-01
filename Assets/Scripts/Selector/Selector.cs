@@ -59,6 +59,7 @@ namespace Blokr
         //         };
         //     }
         // }
+        
         public Vector2Int GetNext(Vector2Int cell, Direction direction, bool isFlipped)
         {
             return direction switch
