@@ -52,9 +52,9 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
-            Assert.AreEqual(new Vector2Int(4, 4), result[3]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 2), result[3]);
         }
 
         [Test]
@@ -96,9 +96,9 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
-            Assert.AreEqual(new Vector2Int(4, 2), result[3]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 4), result[3]);
         }
 
         [Test]
@@ -140,9 +140,9 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
-            Assert.AreEqual(new Vector2Int(2, 2), result[3]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(4, 4), result[3]);
         }
 
         [Test]
@@ -184,9 +184,9 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
-            Assert.AreEqual(new Vector2Int(2, 4), result[3]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
+            Assert.AreEqual(new Vector2Int(4, 2), result[3]);
         }
     }
 }

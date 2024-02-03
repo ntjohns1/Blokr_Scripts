@@ -30,8 +30,8 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
             Assert.AreEqual(new Vector2Int(2, 4), result[3]);
             Assert.AreEqual(new Vector2Int(1, 4), result[4]);
         }
@@ -53,10 +53,10 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
-            Assert.AreEqual(new Vector2Int(4, 4), result[3]);
-            Assert.AreEqual(new Vector2Int(5, 4), result[4]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 2), result[3]);
+            Assert.AreEqual(new Vector2Int(1, 2), result[4]);
         }
 
         [Test]
@@ -76,8 +76,8 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
             Assert.AreEqual(new Vector2Int(4, 4), result[3]);
             Assert.AreEqual(new Vector2Int(4, 5), result[4]);
         }
@@ -99,10 +99,10 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
-            Assert.AreEqual(new Vector2Int(4, 2), result[3]);
-            Assert.AreEqual(new Vector2Int(4, 1), result[4]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 4), result[3]);
+            Assert.AreEqual(new Vector2Int(2, 5), result[4]);
         }
 
         [Test]
@@ -122,8 +122,8 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
             Assert.AreEqual(new Vector2Int(4, 2), result[3]);
             Assert.AreEqual(new Vector2Int(5, 2), result[4]);
         }
@@ -145,10 +145,10 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[3]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[4]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(4, 4), result[3]);
+            Assert.AreEqual(new Vector2Int(5, 4), result[4]);
         }
 
         [Test]
@@ -168,8 +168,8 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
             Assert.AreEqual(new Vector2Int(2, 2), result[3]);
             Assert.AreEqual(new Vector2Int(2, 1), result[4]);
         }
@@ -191,10 +191,10 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
-            Assert.AreEqual(new Vector2Int(2, 4), result[3]);
-            Assert.AreEqual(new Vector2Int(2, 5), result[4]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
+            Assert.AreEqual(new Vector2Int(4, 2), result[3]);
+            Assert.AreEqual(new Vector2Int(4, 1), result[4]);
         }
 
     }

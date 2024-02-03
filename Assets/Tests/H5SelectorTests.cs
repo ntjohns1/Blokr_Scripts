@@ -29,10 +29,10 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(1, 3), result[2]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[3]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[4]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 4), result[3]);
+            Assert.AreEqual(new Vector2Int(4, 2), result[3]);
         }
 
         [Test]
