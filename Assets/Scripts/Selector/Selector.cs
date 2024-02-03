@@ -60,14 +60,14 @@ namespace Blokr
         //     }
         // }
         
-        public Vector2Int GetNext(Vector2Int cell, Direction direction, bool isFlipped)
+        public Vector2Int GetNext(Vector2Int cell, Direction direction)
         {
             return direction switch
             {
-                Direction.Up => !isFlipped ? new Vector2Int(cell.x, cell.y + 1) : new Vector2Int(cell.x, cell.y - 1),
-                Direction.Right => !isFlipped ? new Vector2Int(cell.x + 1, cell.y) : new Vector2Int(cell.x - 1, cell.y),
-                Direction.Down => !isFlipped ? new Vector2Int(cell.x, cell.y - 1) : new Vector2Int(cell.x, cell.y + 1),
-                Direction.Left => !isFlipped ? new Vector2Int(cell.x - 1, cell.y) : new Vector2Int(cell.x + 1, cell.y),
+                Direction.Up => new Vector2Int(cell.x, cell.y + 1),
+                Direction.Right => new Vector2Int(cell.x + 1, cell.y),
+                Direction.Down => new Vector2Int(cell.x, cell.y - 1),
+                Direction.Left => new Vector2Int(cell.x - 1, cell.y),
                 _ => cell,
             };
         }

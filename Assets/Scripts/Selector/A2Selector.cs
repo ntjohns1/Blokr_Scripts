@@ -10,11 +10,11 @@ namespace Blokr
         {
             var cellB = direction switch
             {
-                Direction.Up => GetNext(cellA, Direction.Right, isFlipped),
-                Direction.Right => GetNext(cellA, Direction.Down, isFlipped),
-                Direction.Down => GetNext(cellA, Direction.Left, isFlipped),
-                Direction.Left => GetNext(cellA, Direction.Up, isFlipped),
-                _ => GetNext(cellA, Direction.Right, isFlipped),
+                Direction.Up => GetNext(cellA, Direction.Right),
+                Direction.Right => GetNext(cellA, Direction.Down),
+                Direction.Down => GetNext(cellA, Direction.Left),
+                Direction.Left => GetNext(cellA, Direction.Up),
+                _ => GetNext(cellA, Direction.Right),
             };
             List<Vector2Int> cells = new()
         {

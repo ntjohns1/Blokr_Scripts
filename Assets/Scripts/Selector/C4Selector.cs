@@ -11,27 +11,27 @@ namespace Blokr
 
             var cellB = direction switch
             {
-                Direction.Up => new Vector2Int(cellA.x + 1, cellA.y),
-                Direction.Right => new Vector2Int(cellA.x, cellA.y - 1),
-                Direction.Down => new Vector2Int(cellA.x - 1, cellA.y),
-                Direction.Left => new Vector2Int(cellA.x, cellA.y + 1),
-                _ => new Vector2Int(cellA.x + 1, cellA.y),
+                Direction.Up => GetNext(cellA, Direction.Up),
+                Direction.Right => GetNext(cellA, Direction.Right),
+                Direction.Down => GetNext(cellA, Direction.Down),
+                Direction.Left => GetNext(cellA, Direction.Left),
+                _ => GetNext(cellA, Direction.Up),
             };
             var cellC = direction switch
             {
-                Direction.Up => new Vector2Int(cellA.x, cellA.y + 1),
-                Direction.Right => new Vector2Int(cellA.x + 1, cellA.y),
-                Direction.Down => new Vector2Int(cellA.x, cellA.y - 1),
-                Direction.Left => new Vector2Int(cellA.x - 1, cellA.y),
-                _ => new Vector2Int(cellA.x, cellA.y + 1),
+                Direction.Up => !isFlipped ? GetNext(cellA, Direction.Right) : GetNext(cellA, Direction.Left),
+                Direction.Right => !isFlipped ? GetNext(cellA, Direction.Down) : GetNext(cellA, Direction.Up),
+                Direction.Down => !isFlipped ? GetNext(cellA, Direction.Left) : GetNext(cellA, Direction.Right),
+                Direction.Left => !isFlipped ? GetNext(cellA, Direction.Up) : GetNext(cellA, Direction.Down),
+                _ => !isFlipped ? GetNext(cellA, Direction.Right) : GetNext(cellA, Direction.Left),
             };
             var cellD = direction switch
             {
-                Direction.Up => new Vector2Int(cellA.x - 1, cellA.y + 1),
-                Direction.Right => new Vector2Int(cellA.x + 1, cellA.y + 1),
-                Direction.Down => new Vector2Int(cellA.x + 1, cellA.y - 1),
-                Direction.Left => new Vector2Int(cellA.x - 1, cellA.y - 1),
-                _ => new Vector2Int(cellA.x - 1, cellA.y + 1),
+                Direction.Up => !isFlipped ? GetNext(cellB, Direction.Left) : GetNext(cellB, Direction.Right),
+                Direction.Right => !isFlipped ? GetNext(cellB, Direction.Up) : GetNext(cellB, Direction.Down),
+                Direction.Down => !isFlipped ? GetNext(cellB, Direction.Right) : GetNext(cellB, Direction.Left),
+                Direction.Left => !isFlipped ? GetNext(cellB, Direction.Down) : GetNext(cellB, Direction.Up),
+                _ => !isFlipped ? GetNext(cellB, Direction.Left) : GetNext(cellB, Direction.Right),
             };
             List<Vector2Int> cells = new()
         {
