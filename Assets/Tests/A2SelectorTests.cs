@@ -3,23 +3,189 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using Blokr;
 
-public class A2SelectorTests
+// *********************************************************************
+// A2Selector Tests
+// *********************************************************************
+namespace Tests
 {
-    // A Test behaves as an ordinary method
-    [Test]
-    public void A2SelectorTestsSimplePasses()
+    public class A2SelectorTests
     {
-        // Use the Assert class to test conditions
-    }
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator A2SelectorTestsWithEnumeratorPasses()
-    {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithUpDirection_ReturnsCorrectPositions()
+        {
+
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Up;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            
+        }
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Up;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            
+        }
+
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithRightDirection_ReturnsCorrectPositions()
+        {
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Right;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            
+        }
+
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithRightDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Right;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            
+        }
+
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithDownDirection_ReturnsCorrectPositions()
+        {
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Down;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            
+        }
+
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithDownDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Down;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            
+        }
+
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithLeftDirection_ReturnsCorrectPositions()
+        {
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Left;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            
+        }
+
+        [Test]
+        public void A2Selector_GetOccupiedGridPositions_WithLeftDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+            A2Selector selector = new GameObject().AddComponent<A2Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Left;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            
+        }
     }
 }

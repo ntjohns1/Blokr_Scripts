@@ -34,6 +34,7 @@ namespace Tests
             Assert.AreEqual(new Vector2Int(4, 3), result[2]);
             Assert.AreEqual(new Vector2Int(4, 2), result[3]);
         }
+        
         [Test]
         public void B4Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
         {
@@ -187,9 +188,5 @@ namespace Tests
             Assert.AreEqual(new Vector2Int(3, 4), result[2]);
             Assert.AreEqual(new Vector2Int(2, 4), result[3]);
         }
-
-
-
     }
-
 }

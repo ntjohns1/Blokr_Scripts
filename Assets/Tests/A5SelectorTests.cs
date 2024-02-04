@@ -3,23 +3,196 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using Blokr;
 
-public class A5SelectorTests
+// *********************************************************************
+// A5Selector Tests
+// *********************************************************************
+namespace Tests
 {
-    // A Test behaves as an ordinary method
-    [Test]
-    public void A5SelectorTestsSimplePasses()
+    public class A5SelectorTests
     {
-        // Use the Assert class to test conditions
-    }
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator A5SelectorTestsWithEnumeratorPasses()
-    {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithUpDirection_ReturnsCorrectPositions()
+        {
+
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Up;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(5, 3), result[3]);
+            Assert.AreEqual(new Vector2Int(1, 3), result[4]);
+        }
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Up;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(1, 3), result[3]);
+            Assert.AreEqual(new Vector2Int(5, 3), result[4]);
+        }
+
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithRightDirection_ReturnsCorrectPositions()
+        {
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Right;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 1), result[3]);
+            Assert.AreEqual(new Vector2Int(3, 5), result[4]);
+        }
+
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithRightDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Right;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 5), result[3]);
+            Assert.AreEqual(new Vector2Int(3, 1), result[4]);
+        }
+
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithDownDirection_ReturnsCorrectPositions()
+        {
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Down;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(1, 3), result[3]);
+            Assert.AreEqual(new Vector2Int(5, 3), result[3]);
+        }
+
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithDownDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Down;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(5, 3), result[3]);
+            Assert.AreEqual(new Vector2Int(1, 3), result[3]);
+        }
+
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithLeftDirection_ReturnsCorrectPositions()
+        {
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Left;
+            bool isFlipped = false;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(5, 3), result[3]);
+            Assert.AreEqual(new Vector2Int(1, 3), result[4]);
+        }
+
+        [Test]
+        public void A5Selector_GetOccupiedGridPositions_WithLeftDirectionAndFlipped_ReturnsCorrectPositions()
+        {
+            A5Selector selector = new GameObject().AddComponent<A5Selector>();
+            Vector2Int cellA = new Vector2Int(3, 3);
+            Direction direction = Direction.Left;
+            bool isFlipped = true;
+
+            List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+
+            Assert.AreEqual(new Vector2Int(3, 3), result[0]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(1, 3), result[3]);
+            Assert.AreEqual(new Vector2Int(5, 3), result[4]);
+        }
     }
 }
