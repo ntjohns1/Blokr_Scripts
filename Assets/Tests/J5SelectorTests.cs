@@ -13,9 +13,9 @@ namespace Tests
     public class J5SelectorTests
     {
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithUpDirection_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithUpDirection_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Up;
             bool isFlipped = false;
@@ -36,9 +36,9 @@ namespace Tests
         }
 
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Up;
             bool isFlipped = true;
@@ -59,9 +59,9 @@ namespace Tests
         }
 
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithRightDirection_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithRightDirection_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Right;
             bool isFlipped = false;
@@ -82,9 +82,9 @@ namespace Tests
         }
 
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithRightDirectionAndFlipped_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithRightDirectionAndFlipped_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Right;
             bool isFlipped = true;
@@ -105,9 +105,9 @@ namespace Tests
         }
 
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithDownDirection_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithDownDirection_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Down;
             bool isFlipped = false;
@@ -128,9 +128,9 @@ namespace Tests
         }
 
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithDownDirectionAndFlipped_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithDownDirectionAndFlipped_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Down;
             bool isFlipped = true;
@@ -151,9 +151,9 @@ namespace Tests
         }
 
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithLeftDirection_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithLeftDirection_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Left;
             bool isFlipped = false;
@@ -174,9 +174,9 @@ namespace Tests
         }
 
         [Test]
-        public void I5Selector_GetOccupiedGridPositions_WithLeftDirectionAndFlipped_ReturnsCorrectPositions()
+        public void J5Selector_GetOccupiedGridPositions_WithLeftDirectionAndFlipped_ReturnsCorrectPositions()
         {
-            I5Selector selector = new GameObject().AddComponent<I5Selector>();
+            J5Selector selector = new GameObject().AddComponent<J5Selector>();
             Vector2Int cellA = new Vector2Int(3, 3);
             Direction direction = Direction.Left;
             bool isFlipped = true;

@@ -170,7 +170,7 @@ namespace Tests
             Assert.AreEqual(new Vector2Int(3, 4), result[1]);
             Assert.AreEqual(new Vector2Int(3, 2), result[2]);
             Assert.AreEqual(new Vector2Int(2, 3), result[3]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[4]);
+            Assert.AreEqual(new Vector2Int(3, 5), result[4]);
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace Tests
             Assert.AreEqual(new Vector2Int(3, 4), result[1]);
             Assert.AreEqual(new Vector2Int(3, 2), result[2]);
             Assert.AreEqual(new Vector2Int(4, 3), result[3]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[4]);
+            Assert.AreEqual(new Vector2Int(3, 5), result[4]);
         }
     }
 }

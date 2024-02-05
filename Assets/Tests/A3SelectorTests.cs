@@ -30,8 +30,8 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
         }
         [Test]
         public void A3Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
@@ -51,8 +51,8 @@ namespace Tests
 
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
         }
 
         [Test]
@@ -72,8 +72,8 @@ namespace Tests
 
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
         }
 
         [Test]
@@ -94,8 +94,8 @@ namespace Tests
 
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
         }
 
         [Test]
@@ -114,8 +114,8 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
         }
 
         [Test]
@@ -134,8 +134,8 @@ namespace Tests
             }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(2, 3), result[1]);
-            Assert.AreEqual(new Vector2Int(4, 3), result[2]);
+            Assert.AreEqual(new Vector2Int(4, 3), result[1]);
+            Assert.AreEqual(new Vector2Int(2, 3), result[2]);
         }
 
         [Test]
@@ -155,8 +155,8 @@ namespace Tests
 
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
         }
 
         [Test]
@@ -176,8 +176,8 @@ namespace Tests
 
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
-            Assert.AreEqual(new Vector2Int(3, 4), result[1]);
-            Assert.AreEqual(new Vector2Int(3, 2), result[2]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[1]);
+            Assert.AreEqual(new Vector2Int(3, 4), result[2]);
         }
     }
 }
