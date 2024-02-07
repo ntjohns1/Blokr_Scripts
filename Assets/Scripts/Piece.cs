@@ -5,14 +5,18 @@ using UnityEngine;
 namespace Blokr
 {
     public enum PieceType
-    { A1, A2, A3, B3, A4, B4, C4, D4, E4, A5, B5, C5, D5, E5, F5, G5, H5, I5, J5, K5, L5 };
+    { A1, A2, A3, A4, A5, B3, B4, B5, C4, C5, D4, D5, E4, E5, F5, G5, H5, I5, J5, K5, L5 };
     public enum PieceColor { Red, Green, Blue, Yellow };
     public enum Direction { Up, Right, Down, Left };
     public class Piece : MonoBehaviour
     {
+
+// ************************************************************************************
+// Fields
+// ************************************************************************************
+
         [SerializeField]
-        [Range(1, 5)]
-        private int size;
+        private PieceType pieceType;
 
         [SerializeField]
         private PieceColor pieceColor;
@@ -20,32 +24,39 @@ namespace Blokr
         [SerializeField]
         private Direction pieceDirection;
 
-        [SerializeField]
-        private PieceType pieceType;
+        private bool isFlipped;
+        private bool isSelected = false;
 
+
+// ************************************************************************************
+// Properties
+// ************************************************************************************
+
+        public PieceType PieceType
+        {
+            get { return pieceType; }
+        }
+        
+        public PieceColor PieceColor
+        {
+            get { return pieceColor; }
+            // set { pieceColor = value; }
+        }
         public Direction PieceDirection
         {
             get { return pieceDirection; }
             set { pieceDirection = value; }
         }
 
-        public PieceColor PieceColor
+        public bool IsFlipped
         {
-            get { return pieceColor; }
-            // set { pieceColor = value; }
+            get { return isFlipped; }
+            set { isFlipped = value; }
         }
 
-        public PieceType PieceType
-        {
-            get { return pieceType; }
-        }
-
-        private bool isSelected = false;
-
-        public int GetSize()
-        {
-            return size;
-        }
+// ************************************************************************************
+// Methods
+// ************************************************************************************
 
         void OnMouseDown()
         {

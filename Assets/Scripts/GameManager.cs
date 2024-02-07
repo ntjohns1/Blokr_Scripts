@@ -178,25 +178,25 @@ namespace Blokr
                     return highlightPrefabs[1];
                 case PieceType.A3:
                     return highlightPrefabs[2];
-                case PieceType.B3:
-                    return highlightPrefabs[3];
                 case PieceType.A4:
-                    return highlightPrefabs[4];
-                case PieceType.B4:
-                    return highlightPrefabs[5];
-                case PieceType.C4:
-                    return highlightPrefabs[6];
-                case PieceType.D4:
-                    return highlightPrefabs[7];
-                case PieceType.E4:
-                    return highlightPrefabs[8];
+                    return highlightPrefabs[3];
                 case PieceType.A5:
-                    return highlightPrefabs[9];
+                    return highlightPrefabs[4];
+                case PieceType.B3:
+                    return highlightPrefabs[5];
+                case PieceType.B4:
+                    return highlightPrefabs[6];
                 case PieceType.B5:
-                    return highlightPrefabs[10];
+                    return highlightPrefabs[7];
+                case PieceType.C4:
+                    return highlightPrefabs[8];
                 case PieceType.C5:
-                    return highlightPrefabs[11];
+                    return highlightPrefabs[9];
+                case PieceType.D4:
+                    return highlightPrefabs[10];
                 case PieceType.D5:
+                    return highlightPrefabs[11];
+                case PieceType.E4:
                     return highlightPrefabs[12];
                 case PieceType.E5:
                     return highlightPrefabs[13];
