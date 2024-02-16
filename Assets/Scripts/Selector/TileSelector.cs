@@ -16,169 +16,108 @@ namespace Blokr
 
         private Vector3 currentRotation;
 
-
-
         [SerializeField] private LayerMask gridLayer;
 
-        // void Start()
-        // {
-        //     if (tileHighlight != null)
-        //     {
-        //         currentRotation = tileHighlight.transform.eulerAngles;
-        //     }
-        // }
+        private bool isFlipped = false;
 
         public void SetHighlight(GameObject highlightPrefab)
         {
             tileHighlight = highlightPrefab;
             objectCollider = highlightPrefab.GetComponent<Collider>();
+            InitializePositionAndRotation(); // Call the new initialization method here
         }
         void Update()
         {
-            if (tileHighlight != null)
+            if (tileHighlight == null) return;
+
+            HandleMouseOver();
+            HandleRotationInput();
+            HandleFlipInput();
+        }
+
+        void InitializePositionAndRotation()
+        {
+            if (tileHighlight == null) return;
+            // Initialize with a default position and rotation if needed
+            tileHighlight.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        }
+        void HandleMouseOver()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, gridLayer))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100f, gridLayer))
+                Vector3 point = hit.point;
+                Vector2Int gridPoint = Geometry.GridFromPoint(point);
+                tileHighlight.SetActive(true);
+                // Adjust position based on grid point, without resetting rotation
+                tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
+            }
+            else
+            {
+                tileHighlight.SetActive(false);
+            }
+        }
+
+        void HandleRotationInput()
+        {
+            Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
+            int initDirection = (int)piece.PieceDirection;
+            int dirIndex = initDirection;
+
+            if (Input.GetKeyUp("e"))
+            {
+                tileHighlight.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+                if (dirIndex < 3)
                 {
-                    Vector3 point = hit.point;
-                    Vector2Int gridPoint = Geometry.GridFromPoint(point);
-                    Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
-                    int initDirection = (int)piece.PieceDirection;
-                    // bool flipX = false;
-                    // bool flipZ = false;
-
-                    int dirIndex = initDirection;
-
-                    List<Vector2Int> occupiedGridPositions = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, piece.IsFlipped, gridPoint, tileHighlight);
-                    bool allPositionsInBounds = occupiedGridPositions.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
-
-                    if (allPositionsInBounds)
-                    {
-                        tileHighlight.transform.SetPositionAndRotation(Geometry.PointFromGrid(gridPoint), Quaternion.Euler(0.0f, 90.0f * (int)piece.PieceDirection, 0.0f));
-                        currentRotation = tileHighlight.transform.eulerAngles;
-                        tileHighlight.SetActive(true);
-                    }
-                    else
-                    {
-                        tileHighlight.SetActive(false);
-                    }
-
-                    // Debug.Log($"GridPoint: {gridPoint}");
-                    // int i = 0;
-                    // foreach (Vector2Int item in occupiedGridPositions)
-                    // {
-                    //     ++i;
-                    //     Debug.Log($"Cell{i}: {item}");
-                    // }
-
-                    if (Input.GetKeyUp("e"))
-                    {
-                        tileHighlight.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-                        if (dirIndex < 3)
-                        {
-                            dirIndex++;
-                        }
-                        else
-                        {
-                            dirIndex = 0;
-                        }
-
-                        piece.PieceDirection = (Direction)dirIndex;
-                        currentRotation = tileHighlight.transform.eulerAngles;
-                    }
-
-                    if (Input.GetKeyUp("q"))
-                    {
-                        tileHighlight.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
-                        if (dirIndex > 0)
-                        {
-                            dirIndex--;
-                        }
-                        else
-                        {
-                            dirIndex = 3;
-                        }
-
-                        piece.PieceDirection = (Direction)dirIndex;
-                        currentRotation = tileHighlight.transform.eulerAngles;
-                    }
-
-                    if (Input.GetKeyUp("f"))
-                    {
-                        // Log the initial rotation
-                        Debug.Log($"Initial Rotation: {currentRotation}");
-
-                        //     if (!piece.IsFlipped)
-                        //     {
-                        //         piece.IsFlipped = true;
-                        //         if ((int)piece.PieceType <= 4)
-                        //         {
-                        //             flipX = false;
-                        //             flipZ = true;
-
-                        //         }
-                        //         else
-                        //         {
-                        //             flipX = true;
-                        //             flipZ = false;
-                        //         }
-                        //     }
-                        //     else
-                        //     {
-                        //         piece.IsFlipped = false;
-                        //         flipX = false;
-                        //         flipZ = false;
-                        //     }
-
-                        //     // Reset rotation to identity before applying incremental rotation
-                        //     // tileHighlight.transform.rotation = Quaternion.identity;
-                        //     // Apply rotation incrementally after flipping
-                        //     tileHighlight.transform.Rotate(flipX ? 180.0f : 0.0f, 0.0f, flipZ ? 180.0f : 0.0f);
-                        //     currentRotation = tileHighlight.transform.eulerAngles;
-                        //     // Log the final rotation
-
-                        if (!piece.IsFlipped)
-                        {
-                            if ((int)piece.PieceType <= 4)
-                            {
-                                tileHighlight.transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);
-                                currentRotation = tileHighlight.transform.eulerAngles;
-                            }
-                            else
-                            {
-                                tileHighlight.transform.Rotate(180.0f, 0.0f, 0.0f, Space.Self);
-                                currentRotation = tileHighlight.transform.eulerAngles;
-                            }
-                            piece.IsFlipped = true;
-                        }
-                        else
-                        {
-                            piece.IsFlipped = false;
-                        }
-
-                        Debug.Log($"Final Rotation: {currentRotation}");
-                    }
-
-
-
-                    if (Input.GetMouseButtonUp(0))
-                    {
-                        foreach (Vector2Int i in occupiedGridPositions)
-                        {
-                            Debug.Log(i);
-                        }
-                        // GameManager.Instance.AddPiece(piece, tileHighlight);
-                    }
-
+                    dirIndex++;
                 }
                 else
                 {
-                    if (tileHighlight != null)
-                    {
-                        tileHighlight.SetActive(false);
-                    }
+                    dirIndex = 0;
                 }
+
+                piece.PieceDirection = (Direction)dirIndex;
+                currentRotation = tileHighlight.transform.eulerAngles;
+            }
+
+            if (Input.GetKeyUp("q"))
+            {
+                tileHighlight.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
+                if (dirIndex > 0)
+                {
+                    dirIndex--;
+                }
+                else
+                {
+                    dirIndex = 3;
+                }
+
+                piece.PieceDirection = (Direction)dirIndex;
+                currentRotation = tileHighlight.transform.eulerAngles;
+            }
+        }
+
+        void HandleFlipInput()
+        {
+            if (Input.GetKeyUp("f"))
+            {
+                isFlipped = !isFlipped;
+                ApplyFlipTransformation();
+            }
+        }
+
+        void ApplyFlipTransformation()
+        {
+            Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
+            if (piece.PieceType <= PieceType.A4)
+            {
+                float zRotation = isFlipped ? 180f : 0f;
+                tileHighlight.transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, zRotation);
+            }
+            else
+            {
+                float xRotation = isFlipped ? 180f : 0f;
+                tileHighlight.transform.rotation = Quaternion.Euler(xRotation, currentRotation.y, currentRotation.z);
             }
         }
 
