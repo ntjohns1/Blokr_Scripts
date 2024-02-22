@@ -24,7 +24,7 @@ namespace Blokr
         [SerializeField]
         private Direction pieceDirection;
 
-        private bool isFlipped;
+        private bool isFlipped = false;
         private bool isSelected = false;
 
 

@@ -170,53 +170,31 @@ namespace Blokr
 
         private GameObject GetHighlightPrefabForPiece(PieceType pieceType)
         {
-            switch (pieceType)
+            return pieceType switch
             {
-                case PieceType.A1:
-                    return highlightPrefabs[0];
-                case PieceType.A2:
-                    return highlightPrefabs[1];
-                case PieceType.A3:
-                    return highlightPrefabs[2];
-                case PieceType.A4:
-                    return highlightPrefabs[3];
-                case PieceType.A5:
-                    return highlightPrefabs[4];
-                case PieceType.B3:
-                    return highlightPrefabs[5];
-                case PieceType.B4:
-                    return highlightPrefabs[6];
-                case PieceType.B5:
-                    return highlightPrefabs[7];
-                case PieceType.C4:
-                    return highlightPrefabs[8];
-                case PieceType.C5:
-                    return highlightPrefabs[9];
-                case PieceType.D4:
-                    return highlightPrefabs[10];
-                case PieceType.D5:
-                    return highlightPrefabs[11];
-                case PieceType.E4:
-                    return highlightPrefabs[12];
-                case PieceType.E5:
-                    return highlightPrefabs[13];
-                case PieceType.F5:
-                    return highlightPrefabs[14];
-                case PieceType.G5:
-                    return highlightPrefabs[15];
-                case PieceType.H5:
-                    return highlightPrefabs[16];
-                case PieceType.I5:
-                    return highlightPrefabs[17];
-                case PieceType.J5:
-                    return highlightPrefabs[18];
-                case PieceType.K5:
-                    return highlightPrefabs[19];
-                case PieceType.L5:
-                    return highlightPrefabs[20];
-                default:
-                    return highlightPrefabs[0];
-            }
+                PieceType.A1 => highlightPrefabs[0],
+                PieceType.A2 => highlightPrefabs[1],
+                PieceType.A3 => highlightPrefabs[2],
+                PieceType.A4 => highlightPrefabs[3],
+                PieceType.A5 => highlightPrefabs[4],
+                PieceType.B3 => highlightPrefabs[5],
+                PieceType.B4 => highlightPrefabs[6],
+                PieceType.B5 => highlightPrefabs[7],
+                PieceType.C4 => highlightPrefabs[8],
+                PieceType.C5 => highlightPrefabs[9],
+                PieceType.D4 => highlightPrefabs[10],
+                PieceType.D5 => highlightPrefabs[11],
+                PieceType.E4 => highlightPrefabs[12],
+                PieceType.E5 => highlightPrefabs[13],
+                PieceType.F5 => highlightPrefabs[14],
+                PieceType.G5 => highlightPrefabs[15],
+                PieceType.H5 => highlightPrefabs[16],
+                PieceType.I5 => highlightPrefabs[17],
+                PieceType.J5 => highlightPrefabs[18],
+                PieceType.K5 => highlightPrefabs[19],
+                PieceType.L5 => highlightPrefabs[20],
+                _ => highlightPrefabs[0],
+            };
         }
 
         // public Vector2Int GridForPiece(GameObject piece)

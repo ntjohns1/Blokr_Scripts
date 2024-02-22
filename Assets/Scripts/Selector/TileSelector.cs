@@ -14,17 +14,16 @@ namespace Blokr
 
         private Collider objectCollider;
 
-        private Vector3 currentRotation;
-
         [SerializeField] private LayerMask gridLayer;
 
-        private bool isFlipped = false;
+        private Piece piece;
 
         public void SetHighlight(GameObject highlightPrefab)
         {
             tileHighlight = highlightPrefab;
             objectCollider = highlightPrefab.GetComponent<Collider>();
-            InitializePositionAndRotation(); // Call the new initialization method here
+            piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
+            InitializePositionAndRotation();
         }
         void Update()
         {
@@ -33,13 +32,13 @@ namespace Blokr
             HandleMouseOver();
             HandleRotationInput();
             HandleFlipInput();
+            HandleClickInput();
         }
 
         void InitializePositionAndRotation()
         {
             if (tileHighlight == null) return;
-            // Initialize with a default position and rotation if needed
-            tileHighlight.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            tileHighlight.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0.0f, 90.0f * (int)piece.PieceDirection, 0.0f));
         }
         void HandleMouseOver()
         {
@@ -49,8 +48,8 @@ namespace Blokr
                 Vector3 point = hit.point;
                 Vector2Int gridPoint = Geometry.GridFromPoint(point);
                 tileHighlight.SetActive(true);
-                // Adjust position based on grid point, without resetting rotation
                 tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
+
             }
             else
             {
@@ -60,13 +59,20 @@ namespace Blokr
 
         void HandleRotationInput()
         {
-            Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
             int initDirection = (int)piece.PieceDirection;
             int dirIndex = initDirection;
 
+
             if (Input.GetKeyUp("e"))
             {
-                tileHighlight.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+                if (!piece.IsFlipped)
+                {
+                    tileHighlight.transform.Rotate(0f, 90.0f, 0f, Space.Self);
+                }
+                else
+                {
+                    tileHighlight.transform.Rotate(0f, -90.0f, 0f, Space.Self);
+                }
                 if (dirIndex < 3)
                 {
                     dirIndex++;
@@ -75,14 +81,19 @@ namespace Blokr
                 {
                     dirIndex = 0;
                 }
-
+                // dirIndex = dirIndex < 3 ? dirIndex++ : 0;
                 piece.PieceDirection = (Direction)dirIndex;
-                currentRotation = tileHighlight.transform.eulerAngles;
             }
-
             if (Input.GetKeyUp("q"))
             {
-                tileHighlight.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
+                if (!piece.IsFlipped)
+                {
+                    tileHighlight.transform.Rotate(0f, -90.0f, 0f, Space.Self);
+                }
+                else
+                {
+                    tileHighlight.transform.Rotate(0f, 90.0f, 0f, Space.Self);
+                }
                 if (dirIndex > 0)
                 {
                     dirIndex--;
@@ -91,9 +102,8 @@ namespace Blokr
                 {
                     dirIndex = 3;
                 }
-
+                // dirIndex = dirIndex > 0 ? dirIndex-- : 3;
                 piece.PieceDirection = (Direction)dirIndex;
-                currentRotation = tileHighlight.transform.eulerAngles;
             }
         }
 
@@ -101,25 +111,43 @@ namespace Blokr
         {
             if (Input.GetKeyUp("f"))
             {
-                isFlipped = !isFlipped;
+                piece.IsFlipped = !piece.IsFlipped;
                 ApplyFlipTransformation();
+            }
+
+        }
+
+        void HandleClickInput()
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                Debug.Log($"Piece Direction: {piece.PieceDirection}");
+                Debug.Log($"piece.IsFlipped: {piece.IsFlipped}");
+                List<Vector2Int> cells = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, piece.IsFlipped, Geometry.GridFromPoint(tileHighlight.transform.position), tileHighlight);
+                foreach (Vector2Int cell in cells)
+                {
+                    Debug.Log(cell);
+                }
             }
         }
 
         void ApplyFlipTransformation()
         {
-            Piece piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
-            if (piece.PieceType <= PieceType.A4)
+            if (piece.PieceType <= PieceType.A5)
             {
-                float zRotation = isFlipped ? 180f : 0f;
-                tileHighlight.transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, zRotation);
+                tileHighlight.transform.rotation = piece.IsFlipped
+                    ? Quaternion.Euler(0f, 90.0f * (int)piece.PieceDirection, 180f)
+                    : Quaternion.Euler(0f, 90.0f * (int)piece.PieceDirection, 0f);
             }
             else
             {
-                float xRotation = isFlipped ? 180f : 0f;
-                tileHighlight.transform.rotation = Quaternion.Euler(xRotation, currentRotation.y, currentRotation.z);
+                tileHighlight.transform.rotation = piece.IsFlipped
+                    ? Quaternion.Euler(180f, 90.0f * (int)piece.PieceDirection, 0f)
+                    : Quaternion.Euler(0f, 90.0f * (int)piece.PieceDirection, 0f);
             }
         }
+
+
 
         private List<Vector2Int> GetOccupiedCellsForType(PieceType pieceType, Direction direction, bool isFlipped, Vector2Int gridPoint, GameObject tileHighlight)
         {
