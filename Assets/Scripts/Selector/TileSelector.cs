@@ -9,6 +9,7 @@ namespace Blokr
     public class TileSelector : MonoBehaviour
     {
         // public GameObject tileHighlightPrefab;
+        public GameObject test;
 
         private GameObject tileHighlight;
 
@@ -119,17 +120,37 @@ namespace Blokr
 
         void HandleClickInput()
         {
-            if (Input.GetMouseButtonUp(0))
+            if (tileHighlight == null) return;
+            if (tileHighlight.activeInHierarchy)
             {
-                Debug.Log($"Piece Direction: {piece.PieceDirection}");
-                Debug.Log($"piece.IsFlipped: {piece.IsFlipped}");
-                List<Vector2Int> cells = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, piece.IsFlipped, Geometry.GridFromPoint(tileHighlight.transform.position), tileHighlight);
-                foreach (Vector2Int cell in cells)
+                if (Input.GetMouseButtonUp(0))
                 {
-                    Debug.Log(cell);
+                    Debug.Log($"Piece Direction: {piece.PieceDirection}");
+                    Debug.Log($"piece.IsFlipped: {piece.IsFlipped}");
+                    Vector2Int point = Geometry.GridFromPoint(tileHighlight.transform.position);
+                    List<Vector2Int> cells = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, piece.IsFlipped, point, tileHighlight);
+                    foreach (Vector2Int cell in cells)
+                    {
+                        Debug.Log(cell);
+                    }
+
+                    // Adjust rotation by subtracting 90 degrees from the x-axis
+                    Quaternion adjustedRotation = Quaternion.Euler(tileHighlight.transform.rotation.eulerAngles.x - 90, tileHighlight.transform.rotation.eulerAngles.y, tileHighlight.transform.rotation.eulerAngles.z);
+
+                    // Adjust position by offsetting X and Z by -0.5
+                    // Vector3 adjustedPosition = new Vector3(tileHighlight.transform.position.x, tileHighlight.transform.position.y, tileHighlight.transform.position.z);
+                    Vector3 adjustedPosition = Geometry.PointFromGrid(point);
+
+                    // Instantiate the prefab at a specified position and rotation
+                    // foreach (Vector2Int cell in cells)
+                    // {
+                        Instantiate(test, Geometry.PointFromGrid(cells[0]),adjustedRotation);
+                    // }
+                    // piece.transform.SetPositionAndRotation(adjustedPosition, adjustedRotation);
                 }
             }
         }
+
 
         void ApplyFlipTransformation()
         {
