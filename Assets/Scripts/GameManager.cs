@@ -8,51 +8,74 @@ namespace Blokr
 {
     public class GameManager : MonoBehaviour
     {
+        // ************************************************************************************
+        // Fields
+        // ************************************************************************************
+
         private static GameManager instance;
 
         [SerializeField]
         private Board board;
 
         [SerializeField]
-        private List<GameObject> redPieces;
+        private GameObject[] basePieces;
+
         [SerializeField]
-        private List<GameObject> greenPieces;
-        [SerializeField]
-        private List<GameObject> bluePieces;
-        [SerializeField]
-        private List<GameObject> yellowPieces;
+        private Material[] pieceMaterials;
 
         [SerializeField]
         private List<GameObject> highlightPrefabs;
 
         private GameObject previousHighlightPrefab;
-        private GameObject[,] pieces;
-
         private GameObject selectedPiece;
+        private Player currentPlayer;
+
+
+        // ************************************************************************************
+        // Properties
+        // ************************************************************************************
+        
+        public GameObject[] BasePieces
+        {
+            get { return basePieces; }
+            set { basePieces = value; }
+        }
+
+        public Material[] PieceMaterials
+        {
+            get { return pieceMaterials; }
+            set { pieceMaterials = value; }
+        }
+
         public GameObject SelectedPiece
         {
             get { return selectedPiece; }
         }
 
-
-        private Player currentPlayer;
         public Player CurrentPlayer
         {
             get { return currentPlayer; }
             set { currentPlayer = value; }
         }
 
+        public Board Board
+        {
+            get { return board; }
+            set { board = value; }
+        }
 
+
+        // ************************************************************************************
+        // Constructor
+        // ************************************************************************************
         public static GameManager Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    // If the instance is null, try to find an existing GameManager in the scene
                     instance = FindObjectOfType<GameManager>();
 
-                    // If no GameManager is found, create a new one
                     if (instance == null)
                     {
                         GameObject managerObject = new GameObject("GameManager");
@@ -62,13 +85,11 @@ namespace Blokr
                 return instance;
             }
         }
-        public Board Board
-        {
-            get { return board; }
-            set { board = value; }
-        }
 
-        // Ensure that the GameManager persists between scenes
+
+        // ************************************************************************************
+        // Methods
+        // ************************************************************************************
         private void Awake()
         {
             if (instance == null)
@@ -78,15 +99,28 @@ namespace Blokr
             }
             else
             {
-                // If another GameManager already exists, destroy this one
                 Destroy(gameObject);
             }
         }
 
-        // Start is called before the first frame update
         void Start()
         {
-            // Initialize your GameManager here
+            // Initialize GameManager here
+        }
+
+        private void InitialSetup()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    PieceType pieceType = (PieceType)j;
+                    PieceColor pieceColor = (PieceColor)i;
+                    GameObject piece = PiecePool.SharedInstance.GetPiece(pieceType.ToString(), pieceColor);
+                    
+                    piece.SetActive(true);
+                }
+            }
         }
 
         public void AddPiece(GameObject piece, GameObject tileHighlight)
@@ -95,40 +129,14 @@ namespace Blokr
             // player.Pieces.Add(pieceObject);
         }
 
-        // public void SelectPieceAtGrid(Vector2Int gridPoint)
-        // {
-        //     GameObject selectedPiece = pieces[gridPoint.x, gridPoint.y];
-        //     if (selectedPiece)
-        //     {
-        //         board.SelectPiece(selectedPiece);
-        //     }
-        // }
-
-        // public List<Vector2Int> MovesForPiece(GameObject pieceObject)
-        // {
-        //     Piece piece = pieceObject.GetComponent<Piece>();
-        //     Vector2Int gridPoint = GridForPiece(pieceObject);
-        //     List<Vector2Int> locations = piece.MoveLocations(gridPoint);
-
-        //     // filter out offboard locations
-        //     locations.RemoveAll(gp => gp.x < 0 || gp.x > 7 || gp.y < 0 || gp.y > 7);
-
-        //     // filter out locations with friendly piece
-        //     locations.RemoveAll(gp => FriendlyPieceAt(gp));
-
-        //     return locations;
-        // }
-
         public void SelectPiece(GameObject piece)
         {
             this.selectedPiece = piece;
 
-            // Determine the piece type and instantiate the corresponding highlight prefab
             Piece pieceComponent = piece.GetComponent<Piece>();
             TileSelector tileSelector = board.GetComponent<TileSelector>();
             GameObject newHighlightPrefab = GetHighlightPrefabForPiece(pieceComponent.PieceType);
 
-            // Destroy the previous highlight prefab instance if it exists
             if (previousHighlightPrefab != null)
             {
                 Destroy(previousHighlightPrefab);
@@ -142,31 +150,14 @@ namespace Blokr
         {
             TileSelector tileSelector = board.GetComponent<TileSelector>();
 
-            // Hide the current highlight prefab if it exists
             if (previousHighlightPrefab != null)
             {
                 Destroy(previousHighlightPrefab);
             }
 
-            // Set the default highlight prefab
             previousHighlightPrefab = GetHighlightPrefabForPiece(PieceType.A1);
             tileSelector.SetHighlight(previousHighlightPrefab);
         }
-
-
-        // public bool DoesPieceBelongToCurrentPlayer(GameObject piece)
-        // {
-        //     return CurrentPlayer.Pieces.Contains(piece);
-        // }
-
-        // public GameObject PieceAtGrid(Vector2Int gridPoint)
-        // {
-        //     if (gridPoint.x > 7 || gridPoint.y > 7 || gridPoint.x < 0 || gridPoint.y < 0)
-        //     {
-        //         return null;
-        //     }
-        //     return pieces[gridPoint.x, gridPoint.y];
-        // }
 
         private GameObject GetHighlightPrefabForPiece(PieceType pieceType)
         {
@@ -196,45 +187,5 @@ namespace Blokr
                 _ => highlightPrefabs[0],
             };
         }
-
-        // public Vector2Int GridForPiece(GameObject piece)
-        // {
-        //     for (int i = 0; i < 20; i++)
-        //     {
-        //         for (int j = 0; j < 8; j++)
-        //         {
-        //             if (pieces[i, j] == piece)
-        //             {
-        //                 return new Vector2Int(i, j);
-        //             }
-        //         }
-        //     }
-
-        //     return new Vector2Int(-1, -1);
-        // }
-
-        // public bool FriendlyPieceAt(Vector2Int gridPoint)
-        // {
-        //     GameObject piece = PieceAtGrid(gridPoint);
-
-        //     if (piece == null)
-        //     {
-        //         return false;
-        //     }
-
-        //     if (otherPlayer.pieces.Contains(piece))
-        //     {
-        //         return false;
-        //     }
-
-        //     return true;
-        // }
-
-        // public void NextPlayer()
-        // {
-        //     Player tempPlayer = currentPlayer;
-        //     currentPlayer = otherPlayer;
-        //     otherPlayer = tempPlayer;
-        // }
     }
 }

@@ -13,23 +13,22 @@ namespace Blokr
         private readonly Dictionary<string, GameObject> bluePieces = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, GameObject> yellowPieces = new Dictionary<string, GameObject>();
 
-        [SerializeField]
-        private GameObject[] objectTypesToPool;
-
-        [SerializeField]
         private Material[] materials;
-
+        private GameObject[] pieces;
         void Awake()
         {
             SharedInstance = this;
 
             Dictionary<string, GameObject>[] dictionaries = { redPieces, greenPieces, bluePieces, yellowPieces };
 
+            materials = GameManager.Instance.PieceMaterials;
+            pieces = GameManager.Instance.BasePieces;
+
             for (int i = 0; i < dictionaries.Length; i++)
             {
-                for (int j = 0; j < objectTypesToPool.Length; j++)
+                for (int j = 0; j < pieces.Length; j++)
                 {
-                    GameObject obj = Instantiate(objectTypesToPool[j]);
+                    GameObject obj = Instantiate(pieces[j]);
                     Piece pieceComponent = obj.GetComponent<Piece>();
                     obj.SetActive(false);
                     pieceComponent.PieceColor = (PieceColor)i;
