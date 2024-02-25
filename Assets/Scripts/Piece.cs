@@ -35,12 +35,13 @@ namespace Blokr
         public PieceType PieceType
         {
             get { return pieceType; }
+            set { pieceType = value; }
         }
         
         public PieceColor PieceColor
         {
             get { return pieceColor; }
-            // set { pieceColor = value; }
+            set { pieceColor = value; }
         }
         public Direction PieceDirection
         {
