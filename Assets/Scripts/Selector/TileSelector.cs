@@ -8,7 +8,10 @@ namespace Blokr
 {
     public class TileSelector : MonoBehaviour
     {
-        // public GameObject tileHighlightPrefab;
+        // ************************************************************************************
+        // Fields
+        // ************************************************************************************
+
         public GameObject test;
 
         private GameObject tileHighlight;
@@ -18,6 +21,10 @@ namespace Blokr
         [SerializeField] private LayerMask gridLayer;
 
         private Piece piece;
+
+        // ************************************************************************************
+        // Methods
+        // ************************************************************************************
 
         public void SetHighlight(GameObject highlightPrefab)
         {
@@ -144,9 +151,13 @@ namespace Blokr
                     // Instantiate the prefab at a specified position and rotation
                     // foreach (Vector2Int cell in cells)
                     // {
-                        Instantiate(test, Geometry.PointFromGrid(cells[0]),adjustedRotation);
+                    // Instantiate(test, Geometry.PointFromGrid(cells[0]),adjustedRotation);
                     // }
                     // piece.transform.SetPositionAndRotation(adjustedPosition, adjustedRotation);
+
+                    GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
+                    placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), adjustedRotation);
+                    placedPiece.SetActive(true);
                 }
             }
         }

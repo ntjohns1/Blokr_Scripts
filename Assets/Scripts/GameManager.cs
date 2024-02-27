@@ -24,13 +24,21 @@ namespace Blokr
         private Material[] pieceMaterials;
 
         [SerializeField]
+        private GameObject[] players;
+        public GameObject[] Players
+        {
+            get { return players; }
+            // set { players = value; }
+        }
+        
+
+        [SerializeField]
         private List<GameObject> highlightPrefabs;
 
         private GameObject previousHighlightPrefab;
         private GameObject selectedPiece;
         private Player currentPlayer;
-
-
+        
         // ************************************************************************************
         // Properties
         // ************************************************************************************
@@ -106,21 +114,6 @@ namespace Blokr
         void Start()
         {
             // Initialize GameManager here
-        }
-
-        private void InitialSetup()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 20; j++)
-                {
-                    PieceType pieceType = (PieceType)j;
-                    PieceColor pieceColor = (PieceColor)i;
-                    GameObject piece = PiecePool.SharedInstance.GetPiece(pieceType.ToString(), pieceColor);
-                    
-                    piece.SetActive(true);
-                }
-            }
         }
 
         public void AddPiece(GameObject piece, GameObject tileHighlight)

@@ -5,8 +5,10 @@ using UnityEngine;
 namespace Blokr
 {
     public class PiecePool : MonoBehaviour
-
     {
+        // ************************************************************************************
+        // Fields
+        // ************************************************************************************
         public static PiecePool SharedInstance;
         private readonly Dictionary<string, GameObject> redPieces = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, GameObject> greenPieces = new Dictionary<string, GameObject>();
@@ -15,6 +17,12 @@ namespace Blokr
 
         private Material[] materials;
         private GameObject[] pieces;
+        private GameObject[] players;
+
+        // ************************************************************************************
+        // Methods
+        // ************************************************************************************
+
         void Awake()
         {
             SharedInstance = this;
@@ -23,6 +31,7 @@ namespace Blokr
 
             materials = GameManager.Instance.PieceMaterials;
             pieces = GameManager.Instance.BasePieces;
+            players = GameManager.Instance.Players;
 
             for (int i = 0; i < dictionaries.Length; i++)
             {
@@ -31,13 +40,18 @@ namespace Blokr
                     GameObject obj = Instantiate(pieces[j]);
                     Piece pieceComponent = obj.GetComponent<Piece>();
                     obj.SetActive(false);
+                    PieceType pieceType = (PieceType)j;
+                    obj.transform.SetParent(players[i].transform);
                     pieceComponent.PieceColor = (PieceColor)i;
                     pieceComponent.PieceType = (PieceType)j;
                     pieceComponent.PieceDirection = (Direction)i;
-                    MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
-                    meshRenderer.material = materials[i];
-                    string name = pieceComponent.PieceType.ToString();
-                    dictionaries[i].Add(name, obj);
+                    MeshRenderer[] cells = obj.GetComponentsInChildren<MeshRenderer>();
+                    foreach (MeshRenderer cell in cells)
+                    {
+                        cell.material = materials[i];
+                    }
+                    obj.name = $"{pieceType}_{pieceComponent.PieceColor}";
+                    dictionaries[i].Add(pieceType.ToString(), obj);
                 }
             }
         }
