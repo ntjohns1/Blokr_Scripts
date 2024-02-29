@@ -30,7 +30,7 @@ namespace Blokr
             get { return players; }
             // set { players = value; }
         }
-        
+
 
         [SerializeField]
         private List<GameObject> highlightPrefabs;
@@ -38,11 +38,11 @@ namespace Blokr
         private GameObject previousHighlightPrefab;
         private GameObject selectedPiece;
         private Player currentPlayer;
-        
+
         // ************************************************************************************
         // Properties
         // ************************************************************************************
-        
+
         public GameObject[] BasePieces
         {
             get { return basePieces; }
@@ -109,11 +109,11 @@ namespace Blokr
             {
                 Destroy(gameObject);
             }
+            InitializeBoard();
         }
 
         void Start()
         {
-            // Initialize GameManager here
         }
 
         public void AddPiece(GameObject piece, GameObject tileHighlight)
@@ -180,5 +180,31 @@ namespace Blokr
                 _ => highlightPrefabs[0],
             };
         }
+        private void InitializeBoard()
+        {
+            PieceType pieceType;
+            Direction direction;
+            PieceColor color;
+            for (int i = 0; i < 4; i++)
+            {
+                color = (PieceColor)i;
+                direction = (Direction)i;
+                GameObject parent = GameObject.FindGameObjectWithTag(color.ToString());
+                for (int j = 0; j < 21; j++)
+                {
+                    pieceType = (PieceType)j;
+                    string pieceName = $"{pieceType}_{color}";
+                    Transform pieceTransform = parent.transform.Find(pieceName);
+                    if (pieceTransform != null)
+                    {
+                        Piece piece = pieceTransform.gameObject.GetComponent<Piece>();
+                        piece.PieceType = pieceType;
+                        piece.PieceColor = color;
+                        piece.PieceDirection = direction;
+                    }
+                }
+            }
+        }
     }
+
 }

@@ -155,9 +155,9 @@ namespace Blokr
                     // }
                     // piece.transform.SetPositionAndRotation(adjustedPosition, adjustedRotation);
 
-                    GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
-                    placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), adjustedRotation);
-                    placedPiece.SetActive(true);
+                    // GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
+                    // placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), adjustedRotation);
+                    // placedPiece.SetActive(true);
                 }
             }
         }

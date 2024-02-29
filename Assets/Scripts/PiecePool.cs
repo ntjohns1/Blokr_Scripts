@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Blokr
@@ -9,6 +10,7 @@ namespace Blokr
         // ************************************************************************************
         // Fields
         // ************************************************************************************
+
         public static PiecePool SharedInstance;
         private readonly Dictionary<string, GameObject> redPieces = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, GameObject> greenPieces = new Dictionary<string, GameObject>();
@@ -42,9 +44,10 @@ namespace Blokr
                     obj.SetActive(false);
                     PieceType pieceType = (PieceType)j;
                     obj.transform.SetParent(players[i].transform);
+                    obj.layer = LayerMask.NameToLayer("Piece");
                     pieceComponent.PieceColor = (PieceColor)i;
                     pieceComponent.PieceType = (PieceType)j;
-                    pieceComponent.PieceDirection = (Direction)i;
+                    // TODO: filter desired objects to set materials, not all children
                     MeshRenderer[] cells = obj.GetComponentsInChildren<MeshRenderer>();
                     foreach (MeshRenderer cell in cells)
                     {
