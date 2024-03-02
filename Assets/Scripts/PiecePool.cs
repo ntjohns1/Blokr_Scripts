@@ -28,7 +28,10 @@ namespace Blokr
         void Awake()
         {
             SharedInstance = this;
+        }
 
+        void Start()
+        {
             Dictionary<string, GameObject>[] dictionaries = { redPieces, greenPieces, bluePieces, yellowPieces };
 
             materials = GameManager.Instance.PieceMaterials;
@@ -85,6 +88,7 @@ namespace Blokr
 
             if (selectedDictionary.ContainsKey(typeName) && !selectedDictionary[typeName].activeInHierarchy)
             {
+                Debug.Log(selectedDictionary[typeName].name);
                 return selectedDictionary[typeName];
             }
 

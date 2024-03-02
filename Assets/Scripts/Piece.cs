@@ -11,9 +11,9 @@ namespace Blokr
     public class Piece : MonoBehaviour
     {
 
-// ************************************************************************************
-// Fields
-// ************************************************************************************
+        // ************************************************************************************
+        // Fields
+        // ************************************************************************************
 
         [SerializeField]
         private PieceType pieceType;
@@ -28,16 +28,16 @@ namespace Blokr
         private bool isSelected = false;
 
 
-// ************************************************************************************
-// Properties
-// ************************************************************************************
+        // ************************************************************************************
+        // Properties
+        // ************************************************************************************
 
         public PieceType PieceType
         {
             get { return pieceType; }
             set { pieceType = value; }
         }
-        
+
         public PieceColor PieceColor
         {
             get { return pieceColor; }
@@ -55,21 +55,25 @@ namespace Blokr
             set { isFlipped = value; }
         }
 
-// ************************************************************************************
-// Methods
-// ************************************************************************************
+        // ************************************************************************************
+        // Methods
+        // ************************************************************************************
 
         void OnMouseDown()
         {
-            if (!isSelected)
+            if (gameObject.layer == LayerMask.NameToLayer("Selector"))
             {
-                GameManager.Instance.SelectPiece(gameObject);
-                isSelected = true;
-            }
-            else
-            {
-                GameManager.Instance.DeselectPiece(gameObject);
-                isSelected = false;
+
+                if (!isSelected)
+                {
+                    GameManager.Instance.SelectPiece(gameObject);
+                    isSelected = true;
+                }
+                else
+                {
+                    GameManager.Instance.DeselectPiece(gameObject);
+                    isSelected = false;
+                }
             }
         }
     }

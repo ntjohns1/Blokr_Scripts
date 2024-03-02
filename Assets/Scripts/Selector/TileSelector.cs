@@ -55,8 +55,17 @@ namespace Blokr
             {
                 Vector3 point = hit.point;
                 Vector2Int gridPoint = Geometry.GridFromPoint(point);
-                tileHighlight.SetActive(true);
-                tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
+                List<Vector2Int> occupiedGridPositions = GetOccupiedCellsForType(piece.PieceType, piece.PieceDirection, piece.IsFlipped, gridPoint, tileHighlight);
+                bool allPositionsInBounds = occupiedGridPositions.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
+                if (allPositionsInBounds)
+                {
+                    tileHighlight.SetActive(true);
+                    tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
+                }
+                else
+                {
+                    tileHighlight.SetActive(false);
+                }
 
             }
             else
@@ -155,9 +164,10 @@ namespace Blokr
                     // }
                     // piece.transform.SetPositionAndRotation(adjustedPosition, adjustedRotation);
 
-                    // GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
-                    // placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), adjustedRotation);
-                    // placedPiece.SetActive(true);
+                    GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
+                    placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), tileHighlight.transform.rotation);
+                    placedPiece.SetActive(true);
+                    piece.gameObject.SetActive(false);
                 }
             }
         }
