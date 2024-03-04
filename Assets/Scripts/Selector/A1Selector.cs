@@ -9,11 +9,11 @@ namespace Blokr
     public class A1Selector : Selector
     {
 
-        public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int cellA, Direction direction, bool isFlipped)
+        public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
         {
             List<Vector2Int> spaces = new List<Vector2Int>
         {
-            cellA
+            baseCell
         };
             return spaces;
         }
