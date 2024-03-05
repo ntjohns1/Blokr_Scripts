@@ -86,7 +86,7 @@ namespace Blokr
 
                     if (instance == null)
                     {
-                        GameObject managerObject = new GameObject("GameManager");
+                        GameObject managerObject = new("GameManager");
                         instance = managerObject.AddComponent<GameManager>();
                     }
                 }

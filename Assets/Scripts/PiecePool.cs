@@ -12,10 +12,10 @@ namespace Blokr
         // ************************************************************************************
 
         public static PiecePool SharedInstance;
-        private readonly Dictionary<string, GameObject> redPieces = new Dictionary<string, GameObject>();
-        private readonly Dictionary<string, GameObject> greenPieces = new Dictionary<string, GameObject>();
-        private readonly Dictionary<string, GameObject> bluePieces = new Dictionary<string, GameObject>();
-        private readonly Dictionary<string, GameObject> yellowPieces = new Dictionary<string, GameObject>();
+        private readonly Dictionary<string, GameObject> redPieces = new();
+        private readonly Dictionary<string, GameObject> greenPieces = new();
+        private readonly Dictionary<string, GameObject> bluePieces = new();
+        private readonly Dictionary<string, GameObject> yellowPieces = new();
 
         private Material[] materials;
         private GameObject[] pieces;

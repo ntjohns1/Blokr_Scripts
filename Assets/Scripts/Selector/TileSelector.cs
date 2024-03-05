@@ -193,7 +193,7 @@ namespace Blokr
 
         private List<Vector2Int> GetOccupiedCellsForType(PieceType pieceType, Direction direction, bool isFlipped, Vector2Int gridPoint, GameObject tileHighlight)
         {
-            List<Vector2Int> list = new List<Vector2Int>();
+            List<Vector2Int> list = new();
             switch (pieceType)
             {
                 case PieceType.A1:

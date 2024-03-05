@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Blokr
 {
+    public delegate List<Vector2Int> CalculatePositions(Vector2Int initialCell, Direction direction, List<(Vector2Int, int)> positions);
 
     public abstract class Selector : MonoBehaviour
     {
@@ -49,7 +50,7 @@ namespace Blokr
             };
         }
 
-        protected List<Vector2Int> CalculatePositions(Vector2Int initialCell, Direction direction, bool isFlipped, params (Vector2Int, int)[] positions)
+        protected List<Vector2Int> CalculatePositions(Vector2Int initialCell, Direction direction, List<(Vector2Int, int)> positions)
         {
             // based on initial position, and direction/isflipped, generate a list of occupied grid cells for a PieceType
 
@@ -61,6 +62,9 @@ namespace Blokr
 
             // cast direction to int to determine relative directions arithmetically
             int baseAxis = (int)direction;
+
+            // Now we pass a series of tuplets containing a Vector2Int referencing a cell, and an int representing a directional offset:
+            // Direction.Up == 0, Direction.Right == 1, Direction.Down == 2, Direction.Left == 3
             foreach (var (cell, relativeAxis) in positions)
             {
                 int newAxis = (baseAxis + relativeAxis) % 4;

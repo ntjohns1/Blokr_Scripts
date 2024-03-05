@@ -11,11 +11,8 @@ namespace Blokr
 
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
         {
-            List<Vector2Int> spaces = new List<Vector2Int>
-        {
-            baseCell
-        };
-            return spaces;
+            List<Vector2Int> cell = new() { baseCell };
+            return cell;
         }
     }
 }

@@ -8,11 +8,8 @@ namespace Blokr
     {
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
         {
-            (Vector2Int cell, int axis)[] cells = new (Vector2Int, int)[3];
-            cells[0] = (baseCell, 1);
-            cells[1] = (baseCell, 3);
-            cells[2] = !isFlipped ? (baseCell, 0) : (baseCell, 2);
-            return CalculatePositions(baseCell, direction, isFlipped, cells);
+            List<(Vector2Int, int)> cells = new() { (baseCell, 1), (baseCell, 3), !isFlipped ? (baseCell, 0) : (baseCell, 2) };
+            return CalculatePositions(baseCell, direction, cells);
         }
     }
 }
