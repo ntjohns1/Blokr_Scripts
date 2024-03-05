@@ -8,53 +8,12 @@ namespace Blokr
     {
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
         {
-            //     var cellB = direction switch
-            //     {
-            //         Direction.Up => GetNext(cellA, Direction.Right),
-            //         Direction.Right => GetNext(cellA, Direction.Down),
-            //         Direction.Down => GetNext(cellA, Direction.Left),
-            //         Direction.Left => GetNext(cellA, Direction.Up),
-            //         _ => GetNext(cellA, Direction.Right),
-            //     };
-            //     var cellC = direction switch
-            //     {
-            //         Direction.Up => !isFlipped ? GetNext(cellA, Direction.Up) : GetNext(cellA, Direction.Down),
-            //         Direction.Right => !isFlipped ? GetNext(cellA, Direction.Right) : GetNext(cellA, Direction.Left),
-            //         Direction.Down => !isFlipped ? GetNext(cellA, Direction.Down) : GetNext(cellA, Direction.Up),
-            //         Direction.Left => !isFlipped ? GetNext(cellA, Direction.Left) : GetNext(cellA, Direction.Right),
-            //         _ => !isFlipped ? GetNext(cellA, Direction.Up) : GetNext(cellA, Direction.Down),
-            //     };
-            //     var cellD = direction switch
-            //     {
-            //         Direction.Up => !isFlipped ? GetNext(cellB, Direction.Up) : GetNext(cellB, Direction.Down),
-            //         Direction.Right => !isFlipped ? GetNext(cellB, Direction.Right) : GetNext(cellB, Direction.Left),
-            //         Direction.Down => !isFlipped ? GetNext(cellB, Direction.Down) : GetNext(cellB, Direction.Up),
-            //         Direction.Left => !isFlipped ? GetNext(cellB, Direction.Left) : GetNext(cellB, Direction.Right),
-            //         _ => !isFlipped ? GetNext(cellB, Direction.Up) : GetNext(cellB, Direction.Down),
-            //     };
-
-            //     var cellE = direction switch
-            //     {
-            //         Direction.Up => GetNext(cellA, Direction.Left),
-            //         Direction.Right => GetNext(cellA, Direction.Up),
-            //         Direction.Down => GetNext(cellA, Direction.Right),
-            //         Direction.Left => GetNext(cellA, Direction.Down),
-            //         _ => GetNext(cellA, Direction.Left),
-            //     };
-            //     List<Vector2Int> cells = new()
-            // {
-            //     cellA,
-            //     cellB,
-            //     cellC,
-            //     cellD,
-            //     cellE
-            // };
-            //     return cells;
             (Vector2Int cell, int axis)[] cells = new (Vector2Int, int)[4];
             cells[0] = (baseCell, 1);
-            cells[1] = (baseCell, 3);
-            cells[2] = (cells[0].cell, 1);
-            cells[3] = (cells[1].cell, 3);
+            cells[1] = !isFlipped ? (baseCell, 0) : (baseCell, 2);
+            List<Vector2Int> temp = CalculatePositions(baseCell, direction, isFlipped, cells);
+            cells[2] = !isFlipped ? (temp[1], 0) : (temp[1], 2);
+            cells[3] = (baseCell, 3);
             return CalculatePositions(baseCell, direction, isFlipped, cells);
         }
     }

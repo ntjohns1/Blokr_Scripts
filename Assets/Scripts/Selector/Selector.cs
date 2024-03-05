@@ -37,7 +37,7 @@ namespace Blokr
         // Methods
         // ************************************************************************************
 
-        protected Vector2Int GetNext(Vector2Int cell, Direction direction, bool isFlipped)
+        protected Vector2Int GetNext(Vector2Int cell, Direction direction)
         {
             return direction switch
             {
@@ -49,19 +49,6 @@ namespace Blokr
             };
         }
 
-        // protected List<Vector2Int> CalculatePositions(Vector2Int initialPosition, Direction direction, bool isFlipped, params (Vector2Int, Direction)[] movements)
-        // {
-        //     List<Vector2Int> positions = new List<Vector2Int>();
-        //     Vector2Int currentPosition = initialPosition;
-        //     positions.Add(currentPosition);
-        //     foreach (var (cell, next) in movements)
-        //     {
-        //         currentPosition = GetNext(cell, next);
-        //         positions.Add(currentPosition);
-        //     }
-        //     return positions;
-        // }
-
         protected List<Vector2Int> CalculatePositions(Vector2Int initialCell, Direction direction, bool isFlipped, params (Vector2Int, int)[] positions)
         {
             // based on initial position, and direction/isflipped, generate a list of occupied grid cells for a PieceType
@@ -71,28 +58,17 @@ namespace Blokr
             {
                 initialCell
             };
-            Vector2Int currentCell = initialCell;
+
             // cast direction to int to determine relative directions arithmetically
             int baseAxis = (int)direction;
             foreach (var (cell, relativeAxis) in positions)
             {
                 int newAxis = (baseAxis + relativeAxis) % 4;
-                currentCell = GetNext(cell, (Direction)newAxis, isFlipped);
+                Vector2Int currentCell = GetNext(cell, (Direction)newAxis);
                 cells.Add(currentCell);
             }
 
-
             return cells;
-        }
-
-        public static Direction AddToDirection(Direction direction, int value)
-        {
-            // Calculate the new value with wrapping
-            int directionCount = Enum.GetNames(typeof(Direction)).Length;
-            int newValue = (((int)direction + value) % directionCount + directionCount) % directionCount;
-
-            // Cast back to Direction enum
-            return (Direction)newValue;
         }
 
         public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction, bool isFlipped);

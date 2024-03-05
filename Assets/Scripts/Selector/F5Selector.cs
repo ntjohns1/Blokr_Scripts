@@ -53,8 +53,8 @@ namespace Blokr
             (Vector2Int cell, int axis)[] cells = new (Vector2Int, int)[4];
             cells[0] = (baseCell, 1);
             cells[1] = (baseCell, 3);
-            cells[2] = (cells[0].cell, 1);
-            cells[3] = (cells[1].cell, 3);
+            cells[2] = !isFlipped ? (baseCell, 0) : (baseCell, 2);
+            cells[3] = !isFlipped ? (baseCell, 2) : (baseCell, 0);
             return CalculatePositions(baseCell, direction, isFlipped, cells);
         }
     }
