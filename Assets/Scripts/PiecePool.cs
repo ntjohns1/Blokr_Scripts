@@ -50,7 +50,6 @@ namespace Blokr
                     obj.layer = LayerMask.NameToLayer("Piece");
                     pieceComponent.PieceColor = (PieceColor)i;
                     pieceComponent.PieceType = (PieceType)j;
-                    // TODO: filter desired objects to set materials, not all children
                     MeshRenderer[] cells = obj.GetComponentsInChildren<MeshRenderer>();
                     foreach (MeshRenderer cell in cells)
                     {

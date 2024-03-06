@@ -59,6 +59,13 @@ namespace Blokr
         {
             get { return selectedPiece; }
         }
+        
+        public List<GameObject> HighlightPrefabs
+        {
+            get { return highlightPrefabs; }
+            set { highlightPrefabs = value; }
+        }
+        
 
         public Player CurrentPlayer
         {
@@ -116,9 +123,9 @@ namespace Blokr
         {
         }
 
-        public void AddPiece(GameObject piece, GameObject tileHighlight)
+        public void AddPiece(List<Vector2Int> positions)
         {
-            GameObject pieceObject = board.AddPiece(piece, tileHighlight);
+            List<Vector2Int> cells = board.AddPiece(positions);
             // player.Pieces.Add(pieceObject);
         }
 

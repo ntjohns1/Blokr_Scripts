@@ -23,10 +23,9 @@ namespace Blokr
 
         [SerializeField]
         private Direction pieceDirection;
-
+        
         private bool isFlipped = false;
         private bool isSelected = false;
-
 
         // ************************************************************************************
         // Properties

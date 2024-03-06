@@ -150,22 +150,10 @@ namespace Blokr
                         Debug.Log(cell);
                     }
 
-                    // Adjust rotation by subtracting 90 degrees from the x-axis
-                    Quaternion adjustedRotation = Quaternion.Euler(tileHighlight.transform.rotation.eulerAngles.x - 90, tileHighlight.transform.rotation.eulerAngles.y, tileHighlight.transform.rotation.eulerAngles.z);
-
-                    // Adjust position by offsetting X and Z by -0.5
-                    // Vector3 adjustedPosition = new Vector3(tileHighlight.transform.position.x, tileHighlight.transform.position.y, tileHighlight.transform.position.z);
-                    Vector3 adjustedPosition = Geometry.PointFromGrid(point);
-
-                    // Instantiate the prefab at a specified position and rotation
-                    // foreach (Vector2Int cell in cells)
-                    // {
-                    // Instantiate(test, Geometry.PointFromGrid(cells[0]),adjustedRotation);
-                    // }
-                    // piece.transform.SetPositionAndRotation(adjustedPosition, adjustedRotation);
-
+                    // Get Highlight prefab from PiecePool and set active at a specified position and rotation
                     GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
                     placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), tileHighlight.transform.rotation);
+                    GameManager.Instance.AddPiece(cells);
                     placedPiece.SetActive(true);
                     piece.gameObject.SetActive(false);
                 }

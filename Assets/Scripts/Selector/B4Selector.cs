@@ -14,7 +14,7 @@ namespace Blokr
                 (baseCell, 1)
             };
             List<Vector2Int> temp = CalculatePositions(baseCell, direction, cells);
-            cells.Add( !isFlipped ? (temp[2], 2) : (temp[2], 0));
+            cells.Add(!isFlipped ? (temp[2], 2) : (temp[2], 0));
             return CalculatePositions(baseCell, direction, cells);
         }
     }

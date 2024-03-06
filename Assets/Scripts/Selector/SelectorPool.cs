@@ -6,18 +6,51 @@ namespace Blokr
 {
     public class SelectorPool : MonoBehaviour
     {
-        public Dictionary<string, GameObject> pooledObjects;
+        // ************************************************************************************
+        // Fields
+        // ************************************************************************************
 
-        // Start is called before the first frame update
+        public static SelectorPool SharedInstance;
+        private readonly Dictionary<string, GameObject> selectors = new();
+
+        private Material[] materials;
+        private List<GameObject> highlightPrefabs;
+
+        // ************************************************************************************
+        // Methods
+        // ************************************************************************************
+
+        void Awake()
+        {
+            SharedInstance = this;
+        }
+
         void Start()
         {
+            highlightPrefabs = GameManager.Instance.HighlightPrefabs;
+
+            for (int j = 0; j < highlightPrefabs.Count; j++)
+            {
+                GameObject obj = Instantiate(highlightPrefabs[j]);
+                obj.SetActive(false);
+                PieceType pieceType = (PieceType)j;
+                obj.transform.SetParent(gameObject.transform);
+                obj.layer = LayerMask.NameToLayer("Selector");
+                obj.name = $"{pieceType}Selector";
+                selectors.Add(obj.name, obj);
+            }
 
         }
 
-        // Update is called once per frame
-        void Update()
+        public GameObject GetSelector(string typeName)
         {
+            if (selectors.ContainsKey(typeName) && !selectors[typeName].activeInHierarchy)
+            {
+                return selectors[typeName];
+            }
 
+            return null;
         }
+
     }
 }

@@ -50,10 +50,12 @@ namespace Blokr
             };
         }
 
+        // ************************************************************************************
+        // protected List<Vector2Int> CalculatePositions           
+        // based on initial position, and direction/isflipped, generate a list of occupied grid cells for a PieceType
+        // ************************************************************************************
         protected List<Vector2Int> CalculatePositions(Vector2Int initialCell, Direction direction, List<(Vector2Int, int)> positions)
         {
-            // based on initial position, and direction/isflipped, generate a list of occupied grid cells for a PieceType
-
             //  instantiate list to populate and return
             List<Vector2Int> cells = new()
             {
@@ -67,6 +69,7 @@ namespace Blokr
             // Direction.Up == 0, Direction.Right == 1, Direction.Down == 2, Direction.Left == 3
             foreach (var (cell, relativeAxis) in positions)
             {
+                // this eliminates the need for the switch statements in the child classes
                 int newAxis = (baseAxis + relativeAxis) % 4;
                 Vector2Int currentCell = GetNext(cell, (Direction)newAxis);
                 cells.Add(currentCell);
