@@ -1,8 +1,11 @@
 Game mananger:
 - [x] Organize Piece game obects into collections
+- [x] 
+- [x] 
+- [x] 
 
 Board:
-- [ ] keep track of which cells are occupied and which are not.
+- [X] keep track of which cells are occupied and which are not.
 - [ ] sprite to make grid spaces more visible.
 
 Piece: 
@@ -20,15 +23,18 @@ Piece:
 
 Player:
 - [ ] Limit interactions to player's own color
+- [ ] Limit interactions to player's own turn
 - [x] Set of player's pieces.
-- [ ] Futher divide set into played/unplayed pieces
+- [ ] Keep track of played/unplayed pieces
 
 12/8 Notes / Workflow
 
 Board -> Player -> GameManager
 
 Board
- - add/remove/confirm move
+ - add piece
+ - remove piece
+ - confirm move
 -> Player
  - pieces/playedPieces
 -> GameManager
@@ -58,8 +64,8 @@ Selectors to Reorganize:
 √ D5
 √ E5
 √ G5
-H5
-I5
-J5￼
-K5
-L5
+√ H5
+√ I5
+√ J5￼
+√ K5
+√ L5

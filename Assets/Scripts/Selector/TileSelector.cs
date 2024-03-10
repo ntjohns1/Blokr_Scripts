@@ -153,7 +153,7 @@ namespace Blokr
                     // Get Highlight prefab from PiecePool and set active at a specified position and rotation
                     GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
                     placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), tileHighlight.transform.rotation);
-                    GameManager.Instance.AddPiece(cells);
+                    GameManager.Instance.AddPiece(cells, piece.PieceType);
                     placedPiece.SetActive(true);
                     piece.gameObject.SetActive(false);
                 }

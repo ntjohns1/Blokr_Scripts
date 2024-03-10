@@ -25,11 +25,9 @@ namespace Blokr
 
         [SerializeField]
         private GameObject[] players;
-        public GameObject[] Players
-        {
-            get { return players; }
-            // set { players = value; }
-        }
+
+
+        private Player[] playerPool;
 
 
         [SerializeField]
@@ -38,6 +36,8 @@ namespace Blokr
         private GameObject previousHighlightPrefab;
         private GameObject selectedPiece;
         private Player currentPlayer;
+
+        private static int playerCt = 0;
 
         // ************************************************************************************
         // Properties
@@ -55,17 +55,23 @@ namespace Blokr
             set { pieceMaterials = value; }
         }
 
+        public GameObject[] Players
+        {
+            get { return players; }
+            // set { players = value; }
+        }
+
         public GameObject SelectedPiece
         {
             get { return selectedPiece; }
         }
-        
+
         public List<GameObject> HighlightPrefabs
         {
             get { return highlightPrefabs; }
             set { highlightPrefabs = value; }
         }
-        
+
 
         public Player CurrentPlayer
         {
@@ -121,28 +127,37 @@ namespace Blokr
 
         void Start()
         {
+
         }
 
-        public void AddPiece(List<Vector2Int> positions)
+        public void AddPiece(List<Vector2Int> positions, PieceType type)
         {
-            List<Vector2Int> cells = board.AddPiece(positions);
-            // player.Pieces.Add(pieceObject);
+            board.AddPiece(positions);
+            currentPlayer.MarkAsPlayed(type);
         }
 
         public void SelectPiece(GameObject piece)
         {
-            this.selectedPiece = piece;
+            selectedPiece = piece;
 
             Piece pieceComponent = piece.GetComponent<Piece>();
             TileSelector tileSelector = board.GetComponent<TileSelector>();
-            GameObject newHighlightPrefab = GetHighlightPrefabForPiece(pieceComponent.PieceType);
+            GameObject newHighlightPrefab = SelectorPool.SharedInstance.GetSelector(pieceComponent.PieceType);
 
             if (previousHighlightPrefab != null)
             {
-                Destroy(previousHighlightPrefab);
+                previousHighlightPrefab.SetActive(false);
+                previousHighlightPrefab.transform.SetParent(SelectorPool.SharedInstance.transform);
+
             }
 
-            previousHighlightPrefab = Instantiate(newHighlightPrefab, piece.transform.position, Quaternion.identity, piece.transform);
+            previousHighlightPrefab = newHighlightPrefab;
+            previousHighlightPrefab.transform.SetParent(piece.transform);
+
+            // workaround for incorrectly sized prefab
+            Vector3 adjustedScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+            previousHighlightPrefab.transform.localScale = adjustedScale;
+
             tileSelector.SetHighlight(previousHighlightPrefab);
         }
 
@@ -155,38 +170,11 @@ namespace Blokr
                 Destroy(previousHighlightPrefab);
             }
 
-            previousHighlightPrefab = GetHighlightPrefabForPiece(PieceType.A1);
+            previousHighlightPrefab = SelectorPool.SharedInstance.GetSelector(PieceType.A1);
             tileSelector.SetHighlight(previousHighlightPrefab);
         }
 
-        private GameObject GetHighlightPrefabForPiece(PieceType pieceType)
-        {
-            return pieceType switch
-            {
-                PieceType.A1 => highlightPrefabs[0],
-                PieceType.A2 => highlightPrefabs[1],
-                PieceType.A3 => highlightPrefabs[2],
-                PieceType.A4 => highlightPrefabs[3],
-                PieceType.A5 => highlightPrefabs[4],
-                PieceType.B3 => highlightPrefabs[5],
-                PieceType.B4 => highlightPrefabs[6],
-                PieceType.B5 => highlightPrefabs[7],
-                PieceType.C4 => highlightPrefabs[8],
-                PieceType.C5 => highlightPrefabs[9],
-                PieceType.D4 => highlightPrefabs[10],
-                PieceType.D5 => highlightPrefabs[11],
-                PieceType.E4 => highlightPrefabs[12],
-                PieceType.E5 => highlightPrefabs[13],
-                PieceType.F5 => highlightPrefabs[14],
-                PieceType.G5 => highlightPrefabs[15],
-                PieceType.H5 => highlightPrefabs[16],
-                PieceType.I5 => highlightPrefabs[17],
-                PieceType.J5 => highlightPrefabs[18],
-                PieceType.K5 => highlightPrefabs[19],
-                PieceType.L5 => highlightPrefabs[20],
-                _ => highlightPrefabs[0],
-            };
-        }
+
         private void InitializeBoard()
         {
             PieceType pieceType;
@@ -211,6 +199,12 @@ namespace Blokr
                     }
                 }
             }
+        }
+
+        public void NextPlayer()
+        {
+            currentPlayer = playerPool[playerCt];
+            playerCt = playerCt < 3 ? playerCt++ : playerCt = 0;
         }
     }
 

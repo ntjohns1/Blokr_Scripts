@@ -11,9 +11,9 @@ namespace Blokr
         // ************************************************************************************
 
         public static SelectorPool SharedInstance;
-        private readonly Dictionary<string, GameObject> selectors = new();
+        private readonly Dictionary<PieceType, GameObject> selectors = new();
 
-        private Material[] materials;
+        // private Material[] materials;
         private List<GameObject> highlightPrefabs;
 
         // ************************************************************************************
@@ -37,16 +37,16 @@ namespace Blokr
                 obj.transform.SetParent(gameObject.transform);
                 obj.layer = LayerMask.NameToLayer("Selector");
                 obj.name = $"{pieceType}Selector";
-                selectors.Add(obj.name, obj);
+                selectors.Add(pieceType, obj);
             }
 
         }
 
-        public GameObject GetSelector(string typeName)
+        public GameObject GetSelector(PieceType pieceType)
         {
-            if (selectors.ContainsKey(typeName) && !selectors[typeName].activeInHierarchy)
+            if (selectors.ContainsKey(pieceType) && !selectors[pieceType].activeInHierarchy)
             {
-                return selectors[typeName];
+                return selectors[pieceType];
             }
 
             return null;
