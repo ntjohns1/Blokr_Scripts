@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Blokr
 {
-    public class F5Selector : Selector
+    public class F5Selector : Selector, ISelector
     {
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
         {

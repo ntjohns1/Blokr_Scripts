@@ -133,7 +133,7 @@ namespace Blokr
         public void AddPiece(List<Vector2Int> positions, PieceType type)
         {
             board.AddPiece(positions);
-            currentPlayer.MarkAsPlayed(type);
+            // currentPlayer.MarkAsPlayed(type);
         }
 
         public void SelectPiece(GameObject piece)

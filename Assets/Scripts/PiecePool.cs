@@ -63,8 +63,7 @@ namespace Blokr
 
         public GameObject GetPiece(string typeName, PieceColor color)
         {
-            Dictionary<string, GameObject> selectedDictionary = null;
-
+            Dictionary<string, GameObject> selectedDictionary;
             switch (color)
             {
                 case PieceColor.Red:

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Blokr
 {
-    public class A1Selector : Selector
+    public class A1Selector : Selector, ISelector
     {
 
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)

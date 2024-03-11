@@ -7,7 +7,7 @@ namespace Blokr
 {
     public delegate List<Vector2Int> CalculatePositions(Vector2Int initialCell, Direction direction, List<(Vector2Int, int)> positions);
 
-    public abstract class Selector : MonoBehaviour
+    public abstract class Selector : MonoBehaviour, ISelector
     {
         // ************************************************************************************
         // Fields
