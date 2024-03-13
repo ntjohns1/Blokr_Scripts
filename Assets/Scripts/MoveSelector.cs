@@ -8,16 +8,31 @@ namespace Blokr
 {
     public class MoveSelector : MonoBehaviour
     {
-        // Start is called before the first frame update
+        private List<Vector2Int> initCells;
+
         void Start()
         {
-
+            initCells = new List<Vector2Int>
+            {
+                new Vector2Int(20, 0),
+                new Vector2Int(20, 20),
+                new Vector2Int(0, 20),
+                new Vector2Int(0, 0)
+            };
         }
 
-        // Update is called once per frame
-        void Update()
+        public bool IsValidForFirstTurn(List<Vector2Int> occupiedCells, PieceColor color)
         {
-
+            return color switch
+            {
+                PieceColor.Red => occupiedCells.Contains(initCells[0]),
+                PieceColor.Green => occupiedCells.Contains(initCells[1]),
+                PieceColor.Blue => occupiedCells.Contains(initCells[2]),
+                PieceColor.Yellow => occupiedCells.Contains(initCells[3]),
+                _ => occupiedCells.Contains(initCells[0]),
+            };
         }
     }
 }
+
+

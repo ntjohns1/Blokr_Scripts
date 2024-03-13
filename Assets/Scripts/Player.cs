@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Blokr
 {
-    public class Player
+    public class Player : MonoBehaviour
     {
         // Serialized fields that will be visible in the Unity Inspector
         // private List<GameObject> pieces;
@@ -13,7 +13,13 @@ namespace Blokr
 
         private string playerName;
 
-
+        private PieceColor color;
+        public PieceColor Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
+        
         // Constructors
         public Player(string playerName)
         {

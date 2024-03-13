@@ -26,18 +26,12 @@ namespace Blokr
         [SerializeField]
         private GameObject[] players;
 
-
-        private Player[] playerPool;
-
-
         [SerializeField]
         private List<GameObject> highlightPrefabs;
 
         private GameObject previousHighlightPrefab;
         private GameObject selectedPiece;
-        private Player currentPlayer;
-
-        private static int playerCt = 0;
+        private GameObject currentPlayer;
 
         // ************************************************************************************
         // Properties
@@ -73,7 +67,7 @@ namespace Blokr
         }
 
 
-        public Player CurrentPlayer
+        public GameObject CurrentPlayer
         {
             get { return currentPlayer; }
             set { currentPlayer = value; }
@@ -127,7 +121,10 @@ namespace Blokr
 
         void Start()
         {
-
+            // TODO: 
+            // Select first Player from list instead of hard-coding
+            // Change order of colors
+            currentPlayer = players[0];
         }
 
         public void AddPiece(List<Vector2Int> positions, PieceType type)
@@ -201,11 +198,7 @@ namespace Blokr
             }
         }
 
-        public void NextPlayer()
-        {
-            currentPlayer = playerPool[playerCt];
-            playerCt = playerCt < 3 ? playerCt++ : playerCt = 0;
-        }
+
     }
 
 }

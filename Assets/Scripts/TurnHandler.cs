@@ -7,25 +7,35 @@ namespace Blokr
 {
     public class TurnHandler : MonoBehaviour
     {
-        private static int  turnCount;
+        private static TurnHandler instance;
         
+        private static int turnCount;
+
+        private static int currentPlayerIndex;
+
         private static bool isFirstTurn;
-        
+
         private Player[] players;
-        
-        public static int  TurnCount
+
+        public static TurnHandler Instance
         {
-            get { return turnCount; }
-            set { turnCount = value; }
+            get { return instance; }
+            set { instance = value; }
         }
+
+        // public static int TurnCount
+        // {
+        //     get { return turnCount; }
+        //     set { turnCount = value; }
+        // }
 
         public static bool IsFirstTurn
         {
-            get { return isFirstTurn = turnCount == 1; }
+            get { return isFirstTurn = turnCount < 3; }
         }
-        
-        
-        // Start is called before the first frame update
+
+
+        // To Do: Make color order more dynamic
         void Start()
         {
             turnCount = 0;
@@ -33,8 +43,24 @@ namespace Blokr
             for (int i = 0; i < players.Length; i++)
             {
                 PieceColor color = (PieceColor)i;
-                players[i] = new Player($"{color}_Player");
+                players[i] = GameManager.Instance.Players[i].GetComponent<Player>();
+                // players[i].PlayerName = $"{color}_Player";
+                players[i].Color = color;
             }
         }
+
+        public void NextPlayer()
+        {
+            GameManager.Instance.CurrentPlayer = GameManager.Instance.Players[currentPlayerIndex];
+            currentPlayerIndex = currentPlayerIndex < 3 ? currentPlayerIndex++ : currentPlayerIndex = 0;
+        }
+        // void EnterState()
+        // {
+        // }
+
+        // void ExiitState()
+        // {
+        //     //TileSelector.SetActive for CurrentPlayer
+        // }
     }
 }
