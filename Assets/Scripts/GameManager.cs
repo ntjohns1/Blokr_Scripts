@@ -139,7 +139,16 @@ namespace Blokr
 
             Piece pieceComponent = piece.GetComponent<Piece>();
             TileSelector tileSelector = board.GetComponent<TileSelector>();
-            GameObject newHighlightPrefab = SelectorPool.SharedInstance.GetSelector(pieceComponent.PieceType);
+            bool belongsToCurrentPlayer = MoveSelector.Instance.BelongsToCurrentPlayer(currentPlayer, pieceComponent.PieceColor);
+            GameObject newHighlightPrefab;
+            if (belongsToCurrentPlayer)
+            {
+                newHighlightPrefab = SelectorPool.SharedInstance.GetSelector(pieceComponent.PieceType);
+            }
+            else
+            {
+                return;
+            }
 
             if (previousHighlightPrefab != null)
             {
@@ -164,7 +173,8 @@ namespace Blokr
 
             if (previousHighlightPrefab != null)
             {
-                Destroy(previousHighlightPrefab);
+                previousHighlightPrefab.SetActive(false);
+                previousHighlightPrefab.transform.SetParent(SelectorPool.SharedInstance.transform);
             }
 
             previousHighlightPrefab = SelectorPool.SharedInstance.GetSelector(PieceType.A1);

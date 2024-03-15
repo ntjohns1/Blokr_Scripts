@@ -28,6 +28,10 @@ namespace Blokr
         //     get { return turnCount; }
         //     set { turnCount = value; }
         // }
+        void Awake()
+        {
+            instance = this;
+        }
 
         public static bool IsFirstTurn
         {
@@ -53,6 +57,7 @@ namespace Blokr
         {
             GameManager.Instance.CurrentPlayer = GameManager.Instance.Players[currentPlayerIndex];
             currentPlayerIndex = currentPlayerIndex < 3 ? currentPlayerIndex++ : currentPlayerIndex = 0;
+            turnCount++;
         }
         // void EnterState()
         // {
