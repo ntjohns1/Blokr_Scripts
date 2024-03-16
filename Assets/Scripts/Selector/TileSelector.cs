@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace Blokr
 {
@@ -21,6 +22,11 @@ namespace Blokr
         [SerializeField] private LayerMask gridLayer;
 
         private Piece piece;
+
+        [SerializeField]
+        GameObject moveConfirm;
+
+        private List<Vector2Int> occupiedCells;
 
         // ************************************************************************************
         // Methods
@@ -56,9 +62,10 @@ namespace Blokr
                 Vector3 point = hit.point;
                 Vector2Int gridPoint = Geometry.GridFromPoint(point);
                 ISelector selector = tileHighlight.GetComponent<ISelector>();
-                List<Vector2Int> occupiedGridPositions = GetOccupiedCellsForType(tileHighlight, gridPoint, piece.PieceDirection, piece.IsFlipped);
-                bool allPositionsInBounds = occupiedGridPositions.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
-                if (allPositionsInBounds)
+                occupiedCells = GetOccupiedCellsForType(tileHighlight, gridPoint, piece.PieceDirection, piece.IsFlipped);
+                bool allPositionsInBounds = occupiedCells.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
+                bool isValidMove = MoveSelector.Instance.IsValidMove(occupiedCells, piece.PieceColor);
+                if (allPositionsInBounds && isValidMove)
                 {
                     tileHighlight.SetActive(true);
                     tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
@@ -142,21 +149,17 @@ namespace Blokr
             {
                 if (Input.GetMouseButtonUp(0))
                 {
-                    Debug.Log($"Piece Direction: {piece.PieceDirection}");
-                    Debug.Log($"piece.IsFlipped: {piece.IsFlipped}");
                     Vector2Int point = Geometry.GridFromPoint(tileHighlight.transform.position);
-                    List<Vector2Int> cells = GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped );
-                    foreach (Vector2Int cell in cells)
+                    occupiedCells = GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
+                    foreach (Vector2Int cell in occupiedCells)
                     {
                         Debug.Log(cell);
                     }
-
-                    // Get Highlight prefab from PiecePool and set active at a specified position and rotation
                     GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
-                    placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(cells[0]), tileHighlight.transform.rotation);
-                    GameManager.Instance.AddPiece(cells, piece.PieceType);
+                    placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
                     placedPiece.SetActive(true);
                     piece.gameObject.SetActive(false);
+                    moveConfirm.SetActive(true);
                 }
             }
         }
@@ -195,6 +198,17 @@ namespace Blokr
             tileHighlight.SetActive(false);
             // MoveSelector move = GetComponent<MoveSelector>();
             // move.EnterState(movingPiece);
+        }
+
+        public void AcceptMove()
+        {
+            GameManager.Instance.AddPiece(occupiedCells, piece.PieceType);
+            TurnHandler.Instance.NextPlayer();
+        }
+
+        private void CancelMove()
+        {
+
         }
     }
 }

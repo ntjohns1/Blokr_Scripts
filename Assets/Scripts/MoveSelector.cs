@@ -15,7 +15,7 @@ namespace Blokr
             get { return instance; }
             // set { instance = value; }
         }
-        
+
         private List<Vector2Int> initCells;
 
         void Awake()
@@ -27,9 +27,9 @@ namespace Blokr
         {
             initCells = new List<Vector2Int>
             {
-                new Vector2Int(20, 0),
-                new Vector2Int(20, 20),
-                new Vector2Int(0, 20),
+                new Vector2Int(19, 0),
+                new Vector2Int(19, 19),
+                new Vector2Int(0, 19),
                 new Vector2Int(0, 0)
             };
         }
@@ -50,6 +50,25 @@ namespace Blokr
                 PieceColor.Yellow => occupiedCells.Contains(initCells[3]),
                 _ => occupiedCells.Contains(initCells[0]),
             };
+        }
+
+        public bool IsValidMove(List<Vector2Int> occupiedCells, PieceColor color)
+        {
+            if (TurnHandler.IsFirstTurn)
+            {
+                if (IsValidForFirstTurn(occupiedCells, color))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

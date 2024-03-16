@@ -1,6 +1,6 @@
 Game mananger:
 - [x] Organize Piece game obects into collections
-- [x] 
+- [x] Confirm before placing piece
 - [x] 
 - [x] 
 
@@ -10,22 +10,20 @@ Board:
 
 Piece: 
 
-- [x] Select a piece (world position)
-- [x] move it to a location
-- [x] rotate a Piece
-- [x] place a piece 
-- [x] outline / highlight squares
-- [ ] determine what is a valid move
-
 - [ ] Select a piece (GUI)
-- [x] highlight gridspace
-- [x] outline preview of occupied squares
 
 Player:
-- [ ] Limit interactions to player's own color
-- [ ] Limit interactions to player's own turn
-- [x] Set of player's pieces.
 - [ ] Keep track of played/unplayed pieces
+
+TileSelector:
+- [ ] 
+
+MoveSelector:
+- [ ] determine what is a valid move
+- [X] determine valid move for first turn
+
+TurnHandler:
+- [ ]
 
 12/8 Notes / Workflow
 

@@ -23,11 +23,11 @@ namespace Blokr
             set { instance = value; }
         }
 
-        // public static int TurnCount
-        // {
-        //     get { return turnCount; }
-        //     set { turnCount = value; }
-        // }
+        public static int TurnCount
+        {
+            get { return turnCount; }
+            set { turnCount = value; }
+        }
         void Awake()
         {
             instance = this;
