@@ -25,6 +25,7 @@ namespace Blokr
 
         [SerializeField]
         GameObject moveConfirm;
+        GameObject placedPiece;
 
         private List<Vector2Int> occupiedCells;
 
@@ -155,7 +156,7 @@ namespace Blokr
                     {
                         Debug.Log(cell);
                     }
-                    GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
+                    placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
                     placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
                     placedPiece.SetActive(true);
                     piece.gameObject.SetActive(false);
@@ -203,12 +204,15 @@ namespace Blokr
         public void AcceptMove()
         {
             GameManager.Instance.AddPiece(occupiedCells, piece.PieceType);
+            moveConfirm.SetActive(false);
             TurnHandler.Instance.NextPlayer();
         }
 
-        private void CancelMove()
+        public void CancelMove()
         {
-
+            placedPiece.SetActive(false);
+            piece.gameObject.SetActive(true);
+            moveConfirm.SetActive(false);
         }
     }
 }
