@@ -65,7 +65,7 @@ namespace Blokr
 
         // void ExiitState()
         // {
-        //     //TileSelector.SetActive for CurrentPlayer
+        //     //PieceSelector.SetActive for CurrentPlayer
         // }
     }
 }

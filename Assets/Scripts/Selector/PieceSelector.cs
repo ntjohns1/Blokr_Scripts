@@ -7,13 +7,11 @@ using UnityEngine.Animations;
 
 namespace Blokr
 {
-    public class TileSelector : MonoBehaviour
+    public class PieceSelector : MonoBehaviour
     {
         // ************************************************************************************
         // Fields
         // ************************************************************************************
-
-        public GameObject test;
 
         private GameObject tileHighlight;
 

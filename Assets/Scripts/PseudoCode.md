@@ -15,7 +15,7 @@ Piece:
 Player:
 - [ ] Keep track of played/unplayed pieces
 
-TileSelector:
+PieceSelector:
 - [ ] 
 
 MoveSelector:

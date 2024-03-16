@@ -138,7 +138,7 @@ namespace Blokr
             selectedPiece = piece;
 
             Piece pieceComponent = piece.GetComponent<Piece>();
-            TileSelector tileSelector = board.GetComponent<TileSelector>();
+            PieceSelector tileSelector = board.GetComponent<PieceSelector>();
             bool belongsToCurrentPlayer = MoveSelector.Instance.BelongsToCurrentPlayer(currentPlayer, pieceComponent.PieceColor);
             GameObject newHighlightPrefab;
             if (belongsToCurrentPlayer)
@@ -169,7 +169,7 @@ namespace Blokr
 
         public void DeselectPiece(GameObject piece)
         {
-            TileSelector tileSelector = board.GetComponent<TileSelector>();
+            PieceSelector tileSelector = board.GetComponent<PieceSelector>();
 
             if (previousHighlightPrefab != null)
             {
