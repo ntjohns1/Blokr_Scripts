@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -9,6 +10,19 @@ namespace Blokr
 {
     public class MoveSelector : MonoBehaviour
     {
+        private GameObject tileHighlight;
+
+        private Piece piece;
+
+
+        GameObject placedPiece;
+
+        private List<Vector2Int> occupiedCells;
+
+
+        [SerializeField]
+        private readonly GameObject moveConfirm;
+
         private static MoveSelector instance;
         public static MoveSelector Instance
         {
@@ -17,6 +31,12 @@ namespace Blokr
         }
 
         private List<Vector2Int> initCells;
+
+        public GameObject MoveConfirm
+        {
+            get { return moveConfirm; }
+            // set { moveConfirm = value; }
+        }
 
         void Awake()
         {
@@ -52,6 +72,22 @@ namespace Blokr
             };
         }
 
+        void Update()
+        {
+            if (tileHighlight == null) return;
+
+            // To Do : This should all go in MoveSelector
+            InputManager.Instance.HandleMouseOver(tileHighlight, piece);
+            InputManager.Instance.HandleRotationInput(tileHighlight, piece);
+            InputManager.Instance.HandleFlipInput(tileHighlight, piece);
+            InputManager.Instance.HandleClickInput(tileHighlight, moveConfirm, piece);
+
+            // HandleMouseOver();
+            // HandleRotationInput();
+            // HandleFlipInput();
+            // HandleClickInput();
+        }
+
         public bool IsValidMove(List<Vector2Int> occupiedCells, PieceColor color)
         {
             if (TurnHandler.IsFirstTurn)
@@ -69,6 +105,32 @@ namespace Blokr
             {
                 return true;
             }
+        }
+
+        public void AcceptMove()
+        {
+            GameManager.Instance.AddPiece(occupiedCells, piece.PieceType);
+            moveConfirm.SetActive(false);
+            TurnHandler.Instance.NextPlayer();
+        }
+
+        public void CancelMove()
+        {
+            placedPiece.SetActive(false);
+            piece.gameObject.SetActive(true);
+            moveConfirm.SetActive(false);
+        }
+
+        public void EnterState(GameObject tileHighlight, Piece piece)
+        {
+            enabled = true;
+            this.piece = piece;
+            this.tileHighlight = tileHighlight;
+        }
+
+        private void ExitState()
+        {
+            enabled = false;
         }
     }
 }
