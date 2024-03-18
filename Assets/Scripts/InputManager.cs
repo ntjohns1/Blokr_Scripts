@@ -8,20 +8,33 @@ namespace Blokr
 {
     public class InputManager : MonoBehaviour
     {
+
+        // ************************************************************************************
+        // Fields
+        // ************************************************************************************
+        
         private static InputManager instance;
+        
+        // ************************************************************************************
+        // Properties
+        // ************************************************************************************
+
         public static InputManager Instance
         {
+
             get { return instance; }
         }
 
         [SerializeField] private LayerMask gridLayer;
 
+        // ************************************************************************************
+        // Methods
+        // ************************************************************************************
         void Awake()
         {
             instance = this;
         }
 
-//        To Do Separate Methods for MouseOver inPiece Selector and MoveSelector
         public void HandleMouseOver(GameObject tileHighlight, Piece piece)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -32,7 +45,7 @@ namespace Blokr
                 ISelector selector = tileHighlight.GetComponent<ISelector>();
                 List<Vector2Int> occupiedCells = GetOccupiedCellsForType(tileHighlight, gridPoint, piece.PieceDirection, piece.IsFlipped);
                 bool allPositionsInBounds = occupiedCells.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
-                bool isValidMove = MoveSelector.Instance.IsValidMove(occupiedCells, piece.PieceColor);
+                bool isValidMove = MoveValidator.Instance.IsValidMove(occupiedCells, piece.PieceColor);
                 if (allPositionsInBounds && isValidMove)
                 {
                     tileHighlight.SetActive(true);
@@ -50,7 +63,8 @@ namespace Blokr
             }
         }
 
-        private List<Vector2Int> GetOccupiedCellsForType(GameObject tileHighlight, Vector2Int gridPoint, Direction direction, bool isFlipped)
+
+        public List<Vector2Int> GetOccupiedCellsForType(GameObject tileHighlight, Vector2Int gridPoint, Direction direction, bool isFlipped)
         {
             ISelector selector = tileHighlight.GetComponent<ISelector>();
             return selector.GetOccupiedGridPositions(gridPoint, direction, isFlipped);
@@ -132,27 +146,28 @@ namespace Blokr
             }
         }
 
-        public void HandleClickInput(GameObject tileHighlight, GameObject moveConfirm, Piece piece)
-        {
-            if (tileHighlight == null) return;
-            if (tileHighlight.activeInHierarchy)
-            {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    Vector2Int point = Geometry.GridFromPoint(tileHighlight.transform.position);
-                    List<Vector2Int> occupiedCells = GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
-                    foreach (Vector2Int cell in occupiedCells)
-                    {
-                        Debug.Log(cell);
-                    }
-                    GameObject placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
-                    placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
-                    placedPiece.SetActive(true);
-                    piece.gameObject.SetActive(false);
-                    moveConfirm.SetActive(true);
-                }
-            }
-        }
+        // public void HandleClickInput(GameObject tileHighlight, GameObject moveConfirm, Piece piece)
+        // {
+        //     // conditional based on if click is on Selector Layer or Grid Layer 
+        //     if (tileHighlight == null) return;
+        //     if (tileHighlight.activeInHierarchy)
+        //     {
+        //         if (Input.GetMouseButtonUp(0))
+        //         {
+        //             Vector2Int point = Geometry.GridFromPoint(tileHighlight.transform.position);
+        //             List<Vector2Int> occupiedCells = GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
+        //             foreach (Vector2Int cell in occupiedCells)
+        //             {
+        //                 Debug.Log(cell);
+        //             }
+        //             placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
+        //             placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
+        //             placedPiece.SetActive(true);
+        //             piece.gameObject.SetActive(false);
+        //             moveConfirm.SetActive(true);
+        //         }
+        //     }
+        // }
 
     }
 }

@@ -8,12 +8,15 @@ namespace Blokr
     public class TurnHandler : MonoBehaviour
     {
         private static TurnHandler instance;
-        
+
         private static int turnCount;
 
         private static int currentPlayerIndex;
 
         private static bool isFirstTurn;
+
+        [SerializeField]
+        private GameObject moveConfirm;
 
         private Player[] players;
 
@@ -55,17 +58,40 @@ namespace Blokr
 
         public void NextPlayer()
         {
+            currentPlayerIndex = currentPlayerIndex < 3 ? ++currentPlayerIndex : currentPlayerIndex = 0;
             GameManager.Instance.CurrentPlayer = GameManager.Instance.Players[currentPlayerIndex];
-            currentPlayerIndex = currentPlayerIndex < 3 ? currentPlayerIndex++ : currentPlayerIndex = 0;
             turnCount++;
         }
-        // void EnterState()
-        // {
-        // }
+        public void AcceptMove()
+        {
+            GameManager.Instance.AddPiece(MoveSelector.Instance.OccupiedCells, MoveSelector.Instance.Piece.PieceType);
+            moveConfirm.SetActive(false);
+            MoveSelector.Instance.Piece = null;
+            MoveSelector.Instance.OccupiedCells.Clear();
+            MoveSelector.Instance.PlacedPiece = null;
+            NextPlayer();
+            ExitState();
+        }
 
-        // void ExiitState()
-        // {
-        //     //PieceSelector.SetActive for CurrentPlayer
-        // }
+        public void CancelMove()
+        {
+            MoveSelector.Instance.PlacedPiece.SetActive(false);
+            MoveSelector.Instance.Piece.gameObject.SetActive(true);
+            moveConfirm.SetActive(false);
+            ExitState();
+        }
+
+        public void EnterState()
+        {
+            moveConfirm.SetActive(true);
+
+            Debug.Log($"CurrentPlayerIndex: {currentPlayerIndex}");
+        }
+
+        private void ExitState()
+        {
+            MoveSelector move = MoveSelector.Instance;
+            move.EnterState();
+        }
     }
 }

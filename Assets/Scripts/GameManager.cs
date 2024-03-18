@@ -138,8 +138,8 @@ namespace Blokr
             selectedPiece = piece;
 
             Piece pieceComponent = piece.GetComponent<Piece>();
-            PieceSelector tileSelector = board.GetComponent<PieceSelector>();
-            bool belongsToCurrentPlayer = MoveSelector.Instance.BelongsToCurrentPlayer(currentPlayer, pieceComponent.PieceColor);
+            MoveSelector moveSelector = board.GetComponent<MoveSelector>();
+            bool belongsToCurrentPlayer = MoveValidator.Instance.BelongsToCurrentPlayer(currentPlayer, pieceComponent.PieceColor);
             GameObject newHighlightPrefab;
             if (belongsToCurrentPlayer)
             {
@@ -164,12 +164,12 @@ namespace Blokr
             Vector3 adjustedScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
             previousHighlightPrefab.transform.localScale = adjustedScale;
 
-            tileSelector.SetHighlight(previousHighlightPrefab);
+            moveSelector.SetHighlight(previousHighlightPrefab);
         }
 
         public void DeselectPiece(GameObject piece)
         {
-            PieceSelector tileSelector = board.GetComponent<PieceSelector>();
+            MoveSelector moveSelector = board.GetComponent<MoveSelector>();
 
             if (previousHighlightPrefab != null)
             {
@@ -178,7 +178,7 @@ namespace Blokr
             }
 
             previousHighlightPrefab = SelectorPool.SharedInstance.GetSelector(PieceType.A1);
-            tileSelector.SetHighlight(previousHighlightPrefab);
+            moveSelector.SetHighlight(previousHighlightPrefab);
         }
 
 

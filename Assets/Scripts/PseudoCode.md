@@ -68,3 +68,4 @@ Selectors to Reorganize:
 √ K5
 √ L5
 
+// puml-gen /Users/noslen/DevProjects/Unity Projects/Blokr/Assets/Scripts /Users/noslen/DevProjects/Unity Projects/Scratch -dir -createAssociation -allInOne
