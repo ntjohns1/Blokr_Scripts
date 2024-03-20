@@ -38,7 +38,7 @@ namespace Blokr
 
         public static bool IsFirstTurn
         {
-            get { return isFirstTurn = turnCount < 3; }
+            get { return isFirstTurn = turnCount < 4; }
         }
 
 
@@ -64,7 +64,7 @@ namespace Blokr
         }
         public void AcceptMove()
         {
-            GameManager.Instance.AddPiece(MoveSelector.Instance.OccupiedCells, MoveSelector.Instance.Piece.PieceType);
+            GameManager.Instance.AddPiece(MoveSelector.Instance.OccupiedCells, MoveSelector.Instance.Piece.PieceType, MoveSelector.Instance.Piece.PieceColor);
             moveConfirm.SetActive(false);
             MoveSelector.Instance.Piece = null;
             MoveSelector.Instance.OccupiedCells.Clear();

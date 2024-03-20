@@ -127,9 +127,9 @@ namespace Blokr
             currentPlayer = players[0];
         }
 
-        public void AddPiece(List<Vector2Int> positions, PieceType type)
+        public void AddPiece(List<Vector2Int> positions, PieceType type, PieceColor color)
         {
-            board.AddPiece(positions);
+            board.AddPiece(positions, color);
             // currentPlayer.MarkAsPlayed(type);
         }
 
@@ -139,7 +139,7 @@ namespace Blokr
 
             Piece pieceComponent = piece.GetComponent<Piece>();
             MoveSelector moveSelector = board.GetComponent<MoveSelector>();
-            bool belongsToCurrentPlayer = MoveValidator.Instance.BelongsToCurrentPlayer(currentPlayer, pieceComponent.PieceColor);
+            bool belongsToCurrentPlayer = Board.Instance.BelongsToCurrentPlayer(currentPlayer, pieceComponent.PieceColor);
             GameObject newHighlightPrefab;
             if (belongsToCurrentPlayer)
             {

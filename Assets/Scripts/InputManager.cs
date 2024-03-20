@@ -45,7 +45,7 @@ namespace Blokr
                 ISelector selector = tileHighlight.GetComponent<ISelector>();
                 List<Vector2Int> occupiedCells = GetOccupiedCellsForType(tileHighlight, gridPoint, piece.PieceDirection, piece.IsFlipped);
                 bool allPositionsInBounds = occupiedCells.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
-                bool isValidMove = MoveValidator.Instance.IsValidMove(occupiedCells, piece.PieceColor);
+                bool isValidMove = Board.Instance.IsValidMove(occupiedCells, piece.PieceColor);
                 if (allPositionsInBounds && isValidMove)
                 {
                     tileHighlight.SetActive(true);
