@@ -24,17 +24,37 @@ namespace Tests
 
             List<Vector2Int> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
-            foreach (Vector2Int item in result)
-            {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
-            }
+            // foreach (Vector2Int item in result)
+            // {
+            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            // }
 
             Assert.AreEqual(new Vector2Int(3, 3), result[0]);
             Assert.AreEqual(new Vector2Int(2, 3), result[1]);
             Assert.AreEqual(new Vector2Int(4, 3), result[2]);
             Assert.AreEqual(new Vector2Int(4, 2), result[3]);
+
+            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            foreach (Vector2Int item in result)
+            {
+                Debug.Log($"[x:{item.x}, y:{item.y}]");
+            }
+            Assert.AreEqual(new Vector2Int(3, 4), result[0]);
+            Assert.AreEqual(new Vector2Int(2, 4), result[1]);
+            Assert.AreEqual(new Vector2Int(1, 4), result[2]);
+            Assert.AreEqual(new Vector2Int(1, 3), result[3]);
+            Assert.AreEqual(new Vector2Int(1, 2), result[4]);
+            Assert.AreEqual(new Vector2Int(2, 2), result[5]);
+            Assert.AreEqual(new Vector2Int(3, 2), result[6]);
+            Assert.AreEqual(new Vector2Int(3, 1), result[7]);
+            Assert.AreEqual(new Vector2Int(4, 1), result[8]);
+            Assert.AreEqual(new Vector2Int(5, 1), result[9]);
+            Assert.AreEqual(new Vector2Int(5, 2), result[10]);
+            Assert.AreEqual(new Vector2Int(5, 3), result[11]);
+            Assert.AreEqual(new Vector2Int(5, 4), result[12]);
+            Assert.AreEqual(new Vector2Int(4, 4), result[13]);
         }
-        
+
         [Test]
         public void B4Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
         {

@@ -49,6 +49,17 @@ namespace Blokr
                 _ => cell,
             };
         }
+        protected Vector2Int GetDiagonal(Vector2Int cell, Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Up => new Vector2Int(cell.x + 1, cell.y + 1),
+                Direction.Right => new Vector2Int(cell.x + 1, cell.y - 1),
+                Direction.Down => new Vector2Int(cell.x - 1, cell.y - 1),
+                Direction.Left => new Vector2Int(cell.x - 1, cell.y + 1),
+                _ => cell,
+            };
+        }
 
         // ************************************************************************************
         // protected List<Vector2Int> CalculatePositions           
@@ -78,6 +89,8 @@ namespace Blokr
             return cells;
         }
 
+        public abstract List<Vector2Int> CalculatePlayablePositions(Vector2Int gridpoint, Direction direction, bool isFlipped);
+    
         public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction, bool isFlipped);
 
     }
