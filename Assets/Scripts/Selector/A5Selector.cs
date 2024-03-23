@@ -18,10 +18,21 @@ namespace Blokr
             };
             Direction[] refDirections =
             {
-                !isFlipped?Direction.Right:Direction.Left,
-                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Right:Direction.Left, 
+                !isFlipped?Direction.Right:Direction.Left, 
+                !isFlipped?Direction.Right:Direction.Left, 
                 Direction.Down,
-                Direction.Up
+                Direction.Down,
+                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Left:Direction.Right,
+                Direction.Up,
+                Direction.Up,
+                !isFlipped?Direction.Right:Direction.Left, 
+                !isFlipped?Direction.Right:Direction.Left, 
             };
 
             for (int i = 0; i < refDirections.Length; i++)
