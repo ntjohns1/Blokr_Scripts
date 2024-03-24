@@ -8,7 +8,37 @@ namespace Blokr
     {
         public override List<Vector2Int> CalculatePlayablePositions(Vector2Int gridpoint, Direction direction, bool isFlipped)
         {
-            throw new System.NotImplementedException();
+            Direction OffsetAxis(Direction offset)
+            {
+                return (Direction)(((int)direction + (int)offset) % 4);
+            }
+            List<Vector2Int> output = new()
+            {
+                GetNext(gridpoint,OffsetAxis(!isFlipped?Direction.Down:Direction.Up))
+            };
+            Direction[] refDirections =
+            {
+                Direction.Left,
+                Direction.Left,
+                !isFlipped?Direction.Up:Direction.Down,
+                !isFlipped?Direction.Up:Direction.Down,
+                Direction.Right,
+                !isFlipped?Direction.Up:Direction.Down,
+                Direction.Right,
+                Direction.Right,
+                !isFlipped?Direction.Down:Direction.Up,
+                Direction.Right,
+                !isFlipped?Direction.Down:Direction.Up,
+                !isFlipped?Direction.Down:Direction.Up,
+                Direction.Left
+            };
+
+            for (int i = 0; i < refDirections.Length; i++)
+            {
+                output.Add(GetNext(output[i], OffsetAxis(refDirections[i])));
+
+            }
+            return output;
         }
 
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
