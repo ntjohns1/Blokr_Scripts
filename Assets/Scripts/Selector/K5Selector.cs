@@ -44,7 +44,7 @@ namespace Blokr
 
         public override List<Vector2Int> CalculatePlayablePositions(List<Vector2Int> adjacentPositions)
         {
-            return new() {adjacentPositions[1]};
+            return new() {adjacentPositions[1],adjacentPositions[3],adjacentPositions[6],adjacentPositions[10],adjacentPositions[13]};
         }
 
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
