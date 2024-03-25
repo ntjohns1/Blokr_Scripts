@@ -6,7 +6,7 @@ namespace Blokr
 {
     public class E5Selector : Selector, ISelector
     {
-        public override List<Vector2Int> CalculatePlayablePositions(Vector2Int gridpoint, Direction direction, bool isFlipped)
+        public override List<Vector2Int> CalculateAdjacentPositions(Vector2Int gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)
             {
@@ -27,7 +27,6 @@ namespace Blokr
                 !isFlipped?Direction.Up:Direction.Down,
                 Direction.Right,
                 Direction.Right,
-
                 !isFlipped?Direction.Down:Direction.Up,
                 !isFlipped?Direction.Down:Direction.Up,
                 Direction.Right,
@@ -42,6 +41,11 @@ namespace Blokr
 
             }
             return output;
+        }
+
+        public override List<Vector2Int> CalculatePlayablePositions(List<Vector2Int> adjacentPositions)
+        {
+            return new() { adjacentPositions[2], adjacentPositions[4], adjacentPositions[7], adjacentPositions[9], adjacentPositions[12], adjacentPositions[14] };
         }
 
         public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)

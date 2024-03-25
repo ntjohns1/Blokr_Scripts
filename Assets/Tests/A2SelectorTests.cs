@@ -33,7 +33,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(4, 3), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");
@@ -71,7 +71,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(2, 3), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");
@@ -109,7 +109,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(3, 2), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");
@@ -147,7 +147,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(3, 4), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");
@@ -184,7 +184,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(2, 3), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");
@@ -221,7 +221,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(4, 3), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");
@@ -259,7 +259,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(3, 4), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");
@@ -297,7 +297,7 @@ namespace Tests
 
             Assert.AreEqual(new Vector2Int(3, 2), result[1]);
 
-            result = selector.CalculatePlayablePositions(cellA, direction, isFlipped);
+            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (Vector2Int item in result)
             {
                 Debug.Log($"[x:{item.x}, y:{item.y}]");

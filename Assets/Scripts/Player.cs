@@ -6,36 +6,42 @@ namespace Blokr
 {
     public class Player : MonoBehaviour
     {
-        // Serialized fields that will be visible in the Unity Inspector
-        // private List<GameObject> pieces;
-        // private (PieceType pieceType, bool isPlayed)[] pieces;
+
+        // ************************************************************************************
+        // Fields
+        // ************************************************************************************
+        private string playerName;
+        private PieceColor color;
+
         private readonly Dictionary<PieceType, bool> pieces;
 
-        private string playerName;
+        private List<Vector2Int> playablePositions;
 
-        private PieceColor color;
+        // ************************************************************************************
+        // Properties
+        // ************************************************************************************
+
+        public string PlayerName
+        {
+            get { return playerName; }
+            set { playerName = value; }
+        }
+
         public PieceColor Color
         {
             get { return color; }
             set { color = value; }
         }
-        
-        // Constructors
-        public Player(string playerName)
-        {
-            this.playerName = playerName;
-            pieces = new();
-            for (int i = 0; i < 20; i++)
-            {
-                pieces.Add((PieceType)i,false);
-            }
-        }
-
-        // Getters and setters for private fields
         public Dictionary<PieceType, bool> Pieces
         {
             get { return pieces; }
             // set { pieces = value; }
+        }
+        
+        public List<Vector2Int> PlayablePositions
+        {
+            get { return playablePositions; }
+            set { playablePositions = value; }
         }
 
         // public List<GameObject> PlayedPieces
@@ -45,13 +51,23 @@ namespace Blokr
         //     set { playedPieces = value; }
         // }
 
-        public string PlayerName
+
+        // ************************************************************************************
+        // Methods
+        // ************************************************************************************
+        
+        // Constructors
+        public Player(string playerName)
         {
-            get { return playerName; }
-            set { playerName = value; }
+            this.playerName = playerName;
+            pieces = new();
+            for (int i = 0; i < 20; i++)
+            {
+                pieces.Add((PieceType)i, false);
+            }
+            playablePositions = new();
         }
 
-        // Methods
         public void MarkAsPlayed(PieceType type)
         {
             if (pieces[type]) return;
