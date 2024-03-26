@@ -6,6 +6,8 @@ namespace Blokr
 {
     public class B5Selector : Selector, ISelector
     {
+        public static int Size { get { return 5; } }
+
         public override List<Vector2Int> CalculateAdjacentPositions(Vector2Int gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)

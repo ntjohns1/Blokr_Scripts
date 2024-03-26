@@ -15,6 +15,7 @@ namespace Blokr
 
         private static MoveSelector instance;
         
+        private InputManager input;
         private GameObject tileHighlight;
 
         // private Collider objectCollider;
@@ -22,6 +23,11 @@ namespace Blokr
 
         private Piece piece;
         private List<Vector2Int> occupiedCells;
+
+        private List<Vector2Int> adjacentCells;
+
+        private List<Vector2Int> playableCells;
+        
         private GameObject placedPiece;
         
         // ************************************************************************************
@@ -45,7 +51,19 @@ namespace Blokr
             get { return occupiedCells; }
             set { occupiedCells = value; }
         }
-        
+
+        public List<Vector2Int> AdjacentCells
+        {
+            get { return adjacentCells; }
+            set { adjacentCells = value; }
+        }
+
+        public List<Vector2Int> PlayableCells
+        {
+            get { return playableCells; }
+            set { playableCells = value; }
+        }
+                
         public GameObject PlacedPiece
         {
             get { return placedPiece; }
@@ -61,6 +79,11 @@ namespace Blokr
             instance = this;
         }
 
+        void Start() 
+        {
+            input = InputManager.Instance;
+        }
+
         public void SetHighlight(GameObject highlightPrefab)
         {
             tileHighlight = highlightPrefab;
@@ -72,9 +95,9 @@ namespace Blokr
         {
             if (tileHighlight == null || piece == null) return;
 
-            InputManager.Instance.HandleMouseOver(tileHighlight, piece);
-            InputManager.Instance.HandleRotationInput(tileHighlight, piece);
-            InputManager.Instance.HandleFlipInput(tileHighlight, piece);
+            input.HandleMouseOver(tileHighlight, piece);
+            input.HandleRotationInput(tileHighlight, piece);
+            input.HandleFlipInput(tileHighlight, piece);
             PlacePiece();
         }
 
@@ -92,17 +115,21 @@ namespace Blokr
                 if (Input.GetMouseButtonUp(0))
                 {
                     Vector2Int point = Geometry.GridFromPoint(tileHighlight.transform.position);
-                    occupiedCells = InputManager.Instance.GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
+                    occupiedCells = input.GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
+                    adjacentCells = input.GetAdjacentCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
+                    playableCells = input.GetPlayableCellsForType(tileHighlight, adjacentCells);
                     foreach (Vector2Int cell in occupiedCells)
                     {
                         Debug.Log(cell);
                     }
+                    Player currentPlayer = GameManager.Instance.CurrentPlayer.GetComponent<Player>();
+                    currentPlayer.UpdateAdjacentPositions(AdjacentCells);
+                    currentPlayer.UpdatePlayablePositions(PlayableCells);
                     placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
                     placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
                     placedPiece.SetActive(true);
                     piece.gameObject.SetActive(false);
                     ExitState();
-
                 }
             }
         }

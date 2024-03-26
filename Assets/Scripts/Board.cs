@@ -42,10 +42,10 @@ namespace Blokr
             occupiedSpaces = new bool[20, 20];
             initCells = new List<Vector2Int>
             {
-                new Vector2Int(19, 0),
-                new Vector2Int(0, 0),
-                new Vector2Int(0, 19),
-                new Vector2Int(19, 19)
+                new(19, 0),
+                new(0, 0),
+                new(0, 19),
+                new(19, 19)
             };
         }
 
@@ -95,6 +95,7 @@ namespace Blokr
                 {
                     int x = cell.x, y = cell.y;
                     if (x < 0 || x > 19 || y < 0 || y > 19 || occupiedSpaces[x, y])
+                    // if (x < 0 || x > 19 || y < 0 || y > 19 || occupiedSpaces[x, y] || !IsPlayableForCurrentPlayer(gridPositions))
                     {
                         return false;
                     }
@@ -102,6 +103,21 @@ namespace Blokr
                 return true;
             }
         }
+
+        // public bool IsValidForCurrentPlayer(List<Vector2Int> gridPositions)
+        // {
+        //     bool[,] adjacentPositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().AdjacentPositions;
+        //     bool[,] playablePositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().PlayablePositions;
+        //     foreach (Vector2Int cell in gridPositions)
+        //     {
+        //          int x = cell.x, y = cell.y;
+        //          if (playablePositions[x,y])
+        //          {
+        //             return true;
+        //          }
+        //     }
+        //     return false;
+        // }
 
         public bool BelongsToCurrentPlayer(GameObject playerObj, PieceColor color)
         {
@@ -122,13 +138,42 @@ namespace Blokr
         }
         public void DebugPrintBoard()
         {
+            // for (int i = 0; i < 20; i++)
+            // {
+            //     string rowString = "";
+            //     for (int j = 0; j < 20; j++)
+            //     {
+            //         rowString += occupiedSpaces[i, j] == false ? "|     " : "| X ";
+            //     }
+            //     Debug.Log(rowString + "|");
+            // }
+            Player player = GameManager.Instance.CurrentPlayer.GetComponent<Player>();
             for (int i = 0; i < 20; i++)
             {
                 string rowString = "";
                 for (int j = 0; j < 20; j++)
                 {
-                    rowString += occupiedSpaces[i, j] == false ? "|     " : "| X ";
+                    if (occupiedSpaces[i, j])
+                    {
+                        rowString += "| X ";
+                    }
+                    else if (player.AdjacentPositions[i, j])
+                    {
+                        if (player.PlayablePositions[i, j])
+                        {
+                            rowString += "| P ";
+                        }
+                        else
+                        {
+                            rowString += "| O ";
+                        }
+                    }
+                    else
+                    {
+                        rowString += "|     ";
+                    }
                 }
+
                 Debug.Log(rowString + "|");
             }
         }

@@ -70,6 +70,18 @@ namespace Blokr
             return selector.GetOccupiedGridPositions(gridPoint, direction, isFlipped);
         }
 
+        public List<Vector2Int> GetAdjacentCellsForType(GameObject tileHighlight, Vector2Int gridPoint, Direction direction, bool isFlipped)
+        {
+            ISelector selector = tileHighlight.GetComponent<ISelector>();
+            return selector.CalculateAdjacentPositions(gridPoint, direction, isFlipped);
+        }
+
+        public List<Vector2Int> GetPlayableCellsForType(GameObject tileHighlight, List<Vector2Int> adjacentCells)
+        {
+            ISelector selector = tileHighlight.GetComponent<ISelector>();
+            return selector.CalculatePlayablePositions(adjacentCells);
+        }
+
         public void HandleRotationInput(GameObject tileHighlight, Piece piece)
         {
             int initDirection = (int)piece.PieceDirection;

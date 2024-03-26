@@ -14,6 +14,7 @@ namespace Blokr
 
         private static GameManager instance;
 
+// TODO: No need to Serialize
         [SerializeField]
         private Board board;
 
@@ -125,12 +126,12 @@ namespace Blokr
             // Select first Player from list instead of hard-coding
             // Change order of colors
             currentPlayer = players[0];
+
         }
 
         public void AddPiece(List<Vector2Int> positions, PieceType type, PieceColor color)
         {
             board.AddPiece(positions, color);
-            // currentPlayer.MarkAsPlayed(type);
         }
 
         public void SelectPiece(GameObject piece)

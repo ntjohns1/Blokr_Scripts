@@ -88,13 +88,12 @@ namespace Blokr
 
             return cells;
         }
+    
+        public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction, bool isFlipped);
 
         public abstract List<Vector2Int> CalculateAdjacentPositions(Vector2Int gridpoint, Direction direction, bool isFlipped);
 
         public abstract List<Vector2Int> CalculatePlayablePositions(List<Vector2Int> adjacentPositions);
-    
-        public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction, bool isFlipped);
-
     }
 }
 
