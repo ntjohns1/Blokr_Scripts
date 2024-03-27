@@ -94,8 +94,8 @@ namespace Blokr
                 foreach (Vector2Int cell in gridPositions)
                 {
                     int x = cell.x, y = cell.y;
-                    if (x < 0 || x > 19 || y < 0 || y > 19 || occupiedSpaces[x, y])
-                    // if (x < 0 || x > 19 || y < 0 || y > 19 || occupiedSpaces[x, y] || !IsPlayableForCurrentPlayer(gridPositions))
+                    // if (x < 0 || x > 19 || y < 0 || y > 19 || occupiedSpaces[x, y])
+                    if (x < 0 || x > 19 || y < 0 || y > 19 || occupiedSpaces[x, y] || !CheckPlayableAndAdjacency(gridPositions))
                     {
                         return false;
                     }
@@ -104,19 +104,63 @@ namespace Blokr
             }
         }
 
-        // public bool IsValidForCurrentPlayer(List<Vector2Int> gridPositions)
+        public bool CheckPlayableAndAdjacency(List<Vector2Int> adjacentCells)
+        {
+            bool[,] playablePositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().PlayablePositions;
+            bool[,] adjacentPositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().AdjacentPositions;
+            bool hasPlayableCell = false;
+            bool allNonAdjacentOrNotPlayable = true;
+
+            foreach (Vector2Int cell in adjacentCells)
+            {
+                int x = cell.x, y = cell.y;
+                if (playablePositions[x, y])
+                {
+                    hasPlayableCell = true;
+                }
+
+                if (adjacentPositions[x, y] && !playablePositions[x, y])
+                {
+                    allNonAdjacentOrNotPlayable = false;
+                    break;
+                }
+            }
+            return hasPlayableCell && allNonAdjacentOrNotPlayable;
+        }
+
+
+
+        // public bool IsPlayableCorner(List<Vector2Int> adjacentCells)  // pass in AdjacentPositions from MoveSelector
         // {
-        //     bool[,] adjacentPositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().AdjacentPositions;
         //     bool[,] playablePositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().PlayablePositions;
-        //     foreach (Vector2Int cell in gridPositions)
+        //     foreach (Vector2Int cell in adjacentCells)
         //     {
-        //          int x = cell.x, y = cell.y;
-        //          if (playablePositions[x,y])
-        //          {
+
+        //         int x = cell.x, y = cell.y;
+        //         if (playablePositions[x, y])
+        //         {
         //             return true;
-        //          }
+        //         }
+
         //     }
         //     return false;
+        // }
+
+        // public bool IsNotAdjacent(List<Vector2Int> adjacentCells)
+        // {
+        //     bool[,] playablePositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().PlayablePositions;
+        //     bool[,] adjacentPositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().AdjacentPositions;
+        //     foreach (Vector2Int cell in adjacentCells)
+        //     {
+
+        //         int x = cell.x, y = cell.y;
+        //         if (adjacentPositions[x,y] && !playablePositions[x, y])
+        //         {
+        //             return false;
+        //         }
+
+        //     }
+        //     return true;
         // }
 
         public bool BelongsToCurrentPlayer(GameObject playerObj, PieceColor color)

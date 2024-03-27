@@ -158,28 +158,5 @@ namespace Blokr
             }
         }
 
-        // public void HandleClickInput(GameObject tileHighlight, GameObject moveConfirm, Piece piece)
-        // {
-        //     // conditional based on if click is on Selector Layer or Grid Layer 
-        //     if (tileHighlight == null) return;
-        //     if (tileHighlight.activeInHierarchy)
-        //     {
-        //         if (Input.GetMouseButtonUp(0))
-        //         {
-        //             Vector2Int point = Geometry.GridFromPoint(tileHighlight.transform.position);
-        //             List<Vector2Int> occupiedCells = GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
-        //             foreach (Vector2Int cell in occupiedCells)
-        //             {
-        //                 Debug.Log(cell);
-        //             }
-        //             placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
-        //             placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
-        //             placedPiece.SetActive(true);
-        //             piece.gameObject.SetActive(false);
-        //             moveConfirm.SetActive(true);
-        //         }
-        //     }
-        // }
-
     }
 }
