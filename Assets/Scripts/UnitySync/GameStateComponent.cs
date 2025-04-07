@@ -15,6 +15,7 @@ namespace Blokr.UnitySync
         private Dictionary<PieceColor, GameObject> _playerObjects;
 
         public static GameStateComponent Instance { get; private set; }
+        public IBoardService BoardService => _boardService;
 
         private void Awake()
         {

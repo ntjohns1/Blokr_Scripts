@@ -16,7 +16,7 @@ namespace Blokr.UnitySync
         private void Start()
         {
             // Get reference to the board service from GameStateComponent
-            _boardService = GameStateComponent.Instance.GetComponent<GameStateComponent>()._boardService;
+            _boardService = GameStateComponent.Instance.BoardService;
             
             if (_boardService != null)
             {
