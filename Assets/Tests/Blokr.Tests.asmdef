@@ -1,14 +1,13 @@
 {
-    "name": "Tests",
-    "rootNamespace": "",
+    "name": "Blokr.Tests",
+    "rootNamespace": "Blokr.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "ScriptsAssembly"
+        "Blokr.Core",
+        "Blokr.Selector"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
