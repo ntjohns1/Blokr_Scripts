@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
+using Blokr.Core.Models;
 
 namespace Blokr.Core.Services
 {
     public interface IBoardService
     {
         bool[,] OccupiedSpaces { get; }
-        List<Vector2Int> InitialCells { get; }
+        List<GridPosition> InitialCells { get; }
         
-        event Action<List<Vector2Int>> OnPiecePlaced;
+        event Action<List<GridPosition>> OnPiecePlaced;
         
-        bool IsValidMove(List<Vector2Int> positions, PieceColor color);
-        bool IsValidForFirstTurn(List<Vector2Int> positions, PieceColor color);
-        bool CheckPlayableAndAdjacency(List<Vector2Int> positions, PieceColor color);
-        void PlacePiece(List<Vector2Int> positions);
+        bool IsValidMove(List<GridPosition> positions, PieceColor color);
+        bool IsValidForFirstTurn(List<GridPosition> positions, PieceColor color);
+        bool CheckPlayableAndAdjacency(List<GridPosition> positions, PieceColor color);
+        void PlacePiece(List<GridPosition> positions);
         void Reset();
     }
 }

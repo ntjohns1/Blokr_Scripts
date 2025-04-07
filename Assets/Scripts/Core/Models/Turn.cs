@@ -17,7 +17,7 @@ namespace Blokr.Core.Models
         public Player CurrentPlayer { get; private set; }
         public TurnPhase Phase { get; private set; }
         public PieceType? SelectedPieceType { get; private set; }
-        public List<Vector2Int> PlacedPositions { get; private set; }
+        public List<GridPosition> PlacedPositions { get; private set; }
         
         public event Action<TurnPhase> OnPhaseChanged;
         public event Action<Turn> OnTurnCompleted;
@@ -27,7 +27,7 @@ namespace Blokr.Core.Models
             TurnNumber = turnNumber;
             CurrentPlayer = player;
             Phase = TurnPhase.SelectPiece;
-            PlacedPositions = new List<Vector2Int>();
+            PlacedPositions = new List<GridPosition>();
         }
 
         public void SelectPiece(PieceType pieceType)
@@ -42,7 +42,7 @@ namespace Blokr.Core.Models
             OnPhaseChanged?.Invoke(Phase);
         }
 
-        public void PlacePiece(List<Vector2Int> positions)
+        public void PlacePiece(List<GridPosition> positions)
         {
             if (Phase != TurnPhase.PlacePiece || positions == null || positions.Count == 0)
             {

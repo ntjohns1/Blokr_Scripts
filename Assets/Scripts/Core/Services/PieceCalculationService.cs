@@ -1,55 +1,52 @@
 using System.Collections.Generic;
-using UnityEngine;
+using Blokr.Core.Models;
 
 namespace Blokr.Core.Services
 {
     public class PieceCalculationService : IPieceCalculationService
     {
-        private readonly Dictionary<PieceType, (List<(Vector2Int, int)> positions, int size)> _pieceDefinitions;
+        private readonly Dictionary<PieceType, PieceDefinition> _pieceDefinitions;
 
         public PieceCalculationService()
         {
-            _pieceDefinitions = new Dictionary<PieceType, (List<(Vector2Int, int)> positions, int size)>();
+            _pieceDefinitions = new Dictionary<PieceType, PieceDefinition>();
             InitializePieceDefinitions();
         }
 
         private void InitializePieceDefinitions()
         {
-            // Example for piece D4 (you'll need to add all piece definitions)
-            _pieceDefinitions[PieceType.D4] = (new List<(Vector2Int, int)>
-            {
-                (new Vector2Int(0, 1), 0),  // Up from initial
-                (new Vector2Int(1, 0), 1),  // Right from first point
-                (new Vector2Int(1, 0), 1)   // Right from second point
-            }, 4);
-
+            // Initialize D4 (T-shaped piece)
+            _pieceDefinitions[PieceType.D4] = PieceDefinition.CreateTPiece(PieceType.D4, 2, 3);
+            
             // Add other piece definitions here...
         }
 
-        public List<Vector2Int> CalculateOccupiedPositions(Vector2Int initialPosition, PieceType pieceType, Direction direction, bool isFlipped)
+        public List<GridPosition> CalculateOccupiedPositions(GridPosition initialPosition, PieceType pieceType, Direction direction, bool isFlipped)
         {
             if (!_pieceDefinitions.TryGetValue(pieceType, out var definition))
             {
-                return new List<Vector2Int> { initialPosition };
+                return new List<GridPosition> { initialPosition };
             }
 
-            var positions = new List<Vector2Int> { initialPosition };
-            var baseAxis = (int)direction;
+            var positions = new List<GridPosition> { initialPosition };
 
-            foreach (var (offset, relativeAxis) in definition.positions)
+            foreach (var cell in definition.Cells)
             {
-                var currentPos = positions[positions.Count - 1];
-                var newAxis = (baseAxis + (isFlipped ? -relativeAxis : relativeAxis)) % 4;
-                positions.Add(GetNextPosition(currentPos, (Direction)newAxis));
+                var offset = cell.Offset;
+                var newDirection = isFlipped ? 
+                    direction.Rotate(-cell.RelativeRotation) : 
+                    direction.Rotate(cell.RelativeRotation);
+                
+                positions.Add(GetNextPosition(positions[positions.Count - 1], newDirection));
             }
 
             return positions;
         }
 
-        public List<Vector2Int> CalculateAdjacentPositions(Vector2Int initialPosition, PieceType pieceType, Direction direction, bool isFlipped)
+        public List<GridPosition> CalculateAdjacentPositions(GridPosition initialPosition, PieceType pieceType, Direction direction, bool isFlipped)
         {
             var occupiedPositions = CalculateOccupiedPositions(initialPosition, pieceType, direction, isFlipped);
-            var adjacentPositions = new HashSet<Vector2Int>();
+            var adjacentPositions = new HashSet<GridPosition>();
 
             foreach (var pos in occupiedPositions)
             {
@@ -74,47 +71,48 @@ namespace Blokr.Core.Services
                 }
             }
 
-            return new List<Vector2Int>(adjacentPositions);
+            return new List<GridPosition>(adjacentPositions);
         }
 
-        public List<Vector2Int> CalculatePlayablePositions(List<Vector2Int> adjacentPositions, PieceType pieceType)
+        public List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions, PieceType pieceType)
         {
-            // This will vary by piece type - implement the specific rules
-            // For now, returning a subset of adjacent positions
-            var playablePositions = new List<Vector2Int>();
-            
-            // Example logic - can be customized per piece type
-            for (int i = 0; i < adjacentPositions.Count; i += 2)
+            if (!_pieceDefinitions.TryGetValue(pieceType, out var definition))
             {
-                if (i < adjacentPositions.Count)
+                return new List<GridPosition>();
+            }
+
+            var playablePositions = new List<GridPosition>();
+            foreach (var index in definition.PlayablePositionIndices)
+            {
+                if (index < adjacentPositions.Count)
                 {
-                    playablePositions.Add(adjacentPositions[i]);
+                    playablePositions.Add(adjacentPositions[index]);
                 }
             }
 
             return playablePositions;
         }
 
-        public Vector2Int GetNextPosition(Vector2Int current, Direction direction)
+        public GridPosition GetNextPosition(GridPosition current, Direction direction)
         {
             return direction switch
             {
-                Direction.Up => new Vector2Int(current.x, current.y + 1),
-                Direction.Right => new Vector2Int(current.x + 1, current.y),
-                Direction.Down => new Vector2Int(current.x, current.y - 1),
-                Direction.Left => new Vector2Int(current.x - 1, current.y),
+                Direction.Up => new GridPosition(current.X, current.Y + 1),
+                Direction.Right => new GridPosition(current.X + 1, current.Y),
+                Direction.Down => new GridPosition(current.X, current.Y - 1),
+                Direction.Left => new GridPosition(current.X - 1, current.Y),
                 _ => current,
             };
         }
 
-        public Vector2Int GetDiagonalPosition(Vector2Int current, Direction direction)
+        public GridPosition GetDiagonalPosition(GridPosition current, Direction direction)
         {
             return direction switch
             {
-                Direction.Up => new Vector2Int(current.x + 1, current.y + 1),
-                Direction.Right => new Vector2Int(current.x + 1, current.y - 1),
-                Direction.Down => new Vector2Int(current.x - 1, current.y - 1),
-                Direction.Left => new Vector2Int(current.x - 1, current.y + 1),
+                Direction.Up => new GridPosition(current.X + 1, current.Y + 1),
+                Direction.Right => new GridPosition(current.X + 1, current.Y - 1),
+                Direction.Down => new GridPosition(current.X - 1, current.Y - 1),
+                Direction.Left => new GridPosition(current.X - 1, current.Y + 1),
                 _ => current,
             };
         }

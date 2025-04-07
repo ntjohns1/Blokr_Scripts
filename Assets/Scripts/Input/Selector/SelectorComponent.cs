@@ -1,4 +1,4 @@
-using UnityEngine;
+
 using System.Collections.Generic;
 using Blokr.Core.Services;
 using Blokr.UnitySync;
@@ -12,20 +12,20 @@ namespace Blokr.Input.Selector
         
         private IPieceCalculationService _calculationService;
         private bool _isFlipped;
-        private Vector2Int _currentPosition;
-        private List<Vector2Int> _occupiedPositions;
-        private List<Vector2Int> _adjacentPositions;
-        private List<Vector2Int> _playablePositions;
+        private GridPosition _currentPosition;
+        private List<GridPosition> _occupiedPositions;
+        private List<GridPosition> _adjacentPositions;
+        private List<GridPosition> _playablePositions;
 
         private void Awake()
         {
             _calculationService = new PieceCalculationService();
-            _occupiedPositions = new List<Vector2Int>();
-            _adjacentPositions = new List<Vector2Int>();
-            _playablePositions = new List<Vector2Int>();
+            _occupiedPositions = new List<GridPosition>();
+            _adjacentPositions = new List<GridPosition>();
+            _playablePositions = new List<GridPosition>();
         }
 
-        public void UpdatePosition(Vector2Int position)
+        public void UpdatePosition(GridPosition position)
         {
             _currentPosition = position;
             CalculatePositions();
@@ -96,8 +96,8 @@ namespace Blokr.Input.Selector
             return true;
         }
 
-        public List<Vector2Int> GetOccupiedPositions() => _occupiedPositions;
-        public List<Vector2Int> GetAdjacentPositions() => _adjacentPositions;
-        public List<Vector2Int> GetPlayablePositions() => _playablePositions;
+        public List<GridPosition> GetOccupiedPositions() => _occupiedPositions;
+        public List<GridPosition> GetAdjacentPositions() => _adjacentPositions;
+        public List<GridPosition> GetPlayablePositions() => _playablePositions;
     }
 }

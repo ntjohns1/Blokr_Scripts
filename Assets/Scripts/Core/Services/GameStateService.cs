@@ -89,7 +89,7 @@ namespace Blokr.Core.Services
             _currentTurn?.SelectPiece(pieceType);
         }
 
-        public void PlacePiece(List<Vector2Int> positions)
+        public void PlacePiece(List<GridPosition> positions)
         {
             _currentTurn?.PlacePiece(positions);
         }

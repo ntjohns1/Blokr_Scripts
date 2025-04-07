@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Blokr.Core.Models;
+
 
 namespace Blokr
 {
-    public class SelectorPool : MonoBehaviour
+    public class SelectorPool
     {
         // ************************************************************************************
         // Fields

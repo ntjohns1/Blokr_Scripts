@@ -1,34 +1,35 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blokr.Core.Models;
 
 namespace Blokr.Core.Services
 {
     public class BoardService : IBoardService
     {
         private readonly bool[,] _occupiedSpaces;
-        private readonly List<Vector2Int> _initialCells;
+        private readonly List<GridPosition> _initialCells;
         private readonly IGameStateService _gameStateService;
 
         public bool[,] OccupiedSpaces => _occupiedSpaces;
-        public List<Vector2Int> InitialCells => _initialCells;
+        public List<GridPosition> InitialCells => _initialCells;
 
-        public event Action<List<Vector2Int>> OnPiecePlaced;
+        public event Action<List<GridPosition>> OnPiecePlaced;
 
         public BoardService(IGameStateService gameStateService)
         {
             _gameStateService = gameStateService;
             _occupiedSpaces = new bool[20, 20];
-            _initialCells = new List<Vector2Int>
+            _initialCells = new List<GridPosition>
             {
-                new(19, 0),  // Red
-                new(0, 0),   // Green
-                new(0, 19),  // Blue
-                new(19, 19)  // Yellow
+                new GridPosition(19, 0),  // Red
+                new GridPosition(0, 0),   // Green
+                new GridPosition(0, 19),  // Blue
+                new GridPosition(19, 19)  // Yellow
             };
         }
 
-        public bool IsValidMove(List<Vector2Int> positions, PieceColor color)
+        public bool IsValidMove(List<GridPosition> positions, PieceColor color)
         {
             if (_gameStateService.CurrentState.IsFirstTurn)
             {
@@ -39,20 +40,20 @@ namespace Blokr.Core.Services
                    CheckPlayableAndAdjacency(positions, color);
         }
 
-        private bool IsValidPosition(Vector2Int pos)
+        private bool IsValidPosition(GridPosition pos)
         {
-            return pos.x >= 0 && pos.x < 20 && 
-                   pos.y >= 0 && pos.y < 20 && 
-                   !_occupiedSpaces[pos.x, pos.y];
+            return pos.X >= 0 && pos.X < 20 && 
+                   pos.Y >= 0 && pos.Y < 20 && 
+                   !_occupiedSpaces[pos.X, pos.Y];
         }
 
-        public bool IsValidForFirstTurn(List<Vector2Int> positions, PieceColor color)
+        public bool IsValidForFirstTurn(List<GridPosition> positions, PieceColor color)
         {
             var initialCell = _initialCells[(int)color];
             return positions.Contains(initialCell);
         }
 
-        public bool CheckPlayableAndAdjacency(List<Vector2Int> positions, PieceColor color)
+        public bool CheckPlayableAndAdjacency(List<GridPosition> positions, PieceColor color)
         {
             var player = _gameStateService.GetPlayer(color);
             if (player == null) return false;
@@ -62,12 +63,12 @@ namespace Blokr.Core.Services
 
             foreach (var pos in positions)
             {
-                if (player.PlayablePositions[pos.x, pos.y])
+                if (player.PlayablePositions[pos.X, pos.Y])
                 {
                     hasPlayableCell = true;
                 }
 
-                if (player.AdjacentPositions[pos.x, pos.y] && !player.PlayablePositions[pos.x, pos.y])
+                if (player.AdjacentPositions[pos.X, pos.Y] && !player.PlayablePositions[pos.X, pos.Y])
                 {
                     allNonAdjacentOrNotPlayable = false;
                     break;
@@ -77,11 +78,11 @@ namespace Blokr.Core.Services
             return hasPlayableCell && allNonAdjacentOrNotPlayable;
         }
 
-        public void PlacePiece(List<Vector2Int> positions)
+        public void PlacePiece(List<GridPosition> positions)
         {
             foreach (var pos in positions)
             {
-                _occupiedSpaces[pos.x, pos.y] = true;
+                _occupiedSpaces[pos.X, pos.Y] = true;
             }
             
             OnPiecePlaced?.Invoke(positions);

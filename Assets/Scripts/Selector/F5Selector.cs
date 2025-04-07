@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Blokr.Core.Models;
+
 
 namespace Blokr
 {
@@ -9,14 +10,14 @@ namespace Blokr
 
         public static int Size { get { return 5; } }
         
-        public override List<Vector2Int> CalculateAdjacentPositions(Vector2Int gridpoint, Direction direction, bool isFlipped)
+        public override List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)
             {
                 return (Direction)(((int)direction + (int)offset) % 4);
             }
             gridpoint = GetNext(gridpoint, OffsetAxis(!isFlipped?Direction.Up:Direction.Down));
-            List<Vector2Int> output = new()
+            List<GridPosition> output = new()
             {
                 GetNext(gridpoint,OffsetAxis(!isFlipped?Direction.Up:Direction.Down))
             };
@@ -47,14 +48,14 @@ namespace Blokr
             return output;
         }
 
-        public override List<Vector2Int> CalculatePlayablePositions(List<Vector2Int> adjacentPositions)
+        public override List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
             return new() { adjacentPositions[1], adjacentPositions[3], adjacentPositions[5], adjacentPositions[7], adjacentPositions[9], adjacentPositions[11], adjacentPositions[13], adjacentPositions[15] };
         }
 
-        public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
+        public override List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
         {
-            List<(Vector2Int, int)> cells = new()
+            List<(GridPosition, int)> cells = new()
             {
                 (baseCell, 1),
                 (baseCell, 3),

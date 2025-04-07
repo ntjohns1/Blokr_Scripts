@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 using UnityEngine.Animations;
 
 namespace Blokr
 {
-    public class MoveSelector : MonoBehaviour
+    public class MoveSelector 
     {
         // ************************************************************************************
         // Fields
@@ -22,11 +22,11 @@ namespace Blokr
         [SerializeField] private LayerMask gridLayer;
 
         private Piece piece;
-        private List<Vector2Int> occupiedCells;
+        private List<GridPosition> occupiedCells;
 
-        private List<Vector2Int> adjacentCells;
+        private List<GridPosition> adjacentCells;
 
-        private List<Vector2Int> playableCells;
+        private List<GridPosition> playableCells;
         
         private GameObject placedPiece;
         
@@ -46,19 +46,19 @@ namespace Blokr
             set { piece = value; }
         }
 
-        public List<Vector2Int> OccupiedCells
+        public List<GridPosition> OccupiedCells
         {
             get { return occupiedCells; }
             set { occupiedCells = value; }
         }
 
-        public List<Vector2Int> AdjacentCells
+        public List<GridPosition> AdjacentCells
         {
             get { return adjacentCells; }
             set { adjacentCells = value; }
         }
 
-        public List<Vector2Int> PlayableCells
+        public List<GridPosition> PlayableCells
         {
             get { return playableCells; }
             set { playableCells = value; }
@@ -114,11 +114,11 @@ namespace Blokr
             {
                 if (Input.GetMouseButtonUp(0))
                 {
-                    Vector2Int point = Geometry.GridFromPoint(tileHighlight.transform.position);
+                    GridPosition point = Geometry.GridFromPoint(tileHighlight.transform.position);
                     occupiedCells = input.GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
                     adjacentCells = input.GetAdjacentCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
                     playableCells = input.GetPlayableCellsForType(tileHighlight, adjacentCells);
-                    foreach (Vector2Int cell in occupiedCells)
+                    foreach (GridPosition cell in occupiedCells)
                     {
                         Debug.Log(cell);
                     }

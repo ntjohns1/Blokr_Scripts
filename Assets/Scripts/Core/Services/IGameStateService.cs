@@ -25,7 +25,7 @@ namespace Blokr.Core.Services
         
         // Turn actions
         void SelectPiece(PieceType pieceType);
-        void PlacePiece(List<Vector2Int> positions);
+        void PlacePiece(List<GridPosition> positions);
         void ConfirmMove();
         void CancelMove();
         

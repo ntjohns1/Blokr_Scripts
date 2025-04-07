@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using UnityEngine;
+using Blokr.Core.Models;
 
 namespace Blokr.Core.Services
 {
     public interface IPieceCalculationService
     {
-        List<Vector2Int> CalculateOccupiedPositions(Vector2Int initialPosition, PieceType pieceType, Direction direction, bool isFlipped);
-        List<Vector2Int> CalculateAdjacentPositions(Vector2Int initialPosition, PieceType pieceType, Direction direction, bool isFlipped);
-        List<Vector2Int> CalculatePlayablePositions(List<Vector2Int> adjacentPositions, PieceType pieceType);
-        Vector2Int GetNextPosition(Vector2Int current, Direction direction);
-        Vector2Int GetDiagonalPosition(Vector2Int current, Direction direction);
+        List<GridPosition> CalculateOccupiedPositions(GridPosition initialPosition, PieceType pieceType, Direction direction, bool isFlipped);
+        List<GridPosition> CalculateAdjacentPositions(GridPosition initialPosition, PieceType pieceType, Direction direction, bool isFlipped);
+        List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions, PieceType pieceType);
+        GridPosition GetNextPosition(GridPosition current, Direction direction);
+        GridPosition GetDiagonalPosition(GridPosition current, Direction direction);
     }
 }

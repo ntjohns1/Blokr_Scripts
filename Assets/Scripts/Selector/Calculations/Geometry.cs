@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 // *********************************************************************
 // public class Geometry:
@@ -9,25 +9,25 @@ using UnityEngine;
 // *********************************************************************
 namespace Blokr
 {
-    public class Geometry : MonoBehaviour
+    public class Geometry 
     {
-        static public Vector3 PointFromGrid(Vector2Int gridPoint)
+        static public Vector3 PointFromGrid(GridPosition gridPoint)
         {
             float x = 0.5f + 1.0f * gridPoint.x;
             float z = 0.5f + 1.0f * gridPoint.y;
             return new Vector3(x, 0.0f, z);
         }
 
-        static public Vector2Int GridPoint(int col, int row)
+        static public GridPosition GridPoint(int col, int row)
         {
-            return new Vector2Int(col, row);
+            return new GridPosition(col, row);
         }
 
-        static public Vector2Int GridFromPoint(Vector3 point)
+        static public GridPosition GridFromPoint(Vector3 point)
         {
             int col = Mathf.FloorToInt(point.x);
             int row = Mathf.FloorToInt(point.z);
-            return new Vector2Int(col, row);
+            return new GridPosition(col, row);
         }
     }
 }

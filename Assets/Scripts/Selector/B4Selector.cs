@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Blokr.Core.Models;
+
 
 namespace Blokr
 {
@@ -9,13 +10,13 @@ namespace Blokr
         
         public static int Size { get { return 4; } }
 
-        public override List<Vector2Int> CalculateAdjacentPositions(Vector2Int gridpoint, Direction direction, bool isFlipped)
+        public override List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)
             {
                 return (Direction)(((int)direction + (int)offset) % 4);
             }
-            List<Vector2Int> output = new()
+            List<GridPosition> output = new()
             {
                 GetNext(gridpoint,OffsetAxis(!isFlipped?Direction.Up:Direction.Down))
             };
@@ -44,19 +45,19 @@ namespace Blokr
             return output;
         }
 
-        public override List<Vector2Int> CalculatePlayablePositions(List<Vector2Int> adjacentPositions)
+        public override List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
             return new() { adjacentPositions[2], adjacentPositions[4], adjacentPositions[7], adjacentPositions[9], adjacentPositions[12] };
         }
 
-        public override List<Vector2Int> GetOccupiedGridPositions(Vector2Int baseCell, Direction direction, bool isFlipped)
+        public override List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
         {
-            List<(Vector2Int, int)> cells = new()
+            List<(GridPosition, int)> cells = new()
             {
                 (baseCell, 3),
                 (baseCell, 1)
             };
-            List<Vector2Int> temp = CalculatePositions(baseCell, direction, cells);
+            List<GridPosition> temp = CalculatePositions(baseCell, direction, cells);
             cells.Add(!isFlipped ? (temp[2], 2) : (temp[2], 0));
             return CalculatePositions(baseCell, direction, cells);
         }
