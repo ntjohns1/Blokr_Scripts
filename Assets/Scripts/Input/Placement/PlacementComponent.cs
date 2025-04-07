@@ -1,16 +1,15 @@
-
-using System.Collections.Generic;
-using Blokr.Core.Services;
-using Blokr.UnitySync;
+using UnityEngine;
+using Blokr.Core.Models;
+using Blokr.Highlighter;
 
 namespace Blokr.Input.Selector
 {
     public class SelectorComponent : MonoBehaviour
     {
-        [SerializeField] private PieceType pieceType;
+        [SerializeField] private Piece piece;
         [SerializeField] private Direction initialDirection;
         
-        private IPieceCalculationService _calculationService;
+        private PlacementHighlighter _highlighter;
         private bool _isFlipped;
         private GridPosition _currentPosition;
         private List<GridPosition> _occupiedPositions;
@@ -19,7 +18,7 @@ namespace Blokr.Input.Selector
 
         private void Awake()
         {
-            _calculationService = new PieceCalculationService();
+            _highlighter = GetComponent<PlacementHighlighter>();
             _occupiedPositions = new List<GridPosition>();
             _adjacentPositions = new List<GridPosition>();
             _playablePositions = new List<GridPosition>();
@@ -45,14 +44,14 @@ namespace Blokr.Input.Selector
 
         private void CalculatePositions()
         {
-            _occupiedPositions = _calculationService.CalculateOccupiedPositions(
-                _currentPosition, pieceType, initialDirection, _isFlipped);
+            _occupiedPositions = _highlighter.GetOccupiedGridPositions(
+                _currentPosition, initialDirection, _isFlipped);
                 
-            _adjacentPositions = _calculationService.CalculateAdjacentPositions(
-                _currentPosition, pieceType, initialDirection, _isFlipped);
+            _adjacentPositions = _highlighter.GetAdjacentGridPositions(
+                _currentPosition, initialDirection, _isFlipped);
                 
-            _playablePositions = _calculationService.CalculatePlayablePositions(
-                _adjacentPositions, pieceType);
+            _playablePositions = _highlighter.GetPlayableGridPositions(
+                _adjacentPositions, piece);
 
             // Update visuals through the board component
             var board = FindObjectOfType<BoardComponent>();

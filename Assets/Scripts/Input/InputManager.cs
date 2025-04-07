@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.Tilemaps;
+using Blokr.Core.Models;
+using Blokr.Highlighter;
 
 namespace Blokr
 {
@@ -43,7 +45,7 @@ namespace Blokr
                 Vector3 point = hit.point;
                 Vector2Int gridPoint = Geometry.GridFromPoint(point);
                 // Debug.Log($"Grid Point: {gridPoint}");
-                ISelector selector = tileHighlight.GetComponent<ISelector>();
+                PlacementHighlighter highlighter = tileHighlight.GetComponent<PlacementHighlighter>();
                 List<Vector2Int> occupiedCells = GetOccupiedCellsForType(tileHighlight, gridPoint, piece.PieceDirection, piece.IsFlipped);
                 bool allPositionsInBounds = occupiedCells.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
                 
@@ -69,20 +71,20 @@ namespace Blokr
 
         public List<Vector2Int> GetOccupiedCellsForType(GameObject tileHighlight, Vector2Int gridPoint, Direction direction, bool isFlipped)
         {
-            ISelector selector = tileHighlight.GetComponent<ISelector>();
-            return selector.GetOccupiedGridPositions(gridPoint, direction, isFlipped);
+            PlacementHighlighter highlighter = tileHighlight.GetComponent<PlacementHighlighter>();
+            return highlighter.GetOccupiedGridPositions(gridPoint, direction, isFlipped);
         }
 
         public List<Vector2Int> GetAdjacentCellsForType(GameObject tileHighlight, Vector2Int gridPoint, Direction direction, bool isFlipped)
         {
-            ISelector selector = tileHighlight.GetComponent<ISelector>();
-            return selector.CalculateAdjacentPositions(gridPoint, direction, isFlipped);
+            PlacementHighlighter highlighter = tileHighlight.GetComponent<PlacementHighlighter>();
+            return highlighter.CalculateAdjacentPositions(gridPoint, direction, isFlipped);
         }
 
         public List<Vector2Int> GetPlayableCellsForType(GameObject tileHighlight, List<Vector2Int> adjacentCells)
         {
-            ISelector selector = tileHighlight.GetComponent<ISelector>();
-            return selector.CalculatePlayablePositions(adjacentCells);
+            PlacementHighlighter highlighter = tileHighlight.GetComponent<PlacementHighlighter>();
+            return highlighter.CalculatePlayablePositions(adjacentCells);
         }
 
         public void HandleRotationInput(GameObject tileHighlight, Piece piece)

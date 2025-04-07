@@ -7,13 +7,13 @@ using UnityEngine.Animations;
 
 namespace Blokr
 {
-    public class MoveSelector 
+    public class PiecePlacementState : MonoBehaviour
     {
         // ************************************************************************************
         // Fields
         // ************************************************************************************
 
-        private static MoveSelector instance;
+        private static PiecePlacementState instance;
         
         private InputManager input;
         private GameObject tileHighlight;
@@ -34,7 +34,7 @@ namespace Blokr
         // Properties
         // ************************************************************************************
         
-        public static MoveSelector Instance
+        public static PiecePlacementState Instance
         {
             get { return instance; }
             set { instance = value; }
@@ -166,4 +166,3 @@ namespace Blokr
         // }
     }
 }
-

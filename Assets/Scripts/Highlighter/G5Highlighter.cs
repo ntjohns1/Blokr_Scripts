@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Blokr.Core.Models;
 
 
-namespace Blokr
+namespace Blokr.Highlighter
 {
-    public class G5Highlighter : Selector, ISelector
+    public class G5Highlighter : PlacementHighlighter
     {
 
         public static int Size { get { return 5; } }

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace Blokr
+namespace Blokr.Highlighter
 {
-    public class C5Highlighter : Selector, ISelector
+    public class C5Highlighter : PlacementHighlighter
     {
 
         public static int Size { get { return 5; } }

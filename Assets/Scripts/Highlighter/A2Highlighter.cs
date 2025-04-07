@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Blokr.Core.Models;
 
-namespace Blokr
+namespace Blokr.Highlighter
 {
-    public class A2Highlighter : Selector, ISelector
+    public class A2Highlighter : PlacementHighlighter
     {
         public static int Size { get { return 2; } }
 
