@@ -12,14 +12,15 @@ namespace Blokr.Core.Models
         Red,
 
         /// <summary>
-        /// Blue team pieces (Player 2)
+        /// Green team pieces (Player 2)
+        /// </summary>
+        Green,
+        
+        /// <summary>
+        /// Blue team pieces (Player 3)
         /// </summary>
         Blue,
 
-        /// <summary>
-        /// Green team pieces (Player 3)
-        /// </summary>
-        Green,
 
         /// <summary>
         /// Yellow team pieces (Player 4)

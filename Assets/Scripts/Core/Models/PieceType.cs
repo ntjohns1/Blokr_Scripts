@@ -22,11 +22,11 @@ namespace Blokr.Core.Models
         C4, // Four cells in a zigzag
         C5, // Five cells in a zigzag
 
-        // D Series - T-shaped pieces (4-5 cells)
-        D4, // Four cells in a T shape
-        D5, // Five cells in a T shape
+        // D Series - Square pieces (4-5 cells)
+        D4, // Four cells in a square shape
+        D5, // Five cells in a square shape with one cell on top
 
-        // E Series - Cross-like pieces (4-5 cells)
+        // E Series - T-shaped pieces (4-5 cells)
         E4, // Four cells in a cross-like shape
         E5, // Five cells in a cross-like shape
 
