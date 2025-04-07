@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Blokr.Core.Models;
 
 
 namespace Blokr
 {
-    public class C5Selector : Selector, ISelector
+    public class G5Highlighter : Selector, ISelector
     {
 
         public static int Size { get { return 5; } }
-
+        
         public override List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)
@@ -23,18 +24,18 @@ namespace Blokr
             {
                 Direction.Left,
                 !isFlipped?Direction.Up:Direction.Down,
-                Direction.Left,
-                Direction.Left,
                 !isFlipped?Direction.Up:Direction.Down,
                 !isFlipped?Direction.Up:Direction.Down,
-                Direction.Right,
-                Direction.Right,
+                !isFlipped?Direction.Up:Direction.Down,
                 Direction.Right,
                 Direction.Right,
                 !isFlipped?Direction.Down:Direction.Up,
+                !isFlipped?Direction.Down:Direction.Up,
+                Direction.Right,
                 Direction.Right,
                 !isFlipped?Direction.Down:Direction.Up,
                 !isFlipped?Direction.Down:Direction.Up,
+                Direction.Left,
                 Direction.Left
             };
 
@@ -48,20 +49,20 @@ namespace Blokr
 
         public override List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
-            return new() { adjacentPositions[1], adjacentPositions[4], adjacentPositions[6], adjacentPositions[10], adjacentPositions[12], adjacentPositions[14] };
+            return new() {adjacentPositions[1], adjacentPositions[5], adjacentPositions[7], adjacentPositions[11], adjacentPositions[13]};
         }
 
         public override List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
         {
             List<(GridPosition, int)> cells = new()
             {
-                !isFlipped ? (baseCell, 0) : (baseCell, 2),
                 (baseCell, 1)
             };
             List<GridPosition> temp = CalculatePositions(baseCell, direction, cells);
-            cells.Add((temp[1], 3));
+            cells.Add((temp[1], 1));
+            cells.Add(!isFlipped ? (baseCell, 0) : (baseCell, 2));
             temp = CalculatePositions(baseCell, direction, cells);
-            cells.Add((temp[3], 3));
+            cells.Add(!isFlipped ? (temp[3], 0) : (temp[3], 2));
             return CalculatePositions(baseCell, direction, cells);
         }
     }

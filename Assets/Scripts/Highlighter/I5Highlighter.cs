@@ -5,10 +5,11 @@ using Blokr.Core.Models;
 
 namespace Blokr
 {
-    public class B5Selector : Selector, ISelector
+    public class I5Highlighter : Selector, ISelector
     {
-        public static int Size { get { return 5; } }
 
+        public static int Size { get { return 5; } }
+        
         public override List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)
@@ -17,25 +18,25 @@ namespace Blokr
             }
             List<GridPosition> output = new()
             {
-                GetNext(gridpoint,OffsetAxis(!isFlipped?Direction.Up:Direction.Down))
+                GetNext(gridpoint,OffsetAxis(!isFlipped?Direction.Down:Direction.Up))
             };
             Direction[] refDirections =
             {
                 Direction.Left,
                 Direction.Left,
+                !isFlipped?Direction.Up:Direction.Down,
+                !isFlipped?Direction.Up:Direction.Down,
+                Direction.Right,
+                !isFlipped?Direction.Up:Direction.Down,
+                Direction.Right,
+                Direction.Right,
+                !isFlipped?Direction.Down:Direction.Up,
+                Direction.Right,
+                Direction.Right,
+                !isFlipped?Direction.Down:Direction.Up,
+                !isFlipped?Direction.Down:Direction.Up,
                 Direction.Left,
-                !isFlipped?Direction.Down:Direction.Up,
-                !isFlipped?Direction.Down:Direction.Up,
-                Direction.Right,
-                Direction.Right,
-                Direction.Right,
-                !isFlipped?Direction.Down:Direction.Up,
-                Direction.Right,
-                Direction.Right,
-                !isFlipped?Direction.Up:Direction.Down,
-                !isFlipped?Direction.Up:Direction.Down,
-                !isFlipped?Direction.Up:Direction.Down,
-                Direction.Left
+                Direction.Left,
             };
 
             for (int i = 0; i < refDirections.Length; i++)
@@ -48,20 +49,20 @@ namespace Blokr
 
         public override List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
-            return new() { adjacentPositions[3], adjacentPositions[5], adjacentPositions[9], adjacentPositions[11], adjacentPositions[14] };
+            return new() { adjacentPositions[2], adjacentPositions[4], adjacentPositions[6], adjacentPositions[8], adjacentPositions[11], adjacentPositions[13] };
         }
 
         public override List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
         {
+
             List<(GridPosition, int)> cells = new()
             {
-                (baseCell, 3)
+                (baseCell, 1),
+                (baseCell, 3),
+                !isFlipped ? (baseCell, 0) : (baseCell, 2)
             };
             List<GridPosition> temp = CalculatePositions(baseCell, direction, cells);
-            cells.Add((temp[1], 3));
-            cells.Add((baseCell, 1));
-            temp = CalculatePositions(baseCell, direction, cells);
-            cells.Add(!isFlipped ? (temp[3], 2) : (temp[3], 0));
+            cells.Add((temp[1], 1));
             return CalculatePositions(baseCell, direction, cells);
         }
     }

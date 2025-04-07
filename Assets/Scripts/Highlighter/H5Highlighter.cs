@@ -5,11 +5,11 @@ using Blokr.Core.Models;
 
 namespace Blokr
 {
-    public class C4Selector : Selector, ISelector
+    public class H5Highlighter : Selector, ISelector
     {
 
-        public static int Size { get { return 4; } }
-
+        public static int Size { get { return 5; } }
+        
         public override List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)
@@ -34,6 +34,8 @@ namespace Blokr
                 Direction.Right,
                 !isFlipped?Direction.Down:Direction.Up,
                 !isFlipped?Direction.Down:Direction.Up,
+                !isFlipped?Direction.Down:Direction.Up,
+                Direction.Left,
                 Direction.Left
             };
 
@@ -47,7 +49,7 @@ namespace Blokr
 
         public override List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
-            return new() { adjacentPositions[1], adjacentPositions[3], adjacentPositions[5], adjacentPositions[8], adjacentPositions[10], adjacentPositions[12] };
+            return new() { adjacentPositions[1], adjacentPositions[3], adjacentPositions[5], adjacentPositions[8], adjacentPositions[10], adjacentPositions[13], adjacentPositions[15] };
         }
 
         public override List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
@@ -59,6 +61,7 @@ namespace Blokr
             };
             List<GridPosition> temp = CalculatePositions(baseCell, direction, cells);
             cells.Add((temp[1], 3));
+            cells.Add(!isFlipped ? (temp[2], 2) : (temp[2], 0));
             return CalculatePositions(baseCell, direction, cells);
         }
     }

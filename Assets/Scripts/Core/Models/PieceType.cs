@@ -27,8 +27,8 @@ namespace Blokr.Core.Models
         D5, // Five cells in a square shape with one cell on top
 
         // E Series - T-shaped pieces (4-5 cells)
-        E4, // Four cells in a cross-like shape
-        E5, // Five cells in a cross-like shape
+        E4, // Four cells in a T shape
+        E5, // Five cells in a T shape
 
         // F-L Series - Complex 5-cell pieces
         F5, // Five cells in F configuration

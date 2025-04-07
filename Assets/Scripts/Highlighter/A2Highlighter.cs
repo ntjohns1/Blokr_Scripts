@@ -1,15 +1,12 @@
-using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-
 using Blokr.Core.Models;
 
 namespace Blokr
 {
-    public class A1Selector : Selector, ISelector
+    public class A2Highlighter : Selector, ISelector
     {
-        public static int Size { get { return 1; } }
+        public static int Size { get { return 2; } }
 
         public override List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
@@ -19,18 +16,19 @@ namespace Blokr
             }
             List<GridPosition> output = new()
             {
-                GetNext(gridpoint,OffsetAxis(!isFlipped?Direction.Up:Direction.Down))
+                GetNext(gridpoint,OffsetAxis(Direction.Up))
             };
             Direction[] refDirections =
             {
-                Direction.Right,
-                !isFlipped?Direction.Down:Direction.Up,
-                !isFlipped?Direction.Down:Direction.Up,
-                Direction.Left,
-                Direction.Left,
-                !isFlipped?Direction.Up:Direction.Down,
-                !isFlipped?Direction.Up:Direction.Down,
-                Direction.Right
+                !isFlipped?Direction.Right:Direction.Left,
+                !isFlipped?Direction.Right:Direction.Left,
+                Direction.Down,
+                Direction.Down,
+                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Left:Direction.Right,
+                !isFlipped?Direction.Left:Direction.Right,
+                Direction.Up,
+                Direction.Up
             };
 
             for (int i = 0; i < refDirections.Length; i++)
@@ -43,13 +41,13 @@ namespace Blokr
 
         public override List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
-            return new() { adjacentPositions[1], adjacentPositions[3], adjacentPositions[5], adjacentPositions[7] };
+            return new() { adjacentPositions[2], adjacentPositions[4], adjacentPositions[7], adjacentPositions[9] };
         }
 
         public override List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
         {
-            List<GridPosition> cell = new() { baseCell };
-            return cell;
+            List<(GridPosition, int)> cells = new() { !isFlipped ? (baseCell, 1) : (baseCell, 3) };
+            return CalculatePositions(baseCell, direction, cells);
         }
     }
 }

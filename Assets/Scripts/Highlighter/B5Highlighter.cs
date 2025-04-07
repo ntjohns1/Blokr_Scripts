@@ -5,11 +5,10 @@ using Blokr.Core.Models;
 
 namespace Blokr
 {
-    public class J5Selector : Selector, ISelector
+    public class B5Highlighter : Selector, ISelector
     {
-
         public static int Size { get { return 5; } }
-        
+
         public override List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
             Direction OffsetAxis(Direction offset)
@@ -22,12 +21,12 @@ namespace Blokr
             };
             Direction[] refDirections =
             {
-                !isFlipped?Direction.Up:Direction.Down,
                 Direction.Left,
                 Direction.Left,
+                Direction.Left,
                 !isFlipped?Direction.Down:Direction.Up,
                 !isFlipped?Direction.Down:Direction.Up,
-                !isFlipped?Direction.Down:Direction.Up,
+                Direction.Right,
                 Direction.Right,
                 Direction.Right,
                 !isFlipped?Direction.Down:Direction.Up,
@@ -49,19 +48,20 @@ namespace Blokr
 
         public override List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
-            return new() { adjacentPositions[1], adjacentPositions[3], adjacentPositions[6], adjacentPositions[9], adjacentPositions[11], adjacentPositions[14] };
+            return new() { adjacentPositions[3], adjacentPositions[5], adjacentPositions[9], adjacentPositions[11], adjacentPositions[14] };
         }
 
         public override List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
         {
             List<(GridPosition, int)> cells = new()
             {
-                (baseCell, 3),
-                (baseCell, 1)
+                (baseCell, 3)
             };
             List<GridPosition> temp = CalculatePositions(baseCell, direction, cells);
-            cells.Add(!isFlipped ? (temp[2], 2) : (temp[2], 0));
-            cells.Add(!isFlipped ? (temp[1], 0) : (temp[1], 2));
+            cells.Add((temp[1], 3));
+            cells.Add((baseCell, 1));
+            temp = CalculatePositions(baseCell, direction, cells);
+            cells.Add(!isFlipped ? (temp[3], 2) : (temp[3], 0));
             return CalculatePositions(baseCell, direction, cells);
         }
     }

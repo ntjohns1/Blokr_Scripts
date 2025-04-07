@@ -5,7 +5,7 @@ using Blokr.Core.Models;
 
 namespace Blokr
 {
-    public class B3Selector : Selector, ISelector
+    public class B3Highlighter : Selector, ISelector
     {
 
         public static int Size { get { return 3; } }
