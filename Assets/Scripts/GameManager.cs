@@ -14,7 +14,7 @@ namespace Blokr
 
         private static GameManager instance;
 
-// TODO: No need to Serialize
+        // TODO: No need to Serialize
         [SerializeField]
         private Board board;
 
@@ -137,33 +137,29 @@ namespace Blokr
         public void SelectPiece(GameObject piece)
         {
             selectedPiece = piece;
-
+            Debug.Log($"Selected piece: {selectedPiece.name}");
             Piece pieceComponent = piece.GetComponent<Piece>();
             MoveSelector moveSelector = board.GetComponent<MoveSelector>();
             bool belongsToCurrentPlayer = Board.Instance.BelongsToCurrentPlayer(currentPlayer, pieceComponent.PieceColor);
-            GameObject newHighlightPrefab;
-            if (belongsToCurrentPlayer)
-            {
-                newHighlightPrefab = SelectorPool.SharedInstance.GetSelector(pieceComponent.PieceType);
-            }
-            else
-            {
-                return;
-            }
+
+            if (!belongsToCurrentPlayer) return;
+
+            GameObject newHighlightPrefab = SelectorPool.SharedInstance.GetSelector(pieceComponent.PieceType);
 
             if (previousHighlightPrefab != null)
             {
                 previousHighlightPrefab.SetActive(false);
                 previousHighlightPrefab.transform.SetParent(SelectorPool.SharedInstance.transform);
-
             }
 
             previousHighlightPrefab = newHighlightPrefab;
-            previousHighlightPrefab.transform.SetParent(piece.transform);
 
-            // workaround for incorrectly sized prefab
-            Vector3 adjustedScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
-            previousHighlightPrefab.transform.localScale = adjustedScale;
+            // Remove or skip this line to prevent parenting to the piece
+            // previousHighlightPrefab.transform.SetParent(piece.transform);
+
+            // Ensure it's active and scaled
+            previousHighlightPrefab.SetActive(true);
+            previousHighlightPrefab.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
 
             moveSelector.SetHighlight(previousHighlightPrefab);
         }

@@ -88,6 +88,7 @@ namespace Blokr
 
             return cells;
         }
+        
     
         public abstract List<Vector2Int> GetOccupiedGridPositions(Vector2Int gridPoint, Direction direction, bool isFlipped);
 

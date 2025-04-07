@@ -42,9 +42,12 @@ namespace Blokr
             {
                 Vector3 point = hit.point;
                 Vector2Int gridPoint = Geometry.GridFromPoint(point);
+                // Debug.Log($"Grid Point: {gridPoint}");
                 ISelector selector = tileHighlight.GetComponent<ISelector>();
                 List<Vector2Int> occupiedCells = GetOccupiedCellsForType(tileHighlight, gridPoint, piece.PieceDirection, piece.IsFlipped);
                 bool allPositionsInBounds = occupiedCells.All(pos => pos.x >= 0 && pos.x <= 19 && pos.y >= 0 && pos.y <= 19);
+                
+                // Todo: This method call is causing a major bug. tileHighlight is only activating on lower right corner of the board
                 bool isValidMove = Board.Instance.IsValidMove(occupiedCells, piece.PieceColor);
                 if (allPositionsInBounds && isValidMove)
                 {
@@ -88,7 +91,7 @@ namespace Blokr
             int dirIndex = initDirection;
 
 
-            if (Input.GetKeyUp("e"))
+            if (Input.GetKeyUp(KeyCode.E))
             {
                 if (!piece.IsFlipped)
                 {
@@ -109,7 +112,7 @@ namespace Blokr
                 // dirIndex = dirIndex < 3 ? dirIndex++ : 0;
                 piece.PieceDirection = (Direction)dirIndex;
             }
-            if (Input.GetKeyUp("q"))
+            if (Input.GetKeyUp(KeyCode.Q))
             {
                 if (!piece.IsFlipped)
                 {
@@ -134,7 +137,7 @@ namespace Blokr
 
         public void HandleFlipInput(GameObject tileHighlight, Piece piece)
         {
-            if (Input.GetKeyUp("f"))
+            if (Input.GetKeyUp(KeyCode.F))
             {
                 piece.IsFlipped = !piece.IsFlipped;
                 ApplyFlipTransformation(tileHighlight, piece);

@@ -33,7 +33,7 @@ namespace Blokr
         void Start()
         {
             Dictionary<string, GameObject>[] dictionaries = { redPieces, greenPieces, bluePieces, yellowPieces };
-
+            Debug.Log("PiecePool Start");
             materials = GameManager.Instance.PieceMaterials;
             pieces = GameManager.Instance.BasePieces;
             players = GameManager.Instance.Players;
@@ -55,7 +55,8 @@ namespace Blokr
                     {
                         cell.material = materials[i];
                     }
-                    obj.name = $"{pieceType}_{pieceComponent.PieceColor}";
+                    // Naming the GameObject for easier identification
+                    obj.name = $"{pieceComponent.PieceColor}_{pieceType}";
                     dictionaries[i].Add(pieceType.ToString(), obj);
                 }
             }

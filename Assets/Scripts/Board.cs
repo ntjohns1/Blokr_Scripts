@@ -130,38 +130,7 @@ namespace Blokr
 
 
 
-        // public bool IsPlayableCorner(List<Vector2Int> adjacentCells)  // pass in AdjacentPositions from MoveSelector
-        // {
-        //     bool[,] playablePositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().PlayablePositions;
-        //     foreach (Vector2Int cell in adjacentCells)
-        //     {
 
-        //         int x = cell.x, y = cell.y;
-        //         if (playablePositions[x, y])
-        //         {
-        //             return true;
-        //         }
-
-        //     }
-        //     return false;
-        // }
-
-        // public bool IsNotAdjacent(List<Vector2Int> adjacentCells)
-        // {
-        //     bool[,] playablePositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().PlayablePositions;
-        //     bool[,] adjacentPositions = GameManager.Instance.CurrentPlayer.GetComponent<Player>().AdjacentPositions;
-        //     foreach (Vector2Int cell in adjacentCells)
-        //     {
-
-        //         int x = cell.x, y = cell.y;
-        //         if (adjacentPositions[x,y] && !playablePositions[x, y])
-        //         {
-        //             return false;
-        //         }
-
-        //     }
-        //     return true;
-        // }
 
         public bool BelongsToCurrentPlayer(GameObject playerObj, PieceColor color)
         {
