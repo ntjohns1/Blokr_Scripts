@@ -1,0 +1,17 @@
+{
+    "name": "Blokr.UnitySync",
+    "rootNamespace": "Blokr.UnitySync",
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "Blokr.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
