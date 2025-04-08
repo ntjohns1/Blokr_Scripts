@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
+using Blokr.Highlighter;
+
 
 namespace Blokr.UnitySync
 {
@@ -14,14 +16,17 @@ namespace Blokr.UnitySync
         private PieceHighlightComponent _highlightComponent;
         private IPieceCalculationService _pieceCalculationService;
         private IGameStateService _gameStateService;
+        private IBoardService _boardService;
 
         public void Initialize(Camera mainCamera, PieceHighlightComponent highlightComponent, 
-            IPieceCalculationService pieceCalculationService, IGameStateService gameStateService)
+            IPieceCalculationService pieceCalculationService, IGameStateService gameStateService,
+            IBoardService boardService)
         {
             _mainCamera = mainCamera;
             _highlightComponent = highlightComponent;
             _pieceCalculationService = pieceCalculationService;
             _gameStateService = gameStateService;
+            _boardService = boardService;
         }
 
         public bool ValidateMousePosition(Piece piece)
@@ -53,7 +58,7 @@ namespace Blokr.UnitySync
                 pos.X >= 0 && pos.X <= 19 && pos.Y >= 0 && pos.Y <= 19);
 
             return allPositionsInBounds && 
-                   _gameStateService.BoardService.IsValidMove(positions, color);
+                   _boardService.IsValidMove(positions, color);
         }
     }
 }
