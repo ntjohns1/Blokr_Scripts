@@ -1,5 +1,6 @@
 using UnityEngine;
-using Blokr.Input.Selector;
+using Blokr.Core.Models;
+using Blokr.Core.Services;
 using Blokr.UnitySync;
 
 namespace Blokr.Input
@@ -10,13 +11,29 @@ namespace Blokr.Input
         [SerializeField] private LayerMask boardLayer;
         [SerializeField] private LayerMask pieceLayer;
         
-        private SelectorComponent _activeSelector;
-        private Vector3 _lastMousePosition;
+        private Piece _activePiece;
+        private PieceHighlightComponent _highlightComponent;
+        private PlacementValidationComponent _validationComponent;
+        private IPieceTransformService _transformService;
+
+        private void Start()
+        {
+            _transformService = new PieceTransformService();
+            _validationComponent = GetComponent<PlacementValidationComponent>();
+            if (_validationComponent == null)
+            {
+                _validationComponent = gameObject.AddComponent<PlacementValidationComponent>();
+            }
+        }
 
         private void Update()
         {
             HandleMouseInput();
             HandleKeyboardInput();
+            if (_activePiece != null)
+            {
+                _validationComponent.ValidateMousePosition(_activePiece);
+            }
         }
 
         private void HandleMouseInput()
@@ -33,22 +50,22 @@ namespace Blokr.Input
 
         private void HandleKeyboardInput()
         {
-            if (_activeSelector == null) return;
+            if (_activePiece == null) return;
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyUp(KeyCode.E))
             {
-                _activeSelector.Rotate();
+                _transformService.RotateClockwise(_activePiece);
+                _highlightComponent.ApplyRotation(_activePiece.IsFlipped, true);
             }
-            else if (Input.GetKeyDown(KeyCode.F))
+            else if (Input.GetKeyUp(KeyCode.Q))
             {
-                _activeSelector.Flip();
+                _transformService.RotateCounterClockwise(_activePiece);
+                _highlightComponent.ApplyRotation(_activePiece.IsFlipped, false);
             }
-            else if (Input.GetKeyDown(KeyCode.Return))
+            else if (Input.GetKeyUp(KeyCode.F))
             {
-                if (_activeSelector.TryPlacePiece())
-                {
-                    _activeSelector = null;
-                }
+                _transformService.Flip(_activePiece);
+                _highlightComponent.ApplyFlipTransformation(_activePiece.PieceDirection, _activePiece.IsFlipped);
             }
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -64,19 +81,25 @@ namespace Blokr.Input
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, pieceLayer))
             {
                 // Clicked on a piece
-                var selector = hit.collider.GetComponent<SelectorComponent>();
-                if (selector != null)
+                var pieceComponent = hit.collider.GetComponent<PieceComponent>();
+                if (pieceComponent != null)
                 {
-                    _activeSelector = selector;
+                    _activePiece = new Piece { PieceType = pieceComponent.PieceType };
+                    _highlightComponent = hit.collider.GetComponent<PieceHighlightComponent>();
+                    if (_highlightComponent == null)
+                    {
+                        _highlightComponent = hit.collider.gameObject.AddComponent<PieceHighlightComponent>();
+                        _highlightComponent.Initialize(_activePiece.PieceType);
+                    }
                 }
             }
-            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, boardLayer))
+            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, boardLayer) && _activePiece != null)
             {
-                // Clicked on the board
-                if (_activeSelector != null)
+                // Try to place piece
+                if (_validationComponent.ValidateMousePosition(_activePiece))
                 {
-                    Vector2Int gridPosition = GetGridPosition(hit.point);
-                    _activeSelector.UpdatePosition(gridPosition);
+                    // Place piece logic here
+                    CancelSelection();
                 }
             }
         }
@@ -88,26 +111,12 @@ namespace Blokr.Input
 
         private void CancelSelection()
         {
-            if (_activeSelector != null)
+            if (_highlightComponent != null)
             {
-                _activeSelector = null;
-                // Clear any highlights or preview
-                var board = FindObjectOfType<BoardComponent>();
-                if (board != null)
-                {
-                    // Clear highlights
-                }
+                _highlightComponent.UpdateVisibility(false);
+                _highlightComponent = null;
             }
-        }
-
-        private Vector2Int GetGridPosition(Vector3 worldPosition)
-        {
-            // Convert world position to grid position
-            // This will depend on your board setup
-            return new Vector2Int(
-                Mathf.RoundToInt(worldPosition.x),
-                Mathf.RoundToInt(worldPosition.z)
-            );
+            _activePiece = null;
         }
     }
 }
