@@ -1,11 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Blokr.Core.Models;
-using Blokr.Highlighter;using Blokr.Core.Models;
 using Blokr.Core.Services;
                                                                             
 namespace Blokr.Highlighter
-.Highlighter
 {
     public class A1Highlighter : PlacementHighlighter
     {

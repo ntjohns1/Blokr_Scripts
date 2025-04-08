@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
-using Blokr.Highlighter;
 
 namespace Blokr.UnitySync
 {

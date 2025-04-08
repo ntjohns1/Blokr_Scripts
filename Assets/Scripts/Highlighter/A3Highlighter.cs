@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Blokr.Core.Models;using Blokr.Core.Models;
+using Blokr.Core.Models;
 using Blokr.Core.Services;
-                                                                            
-namespace Blokr.Highlighter
 
+namespace Blokr.Highlighter
 {
     public class A3Highlighter : PlacementHighlighter
     {
