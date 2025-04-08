@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using Blokr.Core.Models;
+using Blokr.Core.Services;
 
 namespace Blokr.Highlighter
 {

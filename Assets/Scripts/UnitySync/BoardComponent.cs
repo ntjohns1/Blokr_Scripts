@@ -70,7 +70,7 @@ namespace Blokr.UnitySync
 
         public void ClearHighlight(GridPosition position)
         {
-            if (!_boardService.OccupiedSpaces[position.x, position.y])
+            if (!_boardService.OccupiedSpaces[position.X, position.Y])
             {
                 boardTilemap.SetTile(position.ToVector3Int(), null);
             }
@@ -81,7 +81,7 @@ namespace Blokr.UnitySync
             foreach (var pos in positions)
             {
                 if (_boardService.IsValidMove(new List<GridPosition> { pos }, 
-                    GameStateComponent.Instance.GetComponent<GameStateComponent>()._gameStateService.CurrentPlayer.Color))
+                    GameStateComponent.Instance.GameStateService.CurrentPlayer.Color))
                 {
                     HighlightCell(pos);
                 }

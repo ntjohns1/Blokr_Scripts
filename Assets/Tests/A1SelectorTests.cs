@@ -1,34 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEngine;
 using Blokr.Core.Models;
-using Blokr.Selector;
+using Blokr.Highlighter;
 
 // *********************************************************************
-// A1Selector Tests
+// A1Highlighter Tests
 // *********************************************************************
 namespace Tests
 {
-    public class A1SelectorTests
+    public class A1HighlighterTests
     {
 
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithUpDirection_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithUpDirection_ReturnsCorrectPositions()
         {
 
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new(3, 3);
             Direction direction = Direction.Up;
             bool isFlipped = false;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
 
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(3, 4), result[0]);
             Assert.AreEqual(new GridPosition(4, 4), result[1]);
@@ -41,27 +42,27 @@ namespace Tests
 
         }
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithUpDirectionAndFlipped_ReturnsCorrectPositions()
         {
 
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new GridPosition(3, 3);
             Direction direction = Direction.Up;
             bool isFlipped = true;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
             // foreach (GridPosition item in result)
             // {
-            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            //     Debug.Log($"[x:{item.X}, y:{item.Y}]");
             // }
 
             Assert.AreEqual(new GridPosition(3, 3), result[0]);
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(3, 2), result[0]);
             Assert.AreEqual(new GridPosition(4, 2), result[1]);
@@ -75,27 +76,27 @@ namespace Tests
         }
 
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithRightDirection_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithRightDirection_ReturnsCorrectPositions()
         {
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new GridPosition(3, 3);
             Direction direction = Direction.Right;
             bool isFlipped = false;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
             // foreach (GridPosition item in result)
             // {
-            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            //     Debug.Log($"[x:{item.X}, y:{item.Y}]");
             // }
 
             Assert.AreEqual(new GridPosition(3, 3), result[0]);
 
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(4, 3), result[0]);
             Assert.AreEqual(new GridPosition(4, 2), result[1]);
@@ -108,27 +109,27 @@ namespace Tests
         }
 
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithRightDirectionAndFlipped_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithRightDirectionAndFlipped_ReturnsCorrectPositions()
         {
 
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new GridPosition(3, 3);
             Direction direction = Direction.Right;
             bool isFlipped = true;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
             // foreach (GridPosition item in result)
             // {
-            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            //     Debug.Log($"[x:{item.X}, y:{item.Y}]");
             // }
 
             Assert.AreEqual(new GridPosition(3, 3), result[0]);
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(2, 3), result[0]);
             Assert.AreEqual(new GridPosition(2, 2), result[1]);
@@ -141,26 +142,26 @@ namespace Tests
         }
 
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithDownDirection_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithDownDirection_ReturnsCorrectPositions()
         {
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new GridPosition(3, 3);
             Direction direction = Direction.Down;
             bool isFlipped = false;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
             // foreach (GridPosition item in result)
             // {
-            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            //     Debug.Log($"[x:{item.X}, y:{item.Y}]");
             // }
 
             Assert.AreEqual(new GridPosition(3, 3), result[0]);
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(3, 2), result[0]);
             Assert.AreEqual(new GridPosition(2, 2), result[1]);
@@ -173,26 +174,26 @@ namespace Tests
         }
 
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithDownDirectionAndFlipped_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithDownDirectionAndFlipped_ReturnsCorrectPositions()
         {
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new GridPosition(3, 3);
             Direction direction = Direction.Down;
             bool isFlipped = true;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
             // foreach (GridPosition item in result)
             // {
-            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            //     Debug.Log($"[x:{item.X}, y:{item.Y}]");
             // }
 
             Assert.AreEqual(new GridPosition(3, 3), result[0]);
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(3, 4), result[0]);
             Assert.AreEqual(new GridPosition(2, 4), result[1]);
@@ -205,26 +206,26 @@ namespace Tests
         }
 
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithLeftDirection_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithLeftDirection_ReturnsCorrectPositions()
         {
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new GridPosition(3, 3);
             Direction direction = Direction.Left;
             bool isFlipped = false;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
             // foreach (GridPosition item in result)
             // {
-            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            //     Debug.Log($"[x:{item.X}, y:{item.Y}]");
             // }
 
             Assert.AreEqual(new GridPosition(3, 3), result[0]);
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(2, 3), result[0]);
             Assert.AreEqual(new GridPosition(2, 4), result[1]);
@@ -237,26 +238,26 @@ namespace Tests
         }
 
         [Test]
-        public void A1Selector_GetOccupiedGridPositions_WithLeftDirectionAndFlipped_ReturnsCorrectPositions()
+        public void A1Highlighter_GetOccupiedGridPositions_WithLeftDirectionAndFlipped_ReturnsCorrectPositions()
         {
-            A1Selector selector = new A1Selector();
+            A1Highlighter highlighter = new A1Highlighter();
             GridPosition cellA = new GridPosition(3, 3);
             Direction direction = Direction.Left;
             bool isFlipped = true;
 
-            List<GridPosition> result = selector.GetOccupiedGridPositions(cellA, direction, isFlipped);
+            List<GridPosition> result = highlighter.GetOccupiedGridPositions(cellA, direction, isFlipped);
 
             // foreach (GridPosition item in result)
             // {
-            //     Debug.Log($"[x:{item.x}, y:{item.y}]");
+            //     Debug.Log($"[x:{item.X}, y:{item.Y}]");
             // }
 
             Assert.AreEqual(new GridPosition(3, 3), result[0]);
 
-            result = selector.CalculateAdjacentPositions(cellA, direction, isFlipped);
+            result = highlighter.CalculateAdjacentPositions(cellA, direction, isFlipped);
             foreach (GridPosition item in result)
             {
-                Debug.Log($"[x:{item.x}, y:{item.y}]");
+                Debug.Log($"[x:{item.X}, y:{item.Y}]");
             }
             Assert.AreEqual(new GridPosition(4, 3), result[0]);
             Assert.AreEqual(new GridPosition(4, 4), result[1]);

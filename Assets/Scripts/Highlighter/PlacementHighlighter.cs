@@ -1,7 +1,9 @@
 using System.Collections.Generic;
-using Blokr.Core.Models;
-
+using Blokr.Core.Models;using Blokr.Core.Models;
+using Blokr.Core.Services;
+                                                                            
 namespace Blokr.Highlighter
+
 {
     public delegate List<GridPosition> CalculatePositions(GridPosition initialCell, Direction direction, List<(GridPosition, int)> positions);
 
@@ -11,10 +13,10 @@ namespace Blokr.Highlighter
         {
             return direction switch
             {
-                Direction.Up => new GridPosition(current.x, current.y + 1),
-                Direction.Right => new GridPosition(current.x + 1, current.y),
-                Direction.Down => new GridPosition(current.x, current.y - 1),
-                Direction.Left => new GridPosition(current.x - 1, current.y),
+                Direction.Up => new GridPosition(current.X, current.Y + 1),
+                Direction.Right => new GridPosition(current.X + 1, current.Y),
+                Direction.Down => new GridPosition(current.X, current.Y - 1),
+                Direction.Left => new GridPosition(current.X - 1, current.Y),
                 _ => current
             };
         }
@@ -30,7 +32,7 @@ namespace Blokr.Highlighter
                 {
                     current = GetNext(current, direction);
                 }
-                output.Add(new GridPosition(current.x + offset.x, current.y + offset.y));
+                output.Add(new GridPosition(current.X + offset.X, current.Y + offset.Y));
                 current = initialCell;
             }
 

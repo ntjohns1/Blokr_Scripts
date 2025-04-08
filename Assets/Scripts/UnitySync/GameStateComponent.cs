@@ -16,6 +16,7 @@ namespace Blokr.UnitySync
 
         public static GameStateComponent Instance { get; private set; }
         public IBoardService BoardService => _boardService;
+        public IGameStateService GameStateService => _gameStateService;
 
         private void Awake()
         {

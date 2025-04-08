@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Blokr.Core.Models;
+using Blokr.Core.Services;using Blokr.Core.Models;
 using Blokr.Core.Services;
-
+                                                                            
 namespace Blokr.Highlighter
+
 {
     public class K5Highlighter : PlacementHighlighter
     {

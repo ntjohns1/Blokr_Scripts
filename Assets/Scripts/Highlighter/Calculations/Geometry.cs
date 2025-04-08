@@ -14,8 +14,8 @@ namespace Blokr
     {
         static public Vector3 PointFromGrid(GridPosition gridPoint)
         {
-            float x = 0.5f + 1.0f * gridPoint.x;
-            float z = 0.5f + 1.0f * gridPoint.y;
+            float x = 0.5f + 1.0f * gridPoint.X;
+            float z = 0.5f + 1.0f * gridPoint.Y;
             return new Vector3(x, 0.0f, z);
         }
 
