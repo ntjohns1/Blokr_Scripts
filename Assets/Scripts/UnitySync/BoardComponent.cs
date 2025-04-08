@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Blokr.Core.Services;
+using Blokr.Core.Models;
 using UnityEngine.Tilemaps;
 
 namespace Blokr.UnitySync
@@ -37,7 +38,7 @@ namespace Blokr.UnitySync
                 {
                     if (_boardService.OccupiedSpaces[x, y])
                     {
-                        SetTileOccupied(new Vector2Int(x, y));
+                        SetTileOccupied(new GridPosition(x, y));
                     }
                 }
             }
@@ -49,7 +50,7 @@ namespace Blokr.UnitySync
             }
         }
 
-        private void HandlePiecePlaced(List<Vector2Int> positions)
+        private void HandlePiecePlaced(List<GridPosition> positions)
         {
             foreach (var pos in positions)
             {
@@ -57,29 +58,29 @@ namespace Blokr.UnitySync
             }
         }
 
-        public void SetTileOccupied(Vector2Int position)
+        public void SetTileOccupied(GridPosition position)
         {
-            boardTilemap.SetTile(new Vector3Int(position.x, position.y, 0), occupiedTile);
+            boardTilemap.SetTile(position.ToVector3Int(), occupiedTile);
         }
 
-        public void HighlightCell(Vector2Int position)
+        public void HighlightCell(GridPosition position)
         {
-            boardTilemap.SetTile(new Vector3Int(position.x, position.y, 0), highlightTile);
+            boardTilemap.SetTile(position.ToVector3Int(), highlightTile);
         }
 
-        public void ClearHighlight(Vector2Int position)
+        public void ClearHighlight(GridPosition position)
         {
             if (!_boardService.OccupiedSpaces[position.x, position.y])
             {
-                boardTilemap.SetTile(new Vector3Int(position.x, position.y, 0), null);
+                boardTilemap.SetTile(position.ToVector3Int(), null);
             }
         }
 
-        public void HighlightValidMoves(List<Vector2Int> positions)
+        public void HighlightValidMoves(List<GridPosition> positions)
         {
             foreach (var pos in positions)
             {
-                if (_boardService.IsValidMove(new List<Vector2Int> { pos }, 
+                if (_boardService.IsValidMove(new List<GridPosition> { pos }, 
                     GameStateComponent.Instance.GetComponent<GameStateComponent>()._gameStateService.CurrentPlayer.Color))
                 {
                     HighlightCell(pos);

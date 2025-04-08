@@ -104,10 +104,10 @@ namespace Blokr.UnitySync
 
         public void PlacePiece(List<Vector2Int> positions)
         {
-            if (_boardService.IsValidMove(positions, _gameStateService.CurrentPlayer.Color))
+            if (_boardService.IsValidMove(positions.ToGridPosition(), _gameStateService.CurrentPlayer.Color))
             {
-                _gameStateService.PlacePiece(positions);
-                _boardService.PlacePiece(positions);
+                _gameStateService.PlacePiece(positions.ToGridPosition());
+                _boardService.PlacePiece(positions.ToGridPosition());
                 moveConfirmUI.SetActive(true);
             }
         }

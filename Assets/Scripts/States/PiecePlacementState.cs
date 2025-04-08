@@ -1,8 +1,11 @@
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Blokr.Core.Models;
+using Blokr.Core.Services;
+using Blokr.Highlighter;
 using UnityEngine.Animations;
 
 namespace Blokr
