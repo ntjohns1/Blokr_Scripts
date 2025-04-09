@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
 using Blokr.Input;
+using Blokr.UnitySync;
 using UnityEngine;
 
 namespace Blokr.States
@@ -104,7 +105,7 @@ namespace Blokr.States
                 
                 placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
                 placedPiece.transform.SetPositionAndRotation(
-                    Geometry.PointFromGrid(occupiedCells[0]), 
+                    GridGeometry.PointFromGrid(occupiedCells[0]), 
                     tileHighlight.transform.rotation);
                 placedPiece.SetActive(true);
                 piece.gameObject.SetActive(false);
@@ -154,7 +155,7 @@ namespace Blokr.States
         {
             if (piece == null || tileHighlight == null) return;
 
-            GridPosition position = Geometry.GridFromPoint(tileHighlight.transform.position);
+            GridPosition position = GridGeometry.GridFromPoint(tileHighlight.transform.position);
             occupiedCells = positionCalculator.GetOccupiedGridPositions(position, piece.PieceDirection, piece.IsFlipped);
             adjacentCells = positionCalculator.CalculateAdjacentPositions(position, piece.PieceDirection, piece.IsFlipped);
             playableCells = positionCalculator.CalculatePlayablePositions(adjacentCells);

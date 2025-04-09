@@ -1,9 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
-using Blokr.Highlighter;
 
 namespace Blokr.UnitySync
 {
@@ -51,12 +48,12 @@ namespace Blokr.UnitySync
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, boardLayer))
             {
                 Vector3 point = hit.point;
-                GridPosition gridPoint = Geometry.GridFromPoint(point);
+                GridPosition gridPoint = GridGeometry.GridFromPoint(point);
                 
                 if (ValidatePosition(gridPoint, piece))
                 {
                     _highlightComponent.UpdateVisibility(true);
-                    _highlightComponent.UpdatePosition(Geometry.PointFromGrid(gridPoint));
+                    _highlightComponent.UpdatePosition(GridGeometry.PointFromGrid(gridPoint));
                     return true;
                 }
             }

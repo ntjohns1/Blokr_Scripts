@@ -3,6 +3,7 @@ using System;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
 using Blokr.UnitySync;
+using Blokr.Highlighter;
 
 namespace Blokr.Input
 {
@@ -136,7 +137,7 @@ namespace Blokr.Input
                 // Try to place piece
                 if (_validationComponent.ValidateMousePosition(_activePiece))
                 {
-                    var position = Geometry.GridFromPoint(hit.point);
+                    var position = GridGeometry.GridFromPoint(hit.point);
                     OnPositionSelected?.Invoke(position);
                     CancelSelection();
                 }
