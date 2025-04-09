@@ -1,27 +1,21 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
 using Blokr.Highlighter;
 using Blokr.Input;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace Blokr.States
 {
     public class PiecePlacementState : MonoBehaviour
     {
-        // ************************************************************************************
-        // Fields
-        // ************************************************************************************
-
         private static PiecePlacementState instance;
         
         private InputHandler input;
         private GameObject tileHighlight;
         private PlacementValidationComponent validationComponent;
+        private PlacementHighlighter highlighter;
 
         [SerializeField] private LayerMask gridLayer;
 
@@ -30,10 +24,6 @@ namespace Blokr.States
         private List<GridPosition> adjacentCells;
         private List<GridPosition> playableCells;
         private GameObject placedPiece;
-        
-        // ************************************************************************************
-        // Properties
-        // ************************************************************************************
         
         public static PiecePlacementState Instance
         {
@@ -47,93 +37,145 @@ namespace Blokr.States
             set { piece = value; }
         }
 
-        public List<GridPosition> OccupiedCells
-        {
-            get { return occupiedCells; }
-            set { occupiedCells = value; }
-        }
-
-        public List<GridPosition> AdjacentCells
-        {
-            get { return adjacentCells; }
-            set { adjacentCells = value; }
-        }
-
-        public List<GridPosition> PlayableCells
-        {
-            get { return playableCells; }
-            set { playableCells = value; }
-        }
-                
-        public GameObject PlacedPiece
-        {
-            get { return placedPiece; }
-            set { placedPiece = value; }
-        }
-
-        // ************************************************************************************
-        // Methods
-        // ************************************************************************************
-        
         void Awake()
         {
             instance = this;
             validationComponent = GetComponent<PlacementValidationComponent>();
+            highlighter = GetComponent<PlacementHighlighter>();
         }
 
         void Start() 
         {
             input = InputHandler.Instance;
+            SubscribeToInputEvents();
+        }
+
+        void OnDestroy()
+        {
+            UnsubscribeFromInputEvents();
+        }
+
+        private void SubscribeToInputEvents()
+        {
+            if (input != null)
+            {
+                input.OnPieceSelected += HandlePieceSelected;
+                input.OnPositionSelected += HandlePositionSelected;
+                input.OnRotateClockwise += HandleRotateClockwise;
+                input.OnRotateCounterClockwise += HandleRotateCounterClockwise;
+                input.OnFlip += HandleFlip;
+                input.OnCancel += HandleCancel;
+            }
+        }
+
+        private void UnsubscribeFromInputEvents()
+        {
+            if (input != null)
+            {
+                input.OnPieceSelected -= HandlePieceSelected;
+                input.OnPositionSelected -= HandlePositionSelected;
+                input.OnRotateClockwise -= HandleRotateClockwise;
+                input.OnRotateCounterClockwise -= HandleRotateCounterClockwise;
+                input.OnFlip -= HandleFlip;
+                input.OnCancel -= HandleCancel;
+            }
+        }
+
+        private void HandlePieceSelected(Piece selectedPiece)
+        {
+            piece = selectedPiece;
+            if (tileHighlight != null)
+            {
+                tileHighlight.SetActive(true);
+                InitializePositionAndRotation();
+            }
+        }
+
+        private void HandlePositionSelected(GridPosition position)
+        {
+            if (validationComponent.ValidatePosition(position, piece))
+            {
+                occupiedCells = highlighter.GetOccupiedGridPositions(position, piece.PieceDirection, piece.IsFlipped);
+                adjacentCells = highlighter.CalculateAdjacentPositions(position, piece.PieceDirection, piece.IsFlipped);
+                playableCells = highlighter.CalculatePlayablePositions(adjacentCells);
+                        
+                Player currentPlayer = GameManager.Instance.CurrentPlayer.GetComponent<Player>();
+                currentPlayer.UpdateAdjacentPositions(adjacentCells);
+                currentPlayer.UpdatePlayablePositions(playableCells);
+                
+                placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
+                placedPiece.transform.SetPositionAndRotation(
+                    Geometry.PointFromGrid(occupiedCells[0]), 
+                    tileHighlight.transform.rotation);
+                placedPiece.SetActive(true);
+                piece.gameObject.SetActive(false);
+                
+                ExitState();
+            }
+        }
+
+        private void HandleRotateClockwise()
+        {
+            if (tileHighlight != null)
+            {
+                tileHighlight.transform.Rotate(0f, 90f, 0f);
+                CalculatePositions();
+            }
+        }
+
+        private void HandleRotateCounterClockwise()
+        {
+            if (tileHighlight != null)
+            {
+                tileHighlight.transform.Rotate(0f, -90f, 0f);
+                CalculatePositions();
+            }
+        }
+
+        private void HandleFlip()
+        {
+            if (tileHighlight != null)
+            {
+                tileHighlight.transform.Rotate(180f, 0f, 0f);
+                CalculatePositions();
+            }
+        }
+
+        private void HandleCancel()
+        {
+            if (tileHighlight != null)
+            {
+                tileHighlight.SetActive(false);
+            }
+            piece = null;
+            ExitState();
+        }
+
+        private void CalculatePositions()
+        {
+            if (piece == null || tileHighlight == null) return;
+
+            GridPosition position = Geometry.GridFromPoint(tileHighlight.transform.position);
+            occupiedCells = highlighter.GetOccupiedGridPositions(position, piece.PieceDirection, piece.IsFlipped);
+            adjacentCells = highlighter.CalculateAdjacentPositions(position, piece.PieceDirection, piece.IsFlipped);
+            playableCells = highlighter.CalculatePlayablePositions(adjacentCells);
         }
 
         public void SetHighlight(GameObject highlightPrefab)
         {
             tileHighlight = highlightPrefab;
-            piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
-            InitializePositionAndRotation();
-        }
-
-        void Update()
-        {
-            if (tileHighlight == null || piece == null) return;
-
-            input.HandleMouseOver(tileHighlight, piece);
-            input.HandleRotationInput(tileHighlight, piece);
-            input.HandleFlipInput(tileHighlight, piece);
-            PlacePiece();
+            if (piece != null)
+            {
+                InitializePositionAndRotation();
+            }
         }
 
         void InitializePositionAndRotation()
         {
             if (tileHighlight == null) return;
-            tileHighlight.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0.0f, 90.0f * (int)piece.PieceDirection, 0.0f));
-        }
-
-        public void PlacePiece()
-        {
-            if (tileHighlight == null) return;
-            if (tileHighlight.activeInHierarchy)
-            {
-                if (input.GetMouseButtonUp(0))
-                {
-                    GridPosition point = Geometry.GridFromPoint(tileHighlight.transform.position);
-                    if (validationComponent.ValidatePosition(point, piece))
-                    {
-                        occupiedCells = input.GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
-                        adjacentCells = input.GetAdjacentCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
-                        playableCells = input.GetPlayableCellsForType(tileHighlight, adjacentCells);
-                        
-                        Player currentPlayer = GameManager.Instance.CurrentPlayer.GetComponent<Player>();
-                        currentPlayer.UpdateAdjacentPositions(AdjacentCells);
-                        currentPlayer.UpdatePlayablePositions(PlayableCells);
-                        placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
-                        placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
-                        placedPiece.SetActive(true);
-                        piece.gameObject.SetActive(false);
-                        ExitState();
-                    }
-                }
-            }
+            tileHighlight.transform.SetPositionAndRotation(
+                Vector3.zero, 
+                Quaternion.Euler(0.0f, 90.0f * (int)piece.PieceDirection, 0.0f));
         }
 
         public void EnterState()
@@ -147,7 +189,10 @@ namespace Blokr.States
 
         private void ExitState()
         {
-            tileHighlight.SetActive(false);
+            if (tileHighlight != null)
+            {
+                tileHighlight.SetActive(false);
+            }
             enabled = false;
             TurnHandler turnHandler = GetComponent<TurnHandler>();
             turnHandler.EnterState();
