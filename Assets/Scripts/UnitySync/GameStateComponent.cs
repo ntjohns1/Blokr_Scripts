@@ -55,47 +55,59 @@ namespace Blokr.UnitySync
 
         private void Start()
         {
-            InitializePlayers();
             _gameStateService.StartGame();
+            InitializePlayers();
         }
 
         private void InitializePlayers()
         {
-            for (int i = 0; i < playerPrefabs.Length; i++)
+            var playerPrefabs = GameObject.FindGameObjectsWithTag("Player");
+            foreach (var playerPrefab in playerPrefabs)
             {
-                var color = (PieceColor)i;
-                var playerObj = Instantiate(playerPrefabs[i]);
-                _playerObjects[color] = playerObj;
-                
-                // Set up the Unity player component with the core player data
-                var unityPlayer = playerObj.GetComponent<PlayerComponent>();
+                var unityPlayer = playerPrefab.GetComponent<Player>();
                 if (unityPlayer != null)
                 {
+                    var color = unityPlayer.PlayerColor;
                     unityPlayer.Initialize(_gameStateService.GetPlayer(color));
+                    _playerObjects[color] = playerPrefab;
                 }
             }
         }
 
-        private void HandleTurnStarted(Turn turn)
-        {
-            // Update UI and player state for new turn
-            moveConfirmUI.SetActive(false);
-            var currentPlayerObj = _playerObjects[turn.CurrentPlayer.Color];
-            currentPlayerObj.GetComponent<PlayerComponent>()?.OnTurnStarted();
-        }
-
-        private void HandleTurnCompleted(Turn turn)
-        {
-            var playerObj = _playerObjects[turn.CurrentPlayer.Color];
-            playerObj.GetComponent<PlayerComponent>()?.OnTurnCompleted();
-        }
-
-        private void HandlePlayerChanged(Player newPlayer)
+        private void HandleTurnStarted()
         {
             foreach (var playerObj in _playerObjects.Values)
             {
-                playerObj.GetComponent<PlayerComponent>()?.UpdateActiveState(
-                    playerObj == _playerObjects[newPlayer.Color]);
+                var playerComponent = playerObj.GetComponent<PlayerComponent>();
+                if (playerComponent != null)
+                {
+                    playerComponent.OnTurnStarted();
+                }
+            }
+        }
+
+        private void HandleTurnCompleted()
+        {
+            foreach (var playerObj in _playerObjects.Values)
+            {
+                var playerComponent = playerObj.GetComponent<PlayerComponent>();
+                if (playerComponent != null)
+                {
+                    playerComponent.OnTurnCompleted();
+                }
+            }
+            moveConfirmUI.SetActive(false);
+        }
+
+        private void HandlePlayerChanged(PlayerData newPlayer)
+        {
+            foreach (var playerObj in _playerObjects.Values)
+            {
+                var playerComponent = playerObj.GetComponent<PlayerComponent>();
+                if (playerComponent != null)
+                {
+                    playerComponent.UpdateActiveState(playerObj == _playerObjects[newPlayer.Color]);
+                }
             }
         }
 
@@ -124,6 +136,8 @@ namespace Blokr.UnitySync
         public void ConfirmMove()
         {
             _gameStateService.ConfirmMove();
+            moveConfirmUI.SetActive(false);
+            HandleTurnCompleted();
         }
 
         public void CancelMove()
