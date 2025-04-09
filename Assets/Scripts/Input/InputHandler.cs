@@ -38,11 +38,11 @@ namespace Blokr.Input
 
         private void HandleMouseInput()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (UnityEngine.Input.GetMouseButtonDown(0))
             {
                 HandleLeftClick();
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (UnityEngine.Input.GetMouseButtonDown(1))
             {
                 HandleRightClick();
             }
@@ -52,22 +52,22 @@ namespace Blokr.Input
         {
             if (_activePiece == null) return;
 
-            if (Input.GetKeyUp(KeyCode.E))
+            if (UnityEngine.Input.GetKeyUp(KeyCode.E))
             {
                 _transformService.RotateClockwise(_activePiece);
                 _highlightComponent.ApplyRotation(_activePiece.IsFlipped, true);
             }
-            else if (Input.GetKeyUp(KeyCode.Q))
+            else if (UnityEngine.Input.GetKeyUp(KeyCode.Q))
             {
                 _transformService.RotateCounterClockwise(_activePiece);
                 _highlightComponent.ApplyRotation(_activePiece.IsFlipped, false);
             }
-            else if (Input.GetKeyUp(KeyCode.F))
+            else if (UnityEngine.Input.GetKeyUp(KeyCode.F))
             {
                 _transformService.Flip(_activePiece);
                 _highlightComponent.ApplyFlipTransformation(_activePiece.PieceDirection, _activePiece.IsFlipped);
             }
-            else if (Input.GetKeyDown(KeyCode.Escape))
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
             {
                 CancelSelection();
             }
@@ -75,7 +75,7 @@ namespace Blokr.Input
 
         private void HandleLeftClick()
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = mainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, pieceLayer))

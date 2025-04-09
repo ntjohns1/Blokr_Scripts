@@ -1,48 +1,50 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
-                                                                            
+using Blokr.UnitySync;
+
 namespace Blokr.Highlighter
-
 {
-    public delegate List<GridPosition> CalculatePositions(GridPosition initialCell, Direction direction, List<(GridPosition, int)> positions);
-
-    public abstract class PlacementHighlighter
+    public class PlacementHighlighter : MonoBehaviour
     {
-        protected GridPosition GetNext(GridPosition current, Direction direction)
-        {
-            return direction switch
-            {
-                Direction.Up => new GridPosition(current.X, current.Y + 1),
-                Direction.Right => new GridPosition(current.X + 1, current.Y),
-                Direction.Down => new GridPosition(current.X, current.Y - 1),
-                Direction.Left => new GridPosition(current.X - 1, current.Y),
-                _ => current
-            };
-        }
+        private IPieceCalculationService _pieceCalculationService;
+        private PieceType _pieceType;
+        private bool _initialized;
 
-        protected List<GridPosition> CalculatePositions(GridPosition initialCell, Direction direction, List<(GridPosition, int)> positions)
+        private void Start()
         {
-            List<GridPosition> output = new();
-            GridPosition current = initialCell;
-
-            foreach ((GridPosition offset, int steps) in positions)
+            if (!_initialized)
             {
-                for (int i = 0; i < steps; i++)
-                {
-                    current = GetNext(current, direction);
-                }
-                output.Add(new GridPosition(current.X + offset.X, current.Y + offset.Y));
-                current = initialCell;
+                _pieceCalculationService = GameStateComponent.Instance.PieceCalculationService;
+                _pieceType = GetComponent<Piece>()?.PieceType ?? PieceType.A1;
+                _initialized = true;
             }
-
-            return output;
         }
 
-        public abstract List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped);
-        
-        public abstract List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions);
-        
-        public abstract List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped);
+        public void Initialize(IPieceCalculationService pieceCalculationService, PieceType pieceType)
+        {
+            _pieceCalculationService = pieceCalculationService;
+            _pieceType = pieceType;
+            _initialized = true;
+        }
+
+        public List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
+        {
+            if (!_initialized) return new List<GridPosition>();
+            return _pieceCalculationService.CalculateOccupiedPositions(baseCell, _pieceType, direction, isFlipped);
+        }
+
+        public List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
+        {
+            if (!_initialized) return new List<GridPosition>();
+            return _pieceCalculationService.CalculateAdjacentPositions(gridpoint, _pieceType, direction, isFlipped);
+        }
+
+        public List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
+        {
+            if (!_initialized) return new List<GridPosition>();
+            return _pieceCalculationService.CalculatePlayablePositions(adjacentPositions, _pieceType);
+        }
     }
 }

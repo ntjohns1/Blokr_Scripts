@@ -5,6 +5,7 @@ using System.Linq;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
 using Blokr.Highlighter;
+using Blokr.Input;
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -18,19 +19,16 @@ namespace Blokr.States
 
         private static PiecePlacementState instance;
         
-        private InputManager input;
+        private InputHandler input;
         private GameObject tileHighlight;
+        private PlacementValidationComponent validationComponent;
 
-        // private Collider objectCollider;
         [SerializeField] private LayerMask gridLayer;
 
         private Piece piece;
         private List<GridPosition> occupiedCells;
-
         private List<GridPosition> adjacentCells;
-
         private List<GridPosition> playableCells;
-        
         private GameObject placedPiece;
         
         // ************************************************************************************
@@ -80,20 +78,21 @@ namespace Blokr.States
         void Awake()
         {
             instance = this;
+            validationComponent = GetComponent<PlacementValidationComponent>();
         }
 
         void Start() 
         {
-            input = InputManager.Instance;
+            input = InputHandler.Instance;
         }
 
         public void SetHighlight(GameObject highlightPrefab)
         {
             tileHighlight = highlightPrefab;
-            // objectCollider = highlightPrefab.GetComponent<Collider>();
             piece = GameManager.Instance.SelectedPiece.GetComponent<Piece>();
             InitializePositionAndRotation();
         }
+
         void Update()
         {
             if (tileHighlight == null || piece == null) return;
@@ -115,24 +114,24 @@ namespace Blokr.States
             if (tileHighlight == null) return;
             if (tileHighlight.activeInHierarchy)
             {
-                if (Input.GetMouseButtonUp(0))
+                if (input.GetMouseButtonUp(0))
                 {
                     GridPosition point = Geometry.GridFromPoint(tileHighlight.transform.position);
-                    occupiedCells = input.GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
-                    adjacentCells = input.GetAdjacentCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
-                    playableCells = input.GetPlayableCellsForType(tileHighlight, adjacentCells);
-                    foreach (GridPosition cell in occupiedCells)
+                    if (validationComponent.ValidatePosition(point, piece))
                     {
-                        Debug.Log(cell);
+                        occupiedCells = input.GetOccupiedCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
+                        adjacentCells = input.GetAdjacentCellsForType(tileHighlight, point, piece.PieceDirection, piece.IsFlipped);
+                        playableCells = input.GetPlayableCellsForType(tileHighlight, adjacentCells);
+                        
+                        Player currentPlayer = GameManager.Instance.CurrentPlayer.GetComponent<Player>();
+                        currentPlayer.UpdateAdjacentPositions(AdjacentCells);
+                        currentPlayer.UpdatePlayablePositions(PlayableCells);
+                        placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
+                        placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
+                        placedPiece.SetActive(true);
+                        piece.gameObject.SetActive(false);
+                        ExitState();
                     }
-                    Player currentPlayer = GameManager.Instance.CurrentPlayer.GetComponent<Player>();
-                    currentPlayer.UpdateAdjacentPositions(AdjacentCells);
-                    currentPlayer.UpdatePlayablePositions(PlayableCells);
-                    placedPiece = PiecePool.SharedInstance.GetPiece(piece.PieceType.ToString(), piece.PieceColor);
-                    placedPiece.transform.SetPositionAndRotation(Geometry.PointFromGrid(occupiedCells[0]), tileHighlight.transform.rotation);
-                    placedPiece.SetActive(true);
-                    piece.gameObject.SetActive(false);
-                    ExitState();
                 }
             }
         }
@@ -153,19 +152,5 @@ namespace Blokr.States
             TurnHandler turnHandler = GetComponent<TurnHandler>();
             turnHandler.EnterState();
         }
-
-        // public void AcceptMove()
-        // {
-        //     GameManager.Instance.AddPiece(occupiedCells, piece.PieceType);
-        //     moveConfirm.SetActive(false);
-        //     TurnHandler.Instance.NextPlayer();
-        // }
-
-        // public void CancelMove()
-        // {
-        //     placedPiece.SetActive(false);
-        //     piece.gameObject.SetActive(true);
-        //     moveConfirm.SetActive(false);
-        // }
     }
 }

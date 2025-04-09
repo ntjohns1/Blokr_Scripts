@@ -5,7 +5,6 @@ using Blokr.Core.Models;
 using Blokr.Core.Services;
 using Blokr.Highlighter;
 
-
 namespace Blokr.UnitySync
 {
     public class PlacementValidationComponent : MonoBehaviour
@@ -17,6 +16,20 @@ namespace Blokr.UnitySync
         private IPieceCalculationService _pieceCalculationService;
         private IGameStateService _gameStateService;
         private IBoardService _boardService;
+        private bool _initialized;
+
+        private void Start()
+        {
+            if (!_initialized)
+            {
+                _mainCamera = Camera.main;
+                _highlightComponent = GetComponent<PieceHighlightComponent>();
+                _pieceCalculationService = GameStateComponent.Instance.PieceCalculationService;
+                _gameStateService = GameStateComponent.Instance.GameStateService;
+                _boardService = GameStateComponent.Instance.BoardService;
+                _initialized = true;
+            }
+        }
 
         public void Initialize(Camera mainCamera, PieceHighlightComponent highlightComponent, 
             IPieceCalculationService pieceCalculationService, IGameStateService gameStateService,
@@ -27,20 +40,20 @@ namespace Blokr.UnitySync
             _pieceCalculationService = pieceCalculationService;
             _gameStateService = gameStateService;
             _boardService = boardService;
+            _initialized = true;
         }
 
         public bool ValidateMousePosition(Piece piece)
         {
+            if (!_initialized) return false;
+
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, boardLayer))
             {
                 Vector3 point = hit.point;
                 GridPosition gridPoint = Geometry.GridFromPoint(point);
                 
-                var occupiedPositions = _pieceCalculationService.CalculateOccupiedPositions(
-                    gridPoint, piece.PieceType, piece.PieceDirection, piece.IsFlipped);
-
-                if (IsValidPlacement(occupiedPositions, piece.PieceColor))
+                if (ValidatePosition(gridPoint, piece))
                 {
                     _highlightComponent.UpdateVisibility(true);
                     _highlightComponent.UpdatePosition(Geometry.PointFromGrid(gridPoint));
@@ -50,6 +63,22 @@ namespace Blokr.UnitySync
 
             _highlightComponent.UpdateVisibility(false);
             return false;
+        }
+
+        public bool ValidatePosition(GridPosition position, Piece piece)
+        {
+            if (!_initialized) return false;
+
+            var occupiedPositions = _pieceCalculationService.CalculateOccupiedPositions(
+                position, piece.PieceType, piece.PieceDirection, piece.IsFlipped);
+
+            return IsValidPlacement(occupiedPositions, piece.PieceColor);
+        }
+
+        public bool ValidatePositions(List<GridPosition> positions, PieceColor color)
+        {
+            if (!_initialized) return false;
+            return IsValidPlacement(positions, color);
         }
 
         private bool IsValidPlacement(List<GridPosition> positions, PieceColor color)

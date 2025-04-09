@@ -1,3 +1,6 @@
+// This file is deprecated. All piece calculation logic has been moved to IPieceCalculationService.
+// Please use PlacementHighlighter with IPieceCalculationService instead.
+
 using System.Collections;
 using System.Collections.Generic;
 using Blokr.Core.Models;
