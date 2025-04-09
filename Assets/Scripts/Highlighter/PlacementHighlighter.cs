@@ -1,3 +1,6 @@
+// This file is deprecated. Position calculation logic has been moved to PiecePositionCalculator in the UnitySync package.
+// Please use PiecePositionCalculator instead.
+
 using System.Collections.Generic;
 using UnityEngine;
 using Blokr.Core.Models;
@@ -6,6 +9,7 @@ using Blokr.UnitySync;
 
 namespace Blokr.Highlighter
 {
+    [System.Obsolete("This component is deprecated. Use PiecePositionCalculator from UnitySync package instead.")]
     public class PlacementHighlighter : MonoBehaviour
     {
         private IPieceCalculationService _pieceCalculationService;
