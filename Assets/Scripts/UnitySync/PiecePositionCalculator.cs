@@ -50,3 +50,4 @@ namespace Blokr.UnitySync
             return _pieceCalculationService.CalculatePlayablePositions(adjacentPositions, _pieceType);
         }
     }
+}
