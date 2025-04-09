@@ -1,9 +1,7 @@
 using UnityEngine;
 using System;
 using Blokr.Core.Models;
-using Blokr.Core.Services;
 using Blokr.UnitySync;
-using Blokr.Highlighter;
 
 namespace Blokr.Input
 {
@@ -24,7 +22,7 @@ namespace Blokr.Input
         private Piece _activePiece;
         private PieceHighlightComponent _highlightComponent;
         private PlacementValidationComponent _validationComponent;
-        private IPieceTransformService _transformService;
+        private GameStateComponent _gameState;
         private bool _isInputEnabled = true;
 
         public bool IsInputEnabled
@@ -48,7 +46,7 @@ namespace Blokr.Input
 
         private void Start()
         {
-            _transformService = GameStateComponent.Instance.PieceTransformService;
+            _gameState = GameStateComponent.Instance;
             _validationComponent = GetComponent<PlacementValidationComponent>();
             if (_validationComponent == null)
             {
@@ -86,19 +84,19 @@ namespace Blokr.Input
 
             if (UnityEngine.Input.GetKeyUp(KeyCode.E))
             {
-                _transformService.RotateClockwise(_activePiece);
+                _gameState.PieceTransformService.RotateClockwise(_activePiece);
                 _highlightComponent.ApplyRotation(_activePiece.IsFlipped, true);
                 OnRotateClockwise?.Invoke();
             }
             else if (UnityEngine.Input.GetKeyUp(KeyCode.Q))
             {
-                _transformService.RotateCounterClockwise(_activePiece);
+                _gameState.PieceTransformService.RotateCounterClockwise(_activePiece);
                 _highlightComponent.ApplyRotation(_activePiece.IsFlipped, false);
                 OnRotateCounterClockwise?.Invoke();
             }
             else if (UnityEngine.Input.GetKeyUp(KeyCode.F))
             {
-                _transformService.Flip(_activePiece);
+                _gameState.PieceTransformService.Flip(_activePiece);
                 _highlightComponent.ApplyFlipTransformation(_activePiece.PieceDirection, _activePiece.IsFlipped);
                 OnFlip?.Invoke();
             }
@@ -119,17 +117,21 @@ namespace Blokr.Input
                 var pieceComponent = hit.collider.GetComponent<PieceComponent>();
                 if (pieceComponent != null)
                 {
-                    _activePiece = new Piece { 
-                        PieceType = pieceComponent.PieceType,
-                        PieceColor = pieceComponent.PieceColor 
-                    };
-                    _highlightComponent = hit.collider.GetComponent<PieceHighlightComponent>();
-                    if (_highlightComponent == null)
+                    var playerComponent = pieceComponent.GetComponentInParent<PlayerComponent>();
+                    if (playerComponent != null)
                     {
-                        _highlightComponent = hit.collider.gameObject.AddComponent<PieceHighlightComponent>();
-                        _highlightComponent.Initialize(_activePiece.PieceType);
+                        _activePiece = new Piece { 
+                            PieceType = pieceComponent.PieceType,
+                            PieceColor = _gameState.GameStateService.CurrentPlayer.Color
+                        };
+                        _highlightComponent = hit.collider.GetComponent<PieceHighlightComponent>();
+                        if (_highlightComponent == null)
+                        {
+                            _highlightComponent = hit.collider.gameObject.AddComponent<PieceHighlightComponent>();
+                            _highlightComponent.Initialize(_activePiece.PieceType);
+                        }
+                        OnPieceSelected?.Invoke(_activePiece);
                     }
-                    OnPieceSelected?.Invoke(_activePiece);
                 }
             }
             else if (Physics.Raycast(ray, out hit, Mathf.Infinity, boardLayer) && _activePiece != null)

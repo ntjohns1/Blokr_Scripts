@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
 
@@ -11,7 +11,7 @@ namespace Blokr.UnitySync
     /// </summary>
     public class PiecePositionCalculator : MonoBehaviour
     {
-        private IPieceCalculationService _pieceCalculationService;
+        private GameStateComponent _gameState;
         private PieceType _pieceType;
         private bool _initialized;
 
@@ -19,15 +19,15 @@ namespace Blokr.UnitySync
         {
             if (!_initialized)
             {
-                _pieceCalculationService = GameStateComponent.Instance.PieceCalculationService;
+                _gameState = GameStateComponent.Instance;
                 _pieceType = GetComponent<Piece>()?.PieceType ?? PieceType.A1;
                 _initialized = true;
             }
         }
 
-        public void Initialize(IPieceCalculationService pieceCalculationService, PieceType pieceType)
+        public void Initialize(PieceType pieceType)
         {
-            _pieceCalculationService = pieceCalculationService;
+            _gameState = GameStateComponent.Instance;
             _pieceType = pieceType;
             _initialized = true;
         }
@@ -35,19 +35,19 @@ namespace Blokr.UnitySync
         public List<GridPosition> GetOccupiedGridPositions(GridPosition baseCell, Direction direction, bool isFlipped)
         {
             if (!_initialized) return new List<GridPosition>();
-            return _pieceCalculationService.CalculateOccupiedPositions(baseCell, _pieceType, direction, isFlipped);
+            return _gameState.PieceCalculationService.CalculateOccupiedPositions(baseCell, _pieceType, direction, isFlipped);
         }
 
         public List<GridPosition> CalculateAdjacentPositions(GridPosition gridpoint, Direction direction, bool isFlipped)
         {
             if (!_initialized) return new List<GridPosition>();
-            return _pieceCalculationService.CalculateAdjacentPositions(gridpoint, _pieceType, direction, isFlipped);
+            return _gameState.PieceCalculationService.CalculateAdjacentPositions(gridpoint, _pieceType, direction, isFlipped);
         }
 
         public List<GridPosition> CalculatePlayablePositions(List<GridPosition> adjacentPositions)
         {
             if (!_initialized) return new List<GridPosition>();
-            return _pieceCalculationService.CalculatePlayablePositions(adjacentPositions, _pieceType);
+            return _gameState.PieceCalculationService.CalculatePlayablePositions(adjacentPositions, _pieceType);
         }
     }
 }

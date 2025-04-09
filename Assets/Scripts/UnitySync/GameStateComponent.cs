@@ -1,41 +1,49 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Blokr.Core.Services;
 using Blokr.Core.Models;
+using Blokr.Core.Services;
 
 namespace Blokr.UnitySync
 {
     public class GameStateComponent : MonoBehaviour
     {
-        [SerializeField] private GameObject[] playerPrefabs;
+        private static GameStateComponent instance;
+        public static GameStateComponent Instance => instance;
+
         [SerializeField] private GameObject moveConfirmUI;
-        
+        [SerializeField] private GameObject[] playerPrefabs;
+
         private IGameStateService _gameStateService;
         private IBoardService _boardService;
+        private IPieceTransformService _pieceTransformService;
+        private IPieceCalculationService _pieceCalculationService;
         private Dictionary<PieceColor, GameObject> _playerObjects;
 
-        public static GameStateComponent Instance { get; private set; }
+        // Public accessors for services
         public IBoardService BoardService => _boardService;
         public IGameStateService GameStateService => _gameStateService;
+        public IPieceTransformService PieceTransformService => _pieceTransformService;
+        public IPieceCalculationService PieceCalculationService => _pieceCalculationService;
 
         private void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                InitializeServices();
-                DontDestroyOnLoad(gameObject);
-            }
-            else
+            if (instance != null && instance != this)
             {
                 Destroy(gameObject);
+                return;
             }
+            instance = this;
+
+            InitializeServices();
+            DontDestroyOnLoad(gameObject);
         }
 
         private void InitializeServices()
         {
             _gameStateService = new GameStateService();
             _boardService = new BoardService(_gameStateService);
+            _pieceTransformService = new PieceTransformService();
+            _pieceCalculationService = new PieceCalculationService();
             _playerObjects = new Dictionary<PieceColor, GameObject>();
 
             // Subscribe to events

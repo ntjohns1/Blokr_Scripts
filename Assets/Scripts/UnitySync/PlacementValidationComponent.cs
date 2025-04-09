@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
 
@@ -10,9 +12,7 @@ namespace Blokr.UnitySync
         
         private Camera _mainCamera;
         private PieceHighlightComponent _highlightComponent;
-        private IPieceCalculationService _pieceCalculationService;
-        private IGameStateService _gameStateService;
-        private IBoardService _boardService;
+        private GameStateComponent _gameState;
         private bool _initialized;
 
         private void Start()
@@ -21,22 +21,16 @@ namespace Blokr.UnitySync
             {
                 _mainCamera = Camera.main;
                 _highlightComponent = GetComponent<PieceHighlightComponent>();
-                _pieceCalculationService = GameStateComponent.Instance.PieceCalculationService;
-                _gameStateService = GameStateComponent.Instance.GameStateService;
-                _boardService = GameStateComponent.Instance.BoardService;
+                _gameState = GameStateComponent.Instance;
                 _initialized = true;
             }
         }
 
-        public void Initialize(Camera mainCamera, PieceHighlightComponent highlightComponent, 
-            IPieceCalculationService pieceCalculationService, IGameStateService gameStateService,
-            IBoardService boardService)
+        public void Initialize(Camera mainCamera, PieceHighlightComponent highlightComponent)
         {
             _mainCamera = mainCamera;
             _highlightComponent = highlightComponent;
-            _pieceCalculationService = pieceCalculationService;
-            _gameStateService = gameStateService;
-            _boardService = boardService;
+            _gameState = GameStateComponent.Instance;
             _initialized = true;
         }
 
@@ -66,7 +60,7 @@ namespace Blokr.UnitySync
         {
             if (!_initialized) return false;
 
-            var occupiedPositions = _pieceCalculationService.CalculateOccupiedPositions(
+            var occupiedPositions = _gameState.PieceCalculationService.CalculateOccupiedPositions(
                 position, piece.PieceType, piece.PieceDirection, piece.IsFlipped);
 
             return IsValidPlacement(occupiedPositions, piece.PieceColor);
@@ -84,7 +78,7 @@ namespace Blokr.UnitySync
                 pos.X >= 0 && pos.X <= 19 && pos.Y >= 0 && pos.Y <= 19);
 
             return allPositionsInBounds && 
-                   _boardService.IsValidMove(positions, color);
+                   _gameState.BoardService.IsValidMove(positions, color);
         }
     }
 }
