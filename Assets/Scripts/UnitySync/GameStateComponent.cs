@@ -64,17 +64,20 @@ namespace Blokr.UnitySync
             var playerPrefabs = GameObject.FindGameObjectsWithTag("Player");
             foreach (var playerPrefab in playerPrefabs)
             {
-                var unityPlayer = playerPrefab.GetComponent<Player>();
-                if (unityPlayer != null)
+                var playerComponent = playerPrefab.GetComponent<PlayerComponent>();
+                if (playerComponent != null)
                 {
-                    var color = unityPlayer.PlayerColor;
-                    unityPlayer.Initialize(_gameStateService.GetPlayer(color));
-                    _playerObjects[color] = playerPrefab;
+                    var player = _gameStateService.GetPlayer(playerComponent.Color);
+                    if (player != null)
+                    {
+                        playerComponent.Initialize(player);
+                        _playerObjects[player.Color] = playerPrefab;
+                    }
                 }
             }
         }
 
-        private void HandleTurnStarted()
+        private void HandleTurnStarted(Turn turn)
         {
             foreach (var playerObj in _playerObjects.Values)
             {
@@ -86,7 +89,7 @@ namespace Blokr.UnitySync
             }
         }
 
-        private void HandleTurnCompleted()
+        private void HandleTurnCompleted(Turn turn)
         {
             foreach (var playerObj in _playerObjects.Values)
             {
@@ -99,7 +102,7 @@ namespace Blokr.UnitySync
             moveConfirmUI.SetActive(false);
         }
 
-        private void HandlePlayerChanged(PlayerData newPlayer)
+        private void HandlePlayerChanged(Player newPlayer)
         {
             foreach (var playerObj in _playerObjects.Values)
             {
@@ -115,6 +118,17 @@ namespace Blokr.UnitySync
         {
             // Handle game over state (show UI, disable input, etc.)
             Debug.Log("Game Over!");
+        }
+
+        private void OnDestroy()
+        {
+            if (_gameStateService != null)
+            {
+                _gameStateService.OnTurnStarted -= HandleTurnStarted;
+                _gameStateService.OnTurnCompleted -= HandleTurnCompleted;
+                _gameStateService.OnPlayerChanged -= HandlePlayerChanged;
+                _gameStateService.OnGameOver -= HandleGameOver;
+            }
         }
 
         // Public methods for Unity components to interact with the services
@@ -137,24 +151,13 @@ namespace Blokr.UnitySync
         {
             _gameStateService.ConfirmMove();
             moveConfirmUI.SetActive(false);
-            HandleTurnCompleted();
+            // Let the turn completion be handled by the event from GameStateService
         }
 
         public void CancelMove()
         {
             _gameStateService.CancelMove();
             moveConfirmUI.SetActive(false);
-        }
-
-        private void OnDestroy()
-        {
-            if (_gameStateService != null)
-            {
-                _gameStateService.OnTurnStarted -= HandleTurnStarted;
-                _gameStateService.OnTurnCompleted -= HandleTurnCompleted;
-                _gameStateService.OnPlayerChanged -= HandlePlayerChanged;
-                _gameStateService.OnGameOver -= HandleGameOver;
-            }
         }
     }
 }

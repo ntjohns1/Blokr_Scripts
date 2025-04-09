@@ -14,6 +14,8 @@ namespace Blokr.UnitySync
         private Dictionary<PieceType, PieceComponent> _pieces;
         private bool _isActive;
 
+        public PieceColor Color => _player?.Color ?? PieceColor.Blue; // Default to Blue if player not set
+
         public void Initialize(Player player)
         {
             _player = player;
