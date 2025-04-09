@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Blokr.Core.Models;
 using Blokr.Core.Services;
-using Blokr.Highlighter;
 using Blokr.Input;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace Blokr.States
         private InputHandler input;
         private GameObject tileHighlight;
         private PlacementValidationComponent validationComponent;
-        private PlacementHighlighter highlighter;
+        private PiecePositionCalculator positionCalculator;
 
         [SerializeField] private LayerMask gridLayer;
 
@@ -41,7 +40,7 @@ namespace Blokr.States
         {
             instance = this;
             validationComponent = GetComponent<PlacementValidationComponent>();
-            highlighter = GetComponent<PlacementHighlighter>();
+            positionCalculator = GetComponent<PiecePositionCalculator>();
         }
 
         void Start() 
@@ -95,9 +94,9 @@ namespace Blokr.States
         {
             if (validationComponent.ValidatePosition(position, piece))
             {
-                occupiedCells = highlighter.GetOccupiedGridPositions(position, piece.PieceDirection, piece.IsFlipped);
-                adjacentCells = highlighter.CalculateAdjacentPositions(position, piece.PieceDirection, piece.IsFlipped);
-                playableCells = highlighter.CalculatePlayablePositions(adjacentCells);
+                occupiedCells = positionCalculator.GetOccupiedGridPositions(position, piece.PieceDirection, piece.IsFlipped);
+                adjacentCells = positionCalculator.CalculateAdjacentPositions(position, piece.PieceDirection, piece.IsFlipped);
+                playableCells = positionCalculator.CalculatePlayablePositions(adjacentCells);
                         
                 Player currentPlayer = GameManager.Instance.CurrentPlayer.GetComponent<Player>();
                 currentPlayer.UpdateAdjacentPositions(adjacentCells);
@@ -156,9 +155,9 @@ namespace Blokr.States
             if (piece == null || tileHighlight == null) return;
 
             GridPosition position = Geometry.GridFromPoint(tileHighlight.transform.position);
-            occupiedCells = highlighter.GetOccupiedGridPositions(position, piece.PieceDirection, piece.IsFlipped);
-            adjacentCells = highlighter.CalculateAdjacentPositions(position, piece.PieceDirection, piece.IsFlipped);
-            playableCells = highlighter.CalculatePlayablePositions(adjacentCells);
+            occupiedCells = positionCalculator.GetOccupiedGridPositions(position, piece.PieceDirection, piece.IsFlipped);
+            adjacentCells = positionCalculator.CalculateAdjacentPositions(position, piece.PieceDirection, piece.IsFlipped);
+            playableCells = positionCalculator.CalculatePlayablePositions(adjacentCells);
         }
 
         public void SetHighlight(GameObject highlightPrefab)
